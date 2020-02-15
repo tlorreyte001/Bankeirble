@@ -27,15 +27,16 @@ Pour pouvoir correctement lancer les différents modules :
 
 ## Démarrage
 
+Lancer la blockchain Ganache en local :
+``ganache-cli``
 Lancer le serveur :
 ``npm start``
 Ouvrir un navigateur et se connecter sur le port 8080.
 
 
 ## Versions
-Listez les versions ici
-**Dernière version stable :** 0.0.0
-**Dernière version :** 0.0.1
+* **Dernière version stable :** 0.0.0
+* **Dernière version :** 0.0.1
 
 
 ## Auteurs
