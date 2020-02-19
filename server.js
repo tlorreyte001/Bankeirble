@@ -23,6 +23,10 @@ app.use(function (req, res, next) {
 });
 
 // Routes
+var staticPath = path.join(__dirname + '/node_modules');
+app.use(express.static(staticPath));
+
+
 app.get('/', function(req,res){
   res.sendFile(path.join(__dirname + '/client/hello.html'));
 });

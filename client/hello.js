@@ -1,24 +1,4 @@
-
-// import drizzle functions and contract artifact
-import { Drizzle } from "@drizzle/store";
-import MyStringStore from "./contracts/MyStringStore.json";
-
-// let drizzle know what contracts we want and how to access our test blockchain
-const options = {
-  contracts: [MyStringStore],
-  web3: {
-    fallback: {
-      type: "ws",
-      url: "ws://127.0.0.1:7545",
-    },
-  },
-};
-
-// setup drizzle
-const drizzle = new Drizzle(options);
-
-
-
+// Test React
 const e = React.createElement;
 
 class LikeButton extends React.Component {
@@ -38,7 +18,45 @@ class LikeButton extends React.Component {
       'Like'
     );
   }
-}
+};
 
-const domContainer = document.querySelector('#like_button_container');
-ReactDOM.render(e(LikeButton), domContainer);
+// Test Drizzle
+var App = {
+  web3Provider: null,
+  contracts: {},
+
+  init : async function() {
+    return await App.initWeb3();
+  },
+
+  initWeb3 : async function() {
+    // Modern dapp browsers...
+    if (window.ethereum) {
+      App.web3Provider = window.ethereum;
+      try {
+        // Request account access
+        await window.ethereum.enable();
+      } catch (error) {
+        // User denied account access...
+        console.error("User denied account access")
+      }
+    }
+    // Legacy dapp browsers...
+    else if (window.web3) {
+      App.web3Provider = window.web3.currentProvider;
+    }
+    // If no injected web3 instance is detected, fall back to Ganache
+    else {
+    }
+
+    const domContainer = document.getElementById('result');
+    ReactDOM.render(e(LikeButton), domContainer);
+    var web3 = new Web3(App.web3Provider);
+  },
+};
+
+$(function() {
+  $(window).load(function() {
+    App.init();
+  });
+});
