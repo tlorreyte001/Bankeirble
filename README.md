@@ -26,6 +26,8 @@ Pour pouvoir correctement lancer les différents modules :
 * Installer MongoDB : 
 ``https://docs.mongodb.com/manual/administration/install-community/``
 ``npm install mongodb``
+* Installer Mongoose : 
+``npm install mongoose``
 
 
 ## Démarrage
