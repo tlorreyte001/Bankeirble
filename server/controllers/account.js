@@ -1,4 +1,4 @@
-const User = require("../schema/schemaUsers.js");
+const Users = require("../schema/schemaUsers.js");
 const passwordHash = require("password-hash");
 
 module.exports = {
