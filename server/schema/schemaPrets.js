@@ -2,8 +2,8 @@ const mongoose = require("mongoose");
 
 const pretsSchema = mongoose.Schema(
   {
-    _idPreteur: ObjectId,
-    _idEmprunteur: ObjectId,
+    _idPreteur: String,
+    _idEmprunteur: String,
     montant: Number,
     taux: Number,
     duree: Number,
@@ -14,4 +14,4 @@ const pretsSchema = mongoose.Schema(
   },
 );
 
-module.exports = mongoose.model("Prets", userSchema);
+module.exports = mongoose.model("Prets", pretsSchema);
