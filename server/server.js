@@ -5,7 +5,6 @@ const bodyParser = require('body-parser');
 
 //Connexion à la base de donnée
 mongoose.connect("mongodb://localhost/db");
-console.log("Connected to mongoDB");
 
 //On définit notre objet express nommé app
 const app = express();
@@ -25,6 +24,15 @@ app.use(function (req, res, next) {
     res.setHeader('Access-Control-Allow-Credentials', true);
     next();
 });
+
+// const Users = require("./schema/schemaUsers");
+// app.get('/test', function (req, res, next){
+//     const user = new Users({
+//         nom:"Test"
+//     });
+//     user.save();
+//     console.log("ok");
+// });
 
 //Définition du routeur
 const router = express.Router();
