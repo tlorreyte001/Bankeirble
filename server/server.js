@@ -25,14 +25,14 @@ app.use(function (req, res, next) {
     next();
 });
 
-// const Users = require("./schema/schemaUsers");
-// app.get('/test', function (req, res, next){
-//     const user = new Users({
-//         nom:"Test"
-//     });
-//     user.save();
-//     console.log("ok");
-// });
+const Users = require("./schema/schemaUsers");
+app.get('/test', function (req, res, next){
+    const user = new Users({
+        chien: "toto"
+    });
+    user.save();
+    console.log("ok");
+});
 
 //Définition du routeur
 const router = express.Router();
