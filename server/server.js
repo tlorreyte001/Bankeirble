@@ -25,21 +25,22 @@ app.use(function (req, res, next) {
     next();
 });
 
-const Users = require("./schema/schemaUsers");
-app.get('/test', function (req, res, next){
-    const user = new Users({
-        chien: "toto"
-    });
-    user.save();
-    console.log("ok");
-});
+// const Users = require("./schema/schemaUsers");
+// app.get('/test', function (req, res, next){
+//     const user = new Users({
+//         chien: "toto"
+//     });
+//     user.save();
+//     console.log("ok");
+// });
 
-//Définition du routeur
+
+//Définition des routeurs
 const router = express.Router();
 app.use("/user", router);
 require(__dirname + "/controllers/userController")(router);
-app.use("/pret", router);
-require(__dirname + "/controllers/pretController")(router);
+app.use("/loan", router);
+require(__dirname + "/controllers/loanController")(router);
 
 //Définition et mise en place du port d'écoute
 const port = 8800;
