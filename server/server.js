@@ -11,7 +11,7 @@ mongoose.connect("mongodb://localhost:27018/db", { useNewUrlParser: true,  useUn
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {
-  console.log("C'est ok");
+console.log("\nConnecté à la bdd !");
 });
 module.exports = db;
 
@@ -25,21 +25,21 @@ const urlencodedParser = bodyParser.urlencoded({
 app.use(urlencodedParser);
 app.use(bodyParser.json());
 
-const Users = require("./schema/schemaUsers");
-app.get('/test', function (req, res, next){
-    const user = new Users({
-        mailPerso: "toto"
-    });
-    user.save();
-});
+// const Users = require("./schema/schemaUsers");
+// app.get('/test', function (req, res, next){
+//     const user = new Users({
+//         mailPerso: "toto"
+//     });
+//     user.save();
+// });
 
 
 //Définition des routeurs
 const router = express.Router();
 app.use("/user", router);
 require(__dirname + "/controllers/userController")(router);
-// app.use("/loan", router);
-// require(__dirname + "/controllers/loanController")(router);
+app.use("/loan", router);
+require(__dirname + "/controllers/loanController")(router);
 
 //Définition et mise en place du port d'écoute
 const port = 8800;

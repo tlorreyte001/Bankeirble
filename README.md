@@ -17,30 +17,35 @@ Pour pouvoir correctement lancer les différents modules :
 
 * Cloner le repo :
 ``git clone``
-* Instaler les différents modules pour le serveur Node.js :
+* Installer les différents modules pour le serveur Node.js :
 ``npm install``
 * Installer Truffle pour la partie blockchain :
 ``npm install -g truffle``
 * Installer Ganache :
 ``npm install -g ganache-cli``
-* Installer MongoDB : 
+* Installer MongoDB :
 ``https://docs.mongodb.com/manual/administration/install-community/``
 ``npm install mongodb``
+* Installer yarn :
+``https://classic.yarnpkg.com/fr/docs/install/``
 
 
 ## Démarrage
 
 * Lancer la blockchain Ganache en local :
 ``ganache-cli``
-* Lancer la base de donées : 
-``mongod --dbpath=<repertoire du git en local>Bankeirble/data/db --port <port libre>``
-* Lancer le serveur :
+* Lancer la base de données :
+``mongod -port 27018``
+* Lancer le serveur dans le répertoire server:
 ``npm start``
-* Ouvrir un navigateur et se connecter sur le port 8080.
+* Lancer le serveur dans le répertoire client:
+``yarn start``
+* Ouvrir un navigateur et se connecter sur le port 3000.
+``http://localhost:3000/``
 
 ## Visualiser la base de données
 
-* Téléchargez Robo 3T : 
+* Téléchargez Robo 3T :
 ``https://robomongo.org/download``
 * Cliquez sur create.
 * Remplissez le nom.
