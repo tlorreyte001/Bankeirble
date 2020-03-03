@@ -2,12 +2,16 @@
 const express = require("express"); 
 const mongoose = require("mongoose"); 
 const bodyParser = require('body-parser');
+const cors = require("cors");
 
 //Connexion à la base de donnée
-mongoose.connect("mongodb://localhost/db");
+mongoose.connect("mongodb://localhost:27017/db");
 
 //On définit notre objet express nommé app
 const app = express();
+
+//Définition des CORS
+app.use(cors());
 
 //Body Parser
 const urlencodedParser = bodyParser.urlencoded({
@@ -16,31 +20,24 @@ const urlencodedParser = bodyParser.urlencoded({
 app.use(urlencodedParser);
 app.use(bodyParser.json());
 
-//Définition des CORS
-app.use(function (req, res, next) {
-    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-    res.setHeader('Access-Control-Allow-Credentials', true);
-    next();
+const Users = require("./schema/schemaUsers");
+app.get('/test', function (req, res, next){
+    const user = new Users({
+        mail_perso: "toto"
+    });
+    try {user.save();}
+    catch{
+        console.error(error);
+    }
 });
-
-// const Users = require("./schema/schemaUsers");
-// app.get('/test', function (req, res, next){
-//     const user = new Users({
-//         chien: "toto"
-//     });
-//     user.save();
-//     console.log("ok");
-// });
 
 
 //Définition des routeurs
 const router = express.Router();
 app.use("/user", router);
 require(__dirname + "/controllers/userController")(router);
-app.use("/loan", router);
-require(__dirname + "/controllers/loanController")(router);
+// app.use("/loan", router);
+// require(__dirname + "/controllers/loanController")(router);
 
 //Définition et mise en place du port d'écoute
 const port = 8800;

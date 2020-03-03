@@ -28,7 +28,7 @@
 import React, { Component } from "react";
 import { Route, Switch } from "react-router-dom";
 import { Login } from "./components/Login.js";
-import { Authenticate } from "./components/Authenticate";
+import { Signup } from "./components/Signup.js";
 import "./App.css";
 
 class App extends Component {
@@ -38,6 +38,7 @@ class App extends Component {
         <div className="App-content">
           <Switch>
             <Route exact path="/" component={Login} />
+            <Route exact path="/signup" component={Signup} />
           </Switch>
         </div>
       </div>

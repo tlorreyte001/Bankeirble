@@ -2,29 +2,41 @@ import React from "react";
 import { Button, FormGroup, FormControl, ControlLabel } from "react-bootstrap";
 import API from "../utils/API";
 
-export class Login extends React.Component {
+export class Signup extends React.Component {
   state = {
-    email: "",
-    password: ""
+    gender:"", 
+    first_name:"", 
+    last_name:"", 
+    password:"", 
+    num:"", 
+    street:"", 
+    zip:"", 
+    city:"", 
+    comp:"", 
+    tel:"", 
+    mail_perso:"", 
+    birth_date:"", 
+    birth_city:""
   };
   send = async () => {
-    const { email, password } = this.state;
-    if (!email || email.length === 0) {
+    const { password, mail_perso } = this.state;
+    if (!mail_perso || mail_perso.length === 0) {
       return;
     }
     if (!password || password.length === 0) {
       return;
     }
     try {
-      await API.login(email, password);
-      window.location = "/dashboard";
+      await API.signup(mail_perso, password);
     } catch (error) {
+      console.log("bof bof");
+      console.log(this.state);
       console.error(error);
     }
   };
 
   change = () => {
-    window.location = "/signup";
+    window.location = "/";
   }
 
   handleChange = (event) => {
@@ -33,15 +45,15 @@ export class Login extends React.Component {
     });
   };
   render() {
-    const { email, password } = this.state;
+    const { mail_perso, password } = this.state;
     return (
-      <div className="Login">
-        <FormGroup controlId="email" bsSize="large">
+      <div className="Signup">
+        <FormGroup controlId="mail_perso" bsSize="large">
           <ControlLabel>Email</ControlLabel>
           <FormControl
             autoFocus
             type="email"
-            value={email}
+            value={mail_perso}
             onChange={this.handleChange}
           />
         </FormGroup>
@@ -54,10 +66,10 @@ export class Login extends React.Component {
           />
         </FormGroup>
         <Button onClick={this.send} block bsSize="large" type="submit">
-          Connexion
+          S'inscrire
         </Button>
         <Button onClick={this.change} block bsSize="large" type="submit">
-          Or Signup
+          Login
         </Button>
       </div>
     );
