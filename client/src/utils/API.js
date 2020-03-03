@@ -26,5 +26,19 @@ export default {
   },
 
   logout: function() {
+  },
+
+  add_loan: function(amount, num_months, expiration_date) {
+    return axios.post(
+      `${burl}/loan/add`,
+      {
+        amount,
+        num_months,
+        expiration_date
+      },
+      {
+        headers: headers
+      }
+    );
   }
 };

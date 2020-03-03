@@ -1,14 +1,14 @@
 //Définition des modules
-const express = require("express"); 
-const mongoose = require("mongoose"); 
+const express = require("express");
+const mongoose = require("mongoose");
 const bodyParser = require('body-parser');
-const cors = require("cors");
+const app = express();
 
 //Connexion à la base de donnée
-mongoose.connect("mongodb://localhost:27017/db");
-
-//On définit notre objet express nommé app
-const app = express();
+mongoose.connect("mongodb://localhost:27018/db", { useNewUrlParser: true,  useUnifiedTopology: true } );
+// db : variable globale
+const db = mongoose.connection;
+module.exports = db;
 
 //Définition des CORS
 app.use(cors());
