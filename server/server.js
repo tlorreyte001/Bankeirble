@@ -1,13 +1,14 @@
 //Définition des modules
-const express = require("express"); 
-const mongoose = require("mongoose"); 
+const express = require("express");
+const mongoose = require("mongoose");
 const bodyParser = require('body-parser');
+const app = express();
 
 //Connexion à la base de donnée
-mongoose.connect("mongodb://localhost/db");
-
-//On définit notre objet express nommé app
-const app = express();
+mongoose.connect("mongodb://localhost:27018/db", { useNewUrlParser: true,  useUnifiedTopology: true } );
+// db : variable globale
+const db = mongoose.connection;
+module.exports = db;
 
 //Body Parser
 const urlencodedParser = bodyParser.urlencoded({
