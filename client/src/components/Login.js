@@ -4,20 +4,20 @@ import API from "../utils/API";
 
 export class Login extends React.Component {
   state = {
-    email: "",
+    mail_perso: "",
     password: ""
   };
   send = async () => {
-    const { email, password } = this.state;
-    if (!email || email.length === 0) {
+    const { mail_perso, password } = this.state;
+    if (!mail_perso || mail_perso.length === 0) {
       return;
     }
     if (!password || password.length === 0) {
       return;
     }
     try {
-      await API.login(email, password);
-      window.location = "/dashboard";
+      await API.login(mail_perso, password);
+      window.location = "/loan";
     } catch (error) {
       console.error(error);
     }
@@ -33,15 +33,15 @@ export class Login extends React.Component {
     });
   };
   render() {
-    const { email, password } = this.state;
+    const { mail_perso, password } = this.state;
     return (
       <div className="Login">
-        <FormGroup controlId="email" bsSize="large">
+        <FormGroup controlId="mail_perso" bsSize="large">
           <ControlLabel>Email</ControlLabel>
           <FormControl
             autoFocus
             type="email"
-            value={email}
+            value={mail_perso}
             onChange={this.handleChange}
           />
         </FormGroup>

@@ -29,8 +29,6 @@ export class Signup extends React.Component {
     try {
       await API.signup(mail_perso, password);
     } catch (error) {
-      console.log("bof bof");
-      console.log(this.state);
       console.error(error);
     }
   };

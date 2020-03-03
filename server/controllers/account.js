@@ -2,25 +2,29 @@ const Users = require("../schema/schemaUsers.js");
 const passwordHash = require("password-hash");
 
 async function signup (req, res) {
-    const { gender, first_name, last_name, password, num, street, zip, city, comp, tel, mail_perso, birth_date, birth_city } = req.body;
-    
+    const user = {
+        genre:"", prenom:"", nom:"",
+        adresse: {
+            numRue:"", 
+            rue:"", 
+            codePostal:"", 
+            ville:"", 
+            autre:"",
+        },
+        tel:"", mailPerso: req.body.mail_perso, dateNaissance:"", villeNaissance:"",
+        password: passwordHash.generate(req.body.password)
+    };
+
     //Cas où un des champs obligatoires est nul
-    if (!password || !mail_perso) {
+    if (user.password == "" || user.mailPerso == "") {
         return res.status(400).json({
             text: "Requête invalide"
         });
     }
 
-    // Objet User, où on hash son password
-    const user = {
-        gender, first_name, last_name, password, num, street, zip, city, comp, tel, mail_perso, birth_date, birth_city,
-        password: passwordHash.generate(password)
-    };
+    var findUser = await Users.findOne({ mailPerso: user.mailPerso }); 
 
-    // Check s'il existe déja, pour eviter les doublons
-    const findUser = await Users.findOne({
-        mail_perso
-    });
+    console.log(findUser);
 
     if (findUser) {
         return res.status(400).json({
@@ -30,31 +34,35 @@ async function signup (req, res) {
     
     // Sauvegarde de l'utilisateur en base
     const userData = new Users(user);
-    await userData.save();
+    userData.save();
+    console.log("Un new !");
     return res.status(200).json({
         text: "Succès",
     });
 }
 
 async function login (req, res) {
-    const { password, mail_perso } = req.body;
+    const user = {
+        mailPerso: req.body.mail_perso,
+        password: req.body.password
+    }
 
     //Cas où un des champs obligatoires est nul
-    if (!mail_perso || !password) {
+    if (!user.mailPerso || !user.password) {
         return res.status(400).json({
             text: "Requête invalide"
         });
     }
 
     // On check si l'utilisateur existe en base
-    const findUser = Users.findOne({ mail_perso });
+    const findUser = await Users.findOne({ mailPerso: user.mailPerso });
 
     if (!findUser)
         return res.status(401).json({
             text: "L'utilisateur n'existe pas"
     });
 
-    if (passwordHash.generate(password) != findUser.password)
+    if (!passwordHash.verify(user.password, findUser.password))
         return res.status(401).json({
             text: "Mot de passe incorrect"
     });

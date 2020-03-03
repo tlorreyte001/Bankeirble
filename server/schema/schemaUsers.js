@@ -17,7 +17,8 @@ const userSchema = mongoose.Schema(
     mailPerso: String,
     tel: String,
     pseudo: String,
-    pretEnCours: Number
+    pretEnCours: Number,
+    password: String
   },
 );
 

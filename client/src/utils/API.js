@@ -9,14 +9,15 @@ export default {
     return axios.post(
       `${burl}/user/login`,
       {
-        email,
-        password
+        mail_perso: email,
+        password: password
       },
       {
         headers: headers
       }
     );
   },
+  
   signup: function(email, password) {
     console.log(burl + "/user/signup");
     return axios.post(burl + "/user/signup", {

@@ -2,12 +2,17 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require('body-parser');
+const cors = require('cors');
 const app = express();
 
 //Connexion à la base de donnée
 mongoose.connect("mongodb://localhost:27018/db", { useNewUrlParser: true,  useUnifiedTopology: true } );
 // db : variable globale
-const db = mongoose.connection;
+var db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function() {
+  console.log("C'est ok");
+});
 module.exports = db;
 
 //Définition des CORS
@@ -23,12 +28,9 @@ app.use(bodyParser.json());
 const Users = require("./schema/schemaUsers");
 app.get('/test', function (req, res, next){
     const user = new Users({
-        mail_perso: "toto"
+        mailPerso: "toto"
     });
-    try {user.save();}
-    catch{
-        console.error(error);
-    }
+    user.save();
 });
 
 
