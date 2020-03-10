@@ -1,5 +1,7 @@
 const Users = require("../schema/schemaUsers.js");
 const passwordHash = require("password-hash");
+const jwt = require("jwt-simple");
+const config = require("../config/config");
 
 async function signup (req, res) {
     const user = {
@@ -16,13 +18,13 @@ async function signup (req, res) {
     };
 
     //Cas où un des champs obligatoires est nul
-    if (user.password == "" || user.mailPerso == "") {
+    if (user.password === "" || user.mailPerso === "") {
         return res.status(400).json({
             text: "Requête invalide"
         });
     }
 
-    var findUser = await Users.findOne({ mailPerso: user.mailPerso }); 
+    let findUser = await Users.findOne({mailPerso: user.mailPerso});
 
     console.log(findUser);
 
@@ -38,6 +40,7 @@ async function signup (req, res) {
     console.log("Un new !");
     return res.status(200).json({
         text: "Succès",
+        token: jwt.encode(userData, config.secret)
     });
 }
 
@@ -45,7 +48,7 @@ async function login (req, res) {
     const user = {
         mailPerso: req.body.mail_perso,
         password: req.body.password
-    }
+    };
 
     //Cas où un des champs obligatoires est nul
     if (!user.mailPerso || !user.password) {
@@ -68,7 +71,8 @@ async function login (req, res) {
     });
 
     return res.status(200).json({
-        text: "Authentification réussi"
+        text: "Authentification réussie",
+        token: jwt.encode(findUser, config.secret)
     });
 }
 

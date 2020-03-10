@@ -16,8 +16,9 @@ export class Login extends React.Component {
       return;
     }
     try {
-      await API.login(mail_perso, password);
-      window.location = "/loan";
+        const { data } = await API.login(mail_perso, password);
+        localStorage.setItem("token", data.token);
+        window.location = "/loan";
     } catch (error) {
       console.error(error);
     }
@@ -25,13 +26,14 @@ export class Login extends React.Component {
 
   change = () => {
     window.location = "/signup";
-  }
+  };
 
   handleChange = (event) => {
     this.setState({
       [event.target.id]: event.target.value
     });
   };
+
   render() {
     const { mail_perso, password } = this.state;
     return (

@@ -26,7 +26,8 @@ export default {
     });
   },
 
-  logout: function() {
+  isAuth: function() {
+    return localStorage.getItem("token") !== null;
   },
 
   add_loan: function(amount, num_months, expiration_date) {

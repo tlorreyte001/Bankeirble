@@ -5,10 +5,9 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const app = express();
 
-//Connexion à la base de donnée
+//Connexion à la base de données
 mongoose.connect("mongodb://localhost:27018/db", { useNewUrlParser: true,  useUnifiedTopology: true } );
-// db : variable globale
-var db = mongoose.connection;
+const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {
 console.log("\nConnecté à la bdd !");
@@ -33,7 +32,6 @@ app.use(bodyParser.json());
 //     user.save();
 // });
 
-
 //Définition des routeurs
 const router = express.Router();
 app.use("/user", router);
@@ -43,5 +41,5 @@ require(__dirname + "/controllers/loanController")(router);
 
 //Définition et mise en place du port d'écoute
 const port = 8800;
-app.listen(port)
+app.listen(port);
 console.log("Listening on port", port);

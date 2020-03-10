@@ -23,6 +23,12 @@ export class Loan extends React.Component {
       [event.target.id]: event.target.value
     });
   };
+
+  logout = () => {
+    localStorage.clear();
+    window.location = "/";
+  };
+
   render() {
     const {amount, num_months, expiration_date} = this.state;
     return (
@@ -54,6 +60,9 @@ export class Loan extends React.Component {
         </FormGroup>
         <Button onClick={this.send} block bsSize="large" type="submit">
           Envoyer
+        </Button>
+        <Button onClick={this.logout} block bsSize="large" type="submit">
+          Logout
         </Button>
       </div>
     );
