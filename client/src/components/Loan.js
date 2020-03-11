@@ -2,6 +2,7 @@ import React from "react";
 import { Button, FormGroup, FormControl, ControlLabel } from "react-bootstrap";
 import API from "../utils/API";
 
+
 export class Loan extends React.Component {
   state = {
     amount: "",
@@ -11,9 +12,7 @@ export class Loan extends React.Component {
   send = async () => {
     const {amount, num_months, expiration_date} = this.state;
     try {
-      const { data } = await API.add_loan(amount, num_months, expiration_date);
-      localStorage.setItem("token", data.token);
-      window.location = "/dashboard";
+      await API.add_loan(localStorage.getItem("token"), amount, num_months, expiration_date);
     } catch (error) {
       console.error(error);
     }
@@ -22,6 +21,17 @@ export class Loan extends React.Component {
     this.setState({
       [event.target.id]: event.target.value
     });
+  };
+
+  loans = async () => {
+    await API.get_loans();
+    // Exemple res.data.loans[0].montant = premier montant
+    // for (let i = 0, l = prets.length; i < l; i++) {
+    //     pret = prets[i];
+    //     console.log('------------------------------');
+    //     console.log('Montant : ' + pret.montant);
+    //     console.log('------------------------------');
+    // }
   };
 
   logout = () => {
