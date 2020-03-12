@@ -3,7 +3,7 @@ import { Button, FormGroup, FormControl, ControlLabel } from "react-bootstrap";
 import API from "../utils/API";
 
 
-export class Loan extends React.Component {
+export class AddLoan extends React.Component {
   state = {
     amount: "",
     num_months: "",

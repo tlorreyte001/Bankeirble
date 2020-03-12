@@ -44,10 +44,12 @@ export default {
     );
   },
 
-  get_loans: function(){
+  get_loans: function(user){
     return axios.post(
-        `${burl}/loan/get`,
-        {},
+        `${burl}/loan/get_all`,
+        {
+            user
+        },
         {
           headers: headers
         })

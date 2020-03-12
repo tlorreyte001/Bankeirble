@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import { Route, Switch } from "react-router-dom";
 import { Login } from "./components/Login.js";
 import { Signup } from "./components/Signup.js";
-import { Loan } from "./components/Loan.js";
 import { PrivateRoute } from "./components/PrivateRoute.js";
+import { Dashboard } from "./pages/Dashboard.js";
 import "./App.css";
 
 class App extends Component {
@@ -14,7 +14,7 @@ class App extends Component {
           <Switch>
             <Route exact path="/" component={Login} />
             <Route exact path="/signup" component={Signup} />
-            <PrivateRoute exact path="/dashboard" component={Loan} />
+            <PrivateRoute exact path="/dashboard" component={Dashboard} />
           </Switch>
         </div>
       </div>
