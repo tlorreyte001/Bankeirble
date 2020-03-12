@@ -17,7 +17,7 @@ export default {
       }
     );
   },
-  
+
   signup: function(email, password) {
     return axios.post(burl + "/user/signup", {
       mail_perso: email,
@@ -46,7 +46,7 @@ export default {
 
   get_loans: function(user){
     return axios.post(
-        `${burl}/loan/get_all`,
+        `${burl}/loan/get_all_available`,
         {
             user
         },
