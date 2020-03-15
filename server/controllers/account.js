@@ -2,18 +2,30 @@ const Users = require("../schema/schemaUsers.js");
 const passwordHash = require("password-hash");
 const jwt = require("jwt-simple");
 const config = require("../config/config");
+const fs = require('fs');
+const filename = "pseudo";
+
+function find_pseudo(num) {
+  let file = fs.readFileSync(__dirname+'/'+filename).toString();
+  let pseudos = file.split(',');
+  return pseudos[num];
+}
 
 async function signup (req, res) {
+
+    let num = await Users.find({}).countDocuments(); // compte le nombre d'utilisateurs dans la base de données
     const user = {
         genre:"", prenom:"", nom:"",
         adresse: {
-            numRue:"", 
-            rue:"", 
-            codePostal:"", 
-            ville:"", 
+            numRue:"",
+            rue:"",
+            codePostal:"",
+            ville:"",
             autre:"",
         },
-        tel:"", mailPerso: req.body.mail_perso, dateNaissance:"", villeNaissance:"",
+        tel:"",
+        pseudo : find_pseudo(num),
+        mailPerso: req.body.mail_perso, dateNaissance:"", villeNaissance:"",
         password: passwordHash.generate(req.body.password)
     };
 
@@ -26,14 +38,12 @@ async function signup (req, res) {
 
     let findUser = await Users.findOne({mailPerso: user.mailPerso});
 
-    console.log(findUser);
-
     if (findUser) {
         return res.status(400).json({
             text: "L'utilisateur existe déjà"
         });
     }
-    
+
     // Sauvegarde de l'utilisateur en base
     const userData = new Users(user);
     userData.save();

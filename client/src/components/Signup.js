@@ -4,18 +4,18 @@ import API from "../utils/API";
 
 export class Signup extends React.Component {
   state = {
-    gender:"", 
-    first_name:"", 
-    last_name:"", 
-    password:"", 
-    num:"", 
-    street:"", 
-    zip:"", 
-    city:"", 
-    comp:"", 
-    tel:"", 
-    mail_perso:"", 
-    birth_date:"", 
+    gender:"",
+    first_name:"",
+    last_name:"",
+    password:"",
+    num:"",
+    street:"",
+    zip:"",
+    city:"",
+    comp:"",
+    tel:"",
+    mail_perso:"",
+    birth_date:"",
     birth_city:""
   };
   send = async () => {
@@ -29,7 +29,7 @@ export class Signup extends React.Component {
     try {
       const { data } =  await API.signup(mail_perso, password);
       localStorage.setItem("token", data.token);
-      window.location = "/loan";
+      window.location = "/dashboard";
     } catch (error) {
       console.error(error);
     }
