@@ -24,15 +24,16 @@ export class GlobalTable extends React.Component {
         );
     }
 
-    createData(n, montant, taux, duree, dateExp){
-        return {n, montant, taux, duree, dateExp};
+    createData(n, demandeur, montant, taux, duree, dateExp){
+        return {n, demandeur, montant, taux, duree, dateExp};
     };
 
     get = async () => {
         let temp = [];
         let {data} = await API.get_loans(localStorage.getItem("token"));
+        console.log({data})
         for (let i = 0; i < data.loans.length; i++) {
-            temp.push(this.createData(i, data.loans[i].montant, data.loans[i].taux, data.loans[i].duree, data.loans[i].dateExp));
+            temp.push(this.createData(i, data.loans[i].demandeur, data.loans[i].montant, data.loans[i].taux, data.loans[i].duree, data.loans[i].dateExp));
         }
         this.setState({rows: temp});
     };
@@ -45,6 +46,7 @@ export class GlobalTable extends React.Component {
                         <TableHead>
                             <TableRow>
                                 <TableCell>Marché des Prêts</TableCell>
+                                <TableCell>Demandeur</TableCell>
                                 <TableCell align="right">Somme</TableCell>
                                 <TableCell align="right">Durée</TableCell>
                                 <TableCell align="right">Taux</TableCell>
@@ -58,6 +60,7 @@ export class GlobalTable extends React.Component {
                                     <TableCell component="th" scope="row">
                                         {row.n}
                                     </TableCell>
+                                    <TableCell align="right">{row.demandeur}</TableCell>
                                     <TableCell align="right">{row.montant}</TableCell>
                                     <TableCell align="right">{row.duree}</TableCell>
                                     <TableCell align="right">{row.taux}</TableCell>
