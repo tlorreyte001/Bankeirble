@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, FormGroup, FormControl, ControlLabel } from "react-bootstrap";
+import { Button, FormGroup, FormControl, FormLabel } from "react-bootstrap";
 import API from "../utils/API";
 
 
@@ -44,7 +44,7 @@ export class AddLoan extends React.Component {
     return (
       <div className="Loan">
         <FormGroup controlId="amount" bsSize="large">
-          <ControlLabel>Montant du prêt</ControlLabel>
+          <FormLabel>Montant du prêt</FormLabel>
           <FormControl
             autoFocus
             type="amount"
@@ -53,7 +53,7 @@ export class AddLoan extends React.Component {
           />
         </FormGroup>
         <FormGroup controlId="num_months" bsSize="large">
-          <ControlLabel>Nombre de mensualités</ControlLabel>
+          <FormLabel>Nombre de mensualités</FormLabel>
           <FormControl
             value={num_months}
             onChange={this.handleChange}
@@ -61,7 +61,7 @@ export class AddLoan extends React.Component {
           />
         </FormGroup>
         <FormGroup controlId="expiration_date" bsSize="large">
-          <ControlLabel>Date d'expiration de la demande</ControlLabel>
+          <FormLabel>Date d'expiration de la demande</FormLabel>
           <FormControl
             value={expiration_date}
             onChange={this.handleChange}

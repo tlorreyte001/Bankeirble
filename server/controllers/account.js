@@ -40,7 +40,8 @@ async function signup (req, res) {
     console.log("Un new !");
     return res.status(200).json({
         text: "Succès",
-        token: jwt.encode(userData, config.secret)
+        token: jwt.encode(userData, config.secret),
+        user: userData
     });
 }
 
@@ -72,7 +73,8 @@ async function login (req, res) {
 
     return res.status(200).json({
         text: "Authentification réussie",
-        token: jwt.encode(findUser, config.secret)
+        token: jwt.encode(findUser, config.secret),
+        user: findUser
     });
 }
 

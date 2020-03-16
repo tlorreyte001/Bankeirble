@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, FormGroup, FormControl, ControlLabel } from "react-bootstrap";
+import { Button, FormGroup, FormControl, FormLabel } from "react-bootstrap";
 import API from "../utils/API";
 
 export class Signup extends React.Component {
@@ -29,7 +29,7 @@ export class Signup extends React.Component {
     try {
       const { data } =  await API.signup(mail_perso, password);
       localStorage.setItem("token", data.token);
-      window.location = "/loan";
+      window.location = "/acceuil";
     } catch (error) {
       console.error(error);
     }
@@ -49,7 +49,7 @@ export class Signup extends React.Component {
     return (
       <div className="Signup">
         <FormGroup controlId="mail_perso" bsSize="large">
-          <ControlLabel>Email</ControlLabel>
+          <FormLabel>Email</FormLabel>
           <FormControl
             autoFocus
             type="email"
@@ -58,7 +58,7 @@ export class Signup extends React.Component {
           />
         </FormGroup>
         <FormGroup controlId="password" bsSize="large">
-          <ControlLabel>Password</ControlLabel>
+          <FormLabel>Password</FormLabel>
           <FormControl
             value={password}
             onChange={this.handleChange}
