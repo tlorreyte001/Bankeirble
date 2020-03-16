@@ -4,18 +4,18 @@ import API from "../utils/API";
 
 export class Signup extends React.Component {
   state = {
-    gender:"", 
-    first_name:"", 
-    last_name:"", 
-    password:"", 
-    num:"", 
-    street:"", 
-    zip:"", 
-    city:"", 
-    comp:"", 
-    tel:"", 
-    mail_perso:"", 
-    birth_date:"", 
+    gender:"",
+    first_name:"",
+    last_name:"",
+    password:"",
+    num:"",
+    street:"",
+    zip:"",
+    city:"",
+    comp:"",
+    tel:"",
+    mail_perso:"",
+    birth_date:"",
     birth_city:""
   };
   send = async () => {

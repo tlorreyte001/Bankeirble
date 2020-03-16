@@ -11,7 +11,7 @@ async function add (req, res) { // ajoute une demande de prêt dans la bdd
       const pret = new Prets({
           id: 0,
           idPreteur : 0,
-          idEmpreteur : user._id,
+          _idEmprunteur : user._id,
           montant : req.body.amount,
           taux : Math.round((Math.pow(1.17852,req.body.num_months)-0.17852)*100)/100,
           duree : req.body.num_months,
@@ -60,16 +60,22 @@ async function get_all (req, res) { // renvoie l'ensemble des prêts enregistré
 async function get_all_available (req, res) { // renvoie l'ensemble des prêts en attente d'acceptation
     let user = jwt.decode(req.body.user, config.secret);
     let findUser = await Users.findOne({_id : user._id});
+    let loans = [];
+    let prets_db = [];
     if (findUser) {
       const query = Prets.find({status : 0});
-      query.exec(function (err, prets) {
-          if (err) {
-              throw err;
-          }
-          return res.status(200).json({
-              loans: prets
-          });
-      });
+    //   await query.exec(async function (err, prets) {
+    //       if (err) {
+    //           throw err;
+    //       }
+    //   });
+        prets_db = await Prets.find({status : 0});
+        await transformLoans(prets_db).then((res)=>{
+            loans = [...res];
+        });
+        return res.status(200).json({
+            loans: loans
+        });
     }
     else {
       console.log("\nUtilisateur non reconnu !");
@@ -77,6 +83,23 @@ async function get_all_available (req, res) { // renvoie l'ensemble des prêts e
           text: "Requête invalide"
       });
     }
+}
+
+async function transformLoans(prets){
+    let loans = [];
+    await Promise.all(prets.map(async (element) => {
+        let pret = element._doc;
+        let demandeur = await Users.findOne({ _id: pret._idEmprunteur });
+        let loan = {};
+        if (demandeur != null) {
+            loan = { ...element._doc, demandeur: demandeur.pseudo };
+        }
+        else {
+            loan = { ...element._doc, demandeur: '' };
+        }
+        loans.push(loan);
+      }));
+    return loans;
 }
 
 async function get_by_user (req, res) { // renvoie l'ensemble des prêts enregistrés dans la bdd effectués par un utilisateur donné
