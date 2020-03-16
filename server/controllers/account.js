@@ -15,7 +15,7 @@ async function signup (req, res) {
 
     let num = await Users.find({}).countDocuments(); // compte le nombre d'utilisateurs dans la base de données
     const user = {
-        genre:"", prenom:"", nom:"",
+        genre:"", prenom:req.body.prenom, nom:req.body.nom,
         adresse: {
             numRue:"",
             rue:"",

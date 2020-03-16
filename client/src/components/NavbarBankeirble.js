@@ -1,5 +1,4 @@
 import React from "react";
-import {DropdownButton} from "react-bootstrap";
 
 export class NavbarBankeirble extends React.Component {
     constructor(props) {
@@ -21,6 +20,11 @@ export class NavbarBankeirble extends React.Component {
         this.setState({prenom: temp.prenom});
     };
 
+    logout(){
+        localStorage.clear();
+        window.location = "/";
+    };
+
     render() {
         return (
             <div className={"container-fluid m-3"}>
@@ -34,8 +38,8 @@ export class NavbarBankeirble extends React.Component {
                             <img className={"text-right"} alt="" src={"/user-1.png"} width="40" height="40"/> {this.state.prenom} {this.state.nom}
                         </div>
                         <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <a className="dropdown-item" href="#">Tableau de Bord</a>
-                            <a className="dropdown-item" href="#">Se déconnecter</a>
+                            <a className="dropdown-item" href={"/"}>Tableau de Bord</a>
+                            <a className="dropdown-item" href={"/"} onClick={this.logout}>Déconnection</a>
                         </div>
                     </div>
                 </div>

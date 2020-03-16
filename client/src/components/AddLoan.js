@@ -9,6 +9,7 @@ export class AddLoan extends React.Component {
     num_months: "",
     expiration_date: ""
   };
+
   send = async () => {
     const {amount, num_months, expiration_date} = this.state;
     try {
@@ -17,26 +18,11 @@ export class AddLoan extends React.Component {
       console.error(error);
     }
   };
+
   handleChange = (event) => {
     this.setState({
       [event.target.id]: event.target.value
     });
-  };
-
-  loans = async () => {
-    await API.get_loans();
-    // Exemple res.data.loans[0].montant = premier montant
-    // for (let i = 0, l = prets.length; i < l; i++) {
-    //     pret = prets[i];
-    //     console.log('------------------------------');
-    //     console.log('Montant : ' + pret.montant);
-    //     console.log('------------------------------');
-    // }
-  };
-
-  logout = () => {
-    localStorage.clear();
-    window.location = "/";
   };
 
   render() {
@@ -69,10 +55,7 @@ export class AddLoan extends React.Component {
           />
         </FormGroup>
         <Button onClick={this.send} block bsSize="large" type="submit">
-          Envoyer
-        </Button>
-        <Button onClick={this.logout} block bsSize="large" type="submit">
-          Logout
+          Envoyer la demande
         </Button>
       </div>
     );

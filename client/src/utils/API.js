@@ -18,10 +18,12 @@ export default {
     );
   },
 
-  signup: function(email, password) {
+  signup: function(email, password, nom, prenom) {
     return axios.post(burl + "/user/signup", {
       mail_perso: email,
-      password: password
+      password: password,
+        nom: nom,
+        prenom: prenom
     });
   },
 
