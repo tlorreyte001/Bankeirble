@@ -40,7 +40,7 @@ async function signup (req, res) {
 
     if (findUser) {
         return res.status(400).json({
-            text: "L'utilisateur existe déjà"
+            text: "L'utilisateur existe déjà",
         });
     }
 
