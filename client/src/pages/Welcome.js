@@ -1,12 +1,15 @@
-import React,{Component} from 'react';
-import {Link, NavLink} from 'react-router-dom';
-import {browserHistory} from 'react-router';
+import React from 'react';
+import {NavLink} from 'react-router-dom';
 
 import './styleAcceuil.css';
-class Welcome extends Component {
+export class Welcome extends React.Component {
 
-    handleCommencer (){
-        browserHistory.push("/formulaire");
+    handleCommencer(){
+        window.location = "/signup";
+    };
+
+    handleSeConnecter(){
+        window.location = "/login";
     }
 
 render(){
@@ -22,8 +25,8 @@ render(){
         </div>
         <nav>
             <ul className="nav-links">
-                <li ><a className="nav-link" href="#">Transacions</a></li>
-                <li ><a className="nav-link" href="#">Liste des prêts</a></li>
+                <li ><a className="nav-link" href="/">Transacions</a></li>
+                <li ><a className="nav-link" href="/">Liste des prêts</a></li>
                 <li ><NavLink to={"/formulaire"} className="nav-link" activeStyle={{color: "red"}}>Formulaire</NavLink></li>
             
             </ul>
@@ -42,8 +45,8 @@ render(){
                         Avec la confiance de la BlockChain </p>
                 </div>
                 <div className="cta">
-                    <button className="cta-select" onClick={this.handleCommencer}>commencer</button>
-                    <button className="cta-add">se connecter</button>
+                    <button className="cta-select" onClick={this.handleCommencer}>Commencer</button>
+                    <button className="cta-add" onClick={this.handleSeConnecter}>Connection</button>
 
                 </div>
             </div>
@@ -61,4 +64,3 @@ render(){
     );
 }
 }
-export default Welcome;

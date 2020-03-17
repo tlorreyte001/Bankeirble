@@ -1,6 +1,6 @@
 import React from "react";
-import { Button, FormGroup, FormControl, FormLabel } from "react-bootstrap";
 import API from "../utils/API";
+import {Link} from "react-router-dom";
 
 export class Login extends React.Component {
 
@@ -41,37 +41,23 @@ export class Login extends React.Component {
     };
 
     render() {
-        const { mail_perso, password } = this.state;
         return (
-            <div className={"container-fluid text-center Login"}>
-                <div className={"col"}>
-                    <div className={"mx-auto pt-5"} style={{maxWidth: "25%"}}>
-                        <h3>Connexion</h3>
-                        <FormGroup controlId="mail_perso">
-                            <FormLabel>E-mail</FormLabel>
-                            <FormControl
-                                autoFocus
-                                type="email"
-                                value={mail_perso}
-                                onChange={this.handleChange}
-                            />
-                        </FormGroup>
-                        <FormGroup controlId="password">
-                            <FormLabel>Mot de passe</FormLabel>
-                            <FormControl
-                                value={password}
-                                onChange={this.handleChange}
-                                type="password"
-                            />
-                        </FormGroup>
-                        <Button onClick={this.send} block type="submit">
-                            Se connecter
-                        </Button>
-                        <Button onClick={this.change} block type="submit">
-                            Créer un compte
-                        </Button>
-                    </div>
+            <div className="text-center mx-auto pt-5" style={{maxWidth: "35em",}}>
+                <div className="FormField">
+                    <label className="FormField__Label" htmlFor="email">E-Mail</label>
+                    <input type="email" id="mail_perso" className="FormField__Input" name="email" value={this.state.mail_perso} onChange={this.handleChange} />
                 </div>
+                <div className="FormField">
+                    <label className="FormField__Label" htmlFor="password">Mot de passe</label>
+                    <input type="password" id="password" className="FormField__Input" name="password" value={this.state.password} onChange={this.handleChange} />
+                </div>
+                <div className="FormField">
+                    <button onClick={this.send} className="FormField__Button mr-20">Se connecter</button> <Link to="/signup" className="FormField__Link">Je n'ai pas de compte</Link>
+                </div>
+
+                <img className="big-circle" src="./img/big-eclipse.svg" alt=""/>
+                <img className="med-circle" src="./img/mid-eclipse.svg" alt=""/>
+                <img className="sm-circle" src="./img/small-eclipse.svg" alt=""/>
             </div>
         );
     }

@@ -6,9 +6,8 @@ import { PrivateRoute } from "./components/PrivateRoute.js";
 import { Acceuil } from "./pages/Acceuil.js";
 import "./App.css";
 import './pages/styleAcceuil.css';
-import Welcome from './pages/Welcome';
-import Formulaire from './pages/Formulaire';
-// import 'bootstrap/dist/css/bootstrap.min.css';
+import {Welcome} from './pages/Welcome';
+import {Formulaire} from './pages/Formulaire';
 
 
 class App extends Component {

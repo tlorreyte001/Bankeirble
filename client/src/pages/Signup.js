@@ -1,6 +1,6 @@
 import React from "react";
-import { Button, FormGroup, FormControl, FormLabel } from "react-bootstrap";
 import API from "../utils/API";
+import {Link} from "react-router-dom";
 
 export class Signup extends React.Component {
   constructor(props) {
@@ -10,11 +10,15 @@ export class Signup extends React.Component {
       prenom:"",
       password:"",
       mail_perso:"",
+        hasAgreed: false
     };
   }
 
   send = async () => {
-    const { password, mail_perso, nom, prenom } = this.state;
+    const { password, mail_perso, nom, prenom, hasAgreed } = this.state;
+    if(!hasAgreed){
+        return;
+    }
     if (!mail_perso || mail_perso.length === 0) {
       return;
     }
@@ -42,55 +46,37 @@ export class Signup extends React.Component {
   };
 
   render() {
-    const { mail_perso, password, nom, prenom } = this.state;
     return (
-        <div className={"container-fluid text-center Login"}>
-          <div className={"col"}>
-            <div className={"mx-auto pt-5"} style={{maxWidth: "25%"}}>
-              <h3>Inscription</h3>
-              <FormGroup controlId="nom">
-                <FormLabel>Nom</FormLabel>
-                <FormControl
-                    autoFocus
-                    type="input"
-                    value={nom}
-                    onChange={this.handleChange}
-                />
-              </FormGroup>
-              <FormGroup controlId="prenom">
-                <FormLabel>Prénom</FormLabel>
-                <FormControl
-                    autoFocus
-                    type="input"
-                    value={prenom}
-                    onChange={this.handleChange}
-                />
-              </FormGroup>
-              <FormGroup controlId="mail_perso">
-                <FormLabel>E-mail</FormLabel>
-                <FormControl
-                    autoFocus
-                    type="email"
-                    value={mail_perso}
-                    onChange={this.handleChange}
-                />
-              </FormGroup>
-              <FormGroup controlId="password">
-                <FormLabel>Mot de passe</FormLabel>
-                <FormControl
-                    value={password}
-                    onChange={this.handleChange}
-                    type="password"
-                />
-              </FormGroup>
-              <Button onClick={this.send} block type="submit">
-                S'inscrire
-              </Button>
-              <Button onClick={this.change} block type="submit">
-                Se connecter
-              </Button>
-            </div>
+        <div className="text-center mx-auto pt-5" style={{maxWidth: "35em",}}>
+          <div className="FormField">
+            <label className="FormField__Label" htmlFor="name">Nom</label>
+            <input type="text" id="nom" className="FormField__Input" name="name" value={this.state.nom} onChange={this.handleChange} />
           </div>
+          <div className="FormField">
+            <label className="FormField__Label" htmlFor="name">Prénom</label>
+            <input type="text" id="prenom" className="FormField__Input" name="name" value={this.state.prenom} onChange={this.handleChange} />
+          </div>
+            <div className="FormField">
+                <label className="FormField__Label" htmlFor="email">E-Mail</label>
+                <input type="email" id="mail_perso" className="FormField__Input" name="email" value={this.state.mail_perso} onChange={this.handleChange} />
+            </div>
+          <div className="FormField">
+            <label className="FormField__Label" htmlFor="password">Mot de passe</label>
+            <input type="password" id="password" className="FormField__Input" name="password" value={this.state.password} onChange={this.handleChange} />
+          </div>
+
+          <div className="FormField">
+            <label className="FormField__CheckboxLabel">
+              <input className="FormField__Checkbox" type="checkbox" id="hasAgreed" value={this.state.hasAgreed} onChange={this.handleChange} /> J'accepte toutes les<a href="/" className="FormField__TermsLink">conditions d'utilisation</a>
+            </label>
+          </div>
+          <div className="FormField">
+            <button onClick={this.send} className="FormField__Button mr-20">M'inscrire</button> <Link to="/login" className="FormField__Link">Je suis déjà un utilisateur</Link>
+          </div>
+
+          <img className="big-circle" src="./img/big-eclipse.svg" alt=""/>
+          <img className="med-circle" src="./img/mid-eclipse.svg" alt=""/>
+          <img className="sm-circle" src="./img/small-eclipse.svg" alt=""/>
         </div>
     );
   }

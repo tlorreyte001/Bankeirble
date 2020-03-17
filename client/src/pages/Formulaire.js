@@ -1,11 +1,12 @@
-import React , {Component} from 'react';
+import React from 'react';
 import {Link} from 'react-router-dom';
-import { render } from '@testing-library/react';
-class Formulaire extends Component{
+
+
+export class Formulaire extends React.Component{
   
     
-  constructor(){
-    super();
+  constructor(props){
+    super(props);
 
     this.state = {
       email: '',
@@ -38,24 +39,6 @@ class Formulaire extends Component{
     return(
 
       <div className="Formulaire">
-          <header>
-          <div className="logo-container">
-            <img className="imglogo" src="./img/logo.png" alt="logo" />
-            <h4 className="logo">Bankeirble</h4>
-              
-          </div>
-          <nav>
-              <ul className="nav-links">
-                <li ><a className="nav-link" href="#">Transacions</a></li>
-                <li ><a className="nav-link" href="#">Liste des prêts</a></li>
-                <li ><a className="nav-link" href="formulaire">Formulaire</a></li>
-              
-              </ul>
-          </nav>
-          <div className="account-icon">
-              <img className="imgaccount" src="./img/user-1.png" alt="account-icon" />
-          </div>
-      </header>
 
       <main>
         <form onSubmit={this.handleSubmit} className="FormFields">
@@ -74,7 +57,7 @@ class Formulaire extends Component{
 
           <div className="FormField">
             <label className="FormField__CheckboxLabel">
-                <input className="FormField__Checkbox" type="checkbox" name="hasAgreed" value={this.state.hasAgreed} onChange={this.handleChange} /> J'accepte toutes les <a href="" className="FormField__TermsLink">conditions d'utilisation</a>
+                <input className="FormField__Checkbox" type="checkbox" name="hasAgreed" value={this.state.hasAgreed} onChange={this.handleChange} /> J'accepte toutes les <a href="/" className="FormField__TermsLink">conditions d'utilisation</a>
             </label>
           </div>
           <div className="FormField">
@@ -91,5 +74,3 @@ class Formulaire extends Component{
     );
   }
 }
-
-export default Formulaire;
