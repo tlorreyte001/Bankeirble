@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import { Route, Switch } from "react-router-dom";
-import { Login } from "./components/Login.js";
-import { Signup } from "./components/Signup.js";
+import { Login } from "./pages/Login.js";
+import { Signup } from "./pages/Signup.js";
 import { PrivateRoute } from "./components/PrivateRoute.js";
-import { Dashboard } from "./pages/Dashboard.js";
+import { Acceuil } from "./pages/Acceuil.js";
 import "./App.css";
 import './pages/styleAcceuil.css';
 import Welcome from './pages/Welcome';
