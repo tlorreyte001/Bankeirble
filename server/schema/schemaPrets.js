@@ -10,7 +10,8 @@ const pretsSchema = mongoose.Schema(
     dateExp: Date,
     status: Number,
     dateDepart: Date,
-    mensualite: Number
+    mensualite: Number,
+    litige: String
   },
 );
 
