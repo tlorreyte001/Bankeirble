@@ -7,12 +7,10 @@
 }
 
 body {
-    font-family: 'Poppins', sans-serif;
 
 }
 
 button{
-    font-family: 'Poppins', sans-serif;
 
 }
 header{
@@ -178,7 +176,6 @@ header{
 
 /* Formulaire*/
 .Formulaire{
-    font-family: 'Poppins', sans-serif;
 }
 
 .FormFields {

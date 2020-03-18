@@ -27,23 +27,21 @@ export class NavbarBankeirble extends React.Component {
 
     render() {
         return (
-            <div className={"container-fluid m-3"}>
-                <div className={"row"}>
-                    <div className={"col"}>
-                        <div className={"text-left h4"}><a className={"a-normal"} href={"/acceuil"}><img alt="" src={"/logo-1.png"} width="60" height="60"/> Bankeirble</a></div>
-                    </div>
+            <header>
+                <div className="logo-container">
+                    <a href={"/acceuil"}><img className="imglogo" src="./img/logo.png" alt="logo" />
+                    <h4 className="logo">Bankeirble</h4></a>
+                </div>
                     <div className={"col mr-4 text-right"}>
-                        <div className={"btn dropdown-toggle text-right"} id="dropdownMenuButton"
-                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <img className={"text-right"} alt="" src={"/user-1.png"} width="40" height="40"/> {this.state.prenom} {this.state.nom}
-                        </div>
-                        <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <a className="dropdown-item" href={"/"}>Tableau de Bord</a>
-                            <a className="dropdown-item" href={"/"} onClick={this.logout}>Déconnection</a>
-                        </div>
+                        <div className={"btn dropdown-toggle text-right"} id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <img className={"text-right imgaccount"} alt="" src={"/img/user-1.png"}/> {this.state.prenom} {this.state.nom}
+                    </div>
+                    <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a className="dropdown-item" href={"/"}>Tableau de Bord</a>
+                        <a className="dropdown-item" href={"/"} onClick={this.logout}>Déconnection</a>
                     </div>
                 </div>
-            </div>
+            </header>
         );
     }
 }

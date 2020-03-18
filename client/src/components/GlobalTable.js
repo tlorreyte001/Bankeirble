@@ -20,7 +20,7 @@ export class GlobalTable extends React.Component {
     componentDidMount() {
         this.timerID = setInterval(
             () => this.get(),
-            1000
+            10000
         );
     }
 
