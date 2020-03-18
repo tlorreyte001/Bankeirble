@@ -85,19 +85,22 @@ async function get_all_available (req, res) { // renvoie l'ensemble des prêts e
     }
 }
 
-async function transformLoans(prets){
-    let loans = [];
+async function transformLoans(prets){ // renvoie tous les éléments nécessaires au tableau du /accueil
+    let loans = []; // sous la forme d'un tableau
     await Promise.all(prets.map(async (element) => {
         let pret = element._doc;
         let demandeur = await Users.findOne({ _id: pret._idEmprunteur });
-        let loan = {};
+        let ajout = {}; // éléments à ajouter à l'objet prêt : pseudo demandeur, gain pour le prêteur et nb de prêts en cours
         if (demandeur != null) {
-            loan = { ...element._doc, demandeur: demandeur.pseudo };
+            ajout = { ...pret,
+              demandeur: demandeur.pseudo,
+              gain: Math.round(((pret.taux)/100)*(pret.montant)*100)/100,
+              nbPretsCours: demandeur.pretEnCours };
         }
         else {
-            loan = { ...element._doc, demandeur: '' };
+            ajout = { ...pret, demandeur: '', gain: '', nbPretsCours: '' };
         }
-        loans.push(loan);
+        loans.push(ajout);
       }));
     return loans;
 }
@@ -127,13 +130,23 @@ async function accept_loan (req, res) { // met à jour la bdd après accord d'un
     let user = jwt.decode(req.body.user, config.secret);
     let findUser = await Users.findOne({_id : user._id});
     if (findUser) {
-      Prets.findByIdAndUpdate(req.body.id, {"status": 1, "_idPreteur": user._id},{}, function (err) {
+      Prets.findByIdAndUpdate(req.body.id, {"status": 1, "_idPreteur": user._id},{}, function (err, res) { // màj du prêt
+        // il faudra aussi modifier la date de début du prêt
           if (err) {
               throw err;
           }
-          return res.status(200).json({
-              text: "Prêt accepté !"
-          });
+          else {
+            let idDemandeur = res._idEmprunteur;
+          }
+      });
+      // à tester
+      Users.findByIdAndUpdate(idDemandeur, { $inc: { pretEnCours: 1 }},{}, function (err) { // màj du nb de prêt en cours pour le demandeur
+          if (err) {
+              throw err;
+          }
+      });
+      return res.status(200).json({
+          text: "Prêt accepté !"
       });
     }
 }

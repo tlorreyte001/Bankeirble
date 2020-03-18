@@ -18,7 +18,8 @@ const userSchema = mongoose.Schema(
     tel: String,
     pseudo: String,
     pretEnCours: Number,
-    password: String
+    password: String,
+    reputation : Number
   },
 );
 

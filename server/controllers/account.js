@@ -26,7 +26,9 @@ async function signup (req, res) {
         tel:"",
         pseudo : find_pseudo(num),
         mailPerso: req.body.mail_perso, dateNaissance:"", villeNaissance:"",
-        password: passwordHash.generate(req.body.password)
+        password: passwordHash.generate(req.body.password),
+        pretEnCours: 0,
+        reputation : 0
     };
 
     //Cas où un des champs obligatoires est nul
