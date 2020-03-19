@@ -4,6 +4,8 @@ import API from "../utils/API";
 import {Button, FormLabel, Slider, Switch} from '@material-ui/core';
 import {DateTimePicker, MuiPickersUtilsProvider} from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
+import frLocale from "date-fns/locale/fr";
+
 
 export class AddLoan extends React.Component {
 
@@ -88,7 +90,7 @@ export class AddLoan extends React.Component {
                             <FormLabel>Date d'expiration de la demande</FormLabel>
                         </div>
                         <div className={"col"}>
-                            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                            <MuiPickersUtilsProvider utils={DateFnsUtils} locale={frLocale}>
                                 <DateTimePicker
                                     value={this.state.expiration_date}
                                     disablePast
@@ -96,6 +98,8 @@ export class AddLoan extends React.Component {
                                     showTodayButton
                                     maxDate={new Date("2021-01-01")}
                                     color={"secondary"}
+                                    format="dd MMMM yyyy HH:mm"
+                                    ampm={false}
                                 />
                             </MuiPickersUtilsProvider>
                         </div>
@@ -115,7 +119,9 @@ export class AddLoan extends React.Component {
                         </div>
                     </div>
                     <div className={"row pb-3"}>
-                        <FormLabel className={"mx-auto"}>Remboursement de X€ par mois, soit un taux de Y%</FormLabel>
+                        <div className={"mx-auto"}>
+                            <FormLabel>Remboursement de</FormLabel> <FormLabel style={{color: "rgb(211,99,98)",}}>{this.state.amount}€</FormLabel> <FormLabel>par mois, soit un taux de</FormLabel> <FormLabel style={{color: "rgb(211,99,98)",}}>Y%</FormLabel>
+                        </div>
                     </div>
                     <div className={"row"}>
                         <Button className={"mx-auto"} onClick={this.send} variant="contained" color="secondary" type="submit">
