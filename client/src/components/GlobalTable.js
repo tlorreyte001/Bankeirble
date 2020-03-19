@@ -2,7 +2,7 @@ import React from "react";
 import API from "../utils/API";
 
 import MUIDataTable from "mui-datatables";
-import { TableCell, TableRow } from "@material-ui/core";
+import {Button, TableCell, TableRow} from "@material-ui/core";
 
 
 
@@ -25,20 +25,119 @@ export class GlobalTable extends React.Component {
     get = async () => {
         let temp = [];
         let {data} = await API.get_loans(localStorage.getItem("token"));
+        console.log(data);
         for (let i = 0; i < data.loans.length; i++) {
-            temp.push([i, data.loans[i].demandeur, data.loans[i].montant, data.loans[i].taux, data.loans[i].duree, data.loans[i].dateExp]);
+            temp.push([
+                i, "Un COVID-19 Sauvage",
+                data.loans[i].montant.toString() + " €",
+                data.loans[i].duree + " mois",
+                data.loans[i].taux.toString() + " %",
+                (data.loans[i].montant*(1+0.01*data.loans[i].taux)).toString() + " €" ,
+                data.loans[i].dateExp
+            ]);
         }
         this.setState({rows: temp});
     };
 
     render() {
-        const columns = ["n°", "Demandeur", "Somme", "Durée", "Taux", "Somme dûe", "Expire dans"];
+        const columns = [
+            {
+                name: "n°",
+                label: "n°",
+                options: {
+                    filter: false,
+                    sort: false,
+                }
+            },
+            {
+                name: "Demandeur",
+                label: "Demandeur",
+                options: {
+                    filter: false,
+                    sort: false,
+                }
+            },
+            {
+                name: "Somme",
+                label: "Somme",
+                options: {
+                    filter: true,
+                    sort: true,
+                }
+            },
+            {
+                name: "Durée",
+                label: "Durée",
+                options: {
+                    filter: true,
+                    sort: true,
+                }
+            },
+            {
+                name: "Taux",
+                label: "Taux",
+                options: {
+                    filter: false,
+                    sort: true,
+                }
+            },
+            {
+                name: "Somme dûe",
+                label: "Somme dûe",
+                options: {
+                    filter: false,
+                    sort: true,
+                }
+            },
+            {
+                name: "Expire dans",
+                label: "Expire dans",
+                options: {
+                    filter: false,
+                    sort: true,
+                }
+            }
+        ];
 
         const options = {
             filterType: "dropdown",
             responsive: "scroll",
             selectableRows: 'none',
             expandableRows: true,
+            textLabels: {
+                body: {
+                    noMatch: "Désolé, Il y a eu un problème interne",
+                    toolTip: "Trier",
+                    columnHeaderTooltip: column => `Trier par ${column.label}`
+                },
+                pagination: {
+                    next: "Page suivante",
+                    previous: "Page précédente",
+                    rowsPerPage: "Lignes par page:",
+                    displayRows: "sur",
+                },
+                toolbar: {
+                    search: "Rechercher",
+                    downloadCsv: "Télécharger CSV",
+                    print: "Imprimer",
+                    viewColumns: "Selectionner les colonnes",
+                    filterTable: "Filtrer le tableau",
+                },
+                filter: {
+                    all: "Tout",
+                    title: "FILTRES",
+                    reset: "REINITIALISER",
+                },
+                viewColumns: {
+                    title: "Colonnes à afficher",
+                    titleAria: "Colonnes à afficher",
+                },
+                selectedRows: {
+                    text: "Ligne(s) sélectionnée(s)",
+                    delete: "Supprimer",
+                    deleteAria: "Supprimer les lignes sélectionnées",
+                },
+            },
             expandableRowsOnClick: true,
             renderExpandableRow: () => (
                 <TableRow>
@@ -62,6 +161,9 @@ export class GlobalTable extends React.Component {
                     columns={columns}
                     options={options}
                 />
+                <Button className={"mx-auto mt-3"} onClick={this.get} variant="contained" color="secondary" type="submit">
+                    Rafraichir les prêts
+                </Button>
             </div>
         );
     }
