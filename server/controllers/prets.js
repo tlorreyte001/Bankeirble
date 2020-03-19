@@ -7,17 +7,16 @@ const mongoose = require("mongoose");
 async function add (req, res) { // ajoute une demande de prêt dans la bdd
     let user = jwt.decode(req.body.user, config.secret);
     let findUser = await Users.findOne({_id : user._id}); //mongoose.Types.ObjectId("5e5c1d0ee4bee76ce584b7c8")
-    if (findUser) {
-      const pret = new Prets({
+    if (findUser && (0 <= req.body.amount <= 700) && (1 <= req.body.num_months <= 12)) { // ajout test pour date et paiement auto ?
+       const pret = new Prets({ // paiement auto à ajouter
           id: 0,
           idPreteur : 0,
           _idEmprunteur : user._id,
           montant : req.body.amount,
           taux : Math.round((Math.pow(1.17852,req.body.num_months)-0.17852)*100)/100,
           duree : req.body.num_months,
-          dateExp : req.body.expiration_date,
+          dateExp : Date.parse(req.body.expiration_date),
           status : 0, // 0 : en attente; 1 : en cours/accepté; 2 : terminé
-          dateDepart : Date.parse('01 Jan 1970 00:00:00 GMT'), // à modifier après acceptation du prêt
           mensualite : 0
       });
       pret.save();
@@ -27,7 +26,7 @@ async function add (req, res) { // ajoute une demande de prêt dans la bdd
       });
     }
     else {
-      console.log("\nUtilisateur non reconnu !");
+      console.log("\nRequête invalide !");
       return res.status(400).json({
           text: "Requête invalide"
       });
@@ -63,13 +62,13 @@ async function get_all_available (req, res) { // renvoie l'ensemble des prêts e
     let loans = [];
     let prets_db = [];
     if (findUser) {
-      const query = Prets.find({status : 0});
+      // const query = Prets.find({status : 0});
     //   await query.exec(async function (err, prets) {
     //       if (err) {
     //           throw err;
     //       }
     //   });
-        prets_db = await Prets.find({status : 0});
+        prets_db = await Prets.find({status : 0, dateExp : { $gt : Date.now()} }); // demandes de prêt non expirées 
         await transformLoans(prets_db).then((res)=>{
             loans = [...res];
         });
