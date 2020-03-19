@@ -125,7 +125,7 @@ async function get_by_user (req, res) { // renvoie l'ensemble des prêts enregis
       });
     }
 }
-
+// A TESTER
 async function accept_loan (req, res) { // met à jour la bdd après accord d'un prêt
     let user = jwt.decode(req.body.user, config.secret);
     let findUser = await Users.findOne({_id : user._id});
@@ -149,6 +149,29 @@ async function accept_loan (req, res) { // met à jour la bdd après accord d'un
           text: "Prêt accepté !"
       });
     }
+}
+
+// A TESTER
+async function arguments_taux(idDemandeur) { // renvoie un tableau d'arguments permettant le calcul du taux d'une demande de prêt
+  let tab = [];
+  let nbPretsTermines = await Prets.find({_idEmprunteur: idDemandeur, status: 2}).countDocuments(); // nb de prêts terminés par le demandeur
+  let nbDemandes = await Prets.find({status: 0}).countDocuments(); // nb de demandes de prêts en cours
+  Users.find({_id : idDemandeur}, {}, function (err, res) { // récupération des informations
+      if (err) {
+          throw err;
+      }
+      else {
+          let args = {
+            reputation: res.reputation, // réputation du demandeur
+            nbPretsCours: res.pretEnCours, // nb de prêts en cours du demandeur
+            nbPretsTermines: nbPretsTermines,
+            nbDemandes: nbDemandes
+          };
+          tab.push(args);
+      }
+    });
+  console.log(tab);
+  return tab;
 }
 
 exports.add = add;
