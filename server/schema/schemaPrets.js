@@ -11,6 +11,7 @@ const pretsSchema = mongoose.Schema(
     status: Number,
     dateDepart: Date,
     mensualite: Number,
+    paiementAuto : Boolean,
     litige: String
   },
 );
