@@ -10,7 +10,7 @@ async function add (req, res) { // ajoute une demande de prêt dans la bdd
     let findUser = await Users.findOne({_id : user._id});
     let nbDemandes = await Prets.find({_idEmprunteur : user._id, status: 0,  dateExp : { $gt : Date.now()} }).countDocuments(); // compte le nb de demandes de prêt d'un utilisateur encore valides
 
-    if (findUser && (0 <= req.body.amount <= 700) && (1 <= req.body.num_months <= 12) && (nbDemandes < 5) ) { 
+    if (findUser && (0 <= req.body.amount <= 700) && (1 <= req.body.num_months <= 12) && (nbDemandes < 5) ) {
        const pret = new Prets({ // paiement auto à ajouter
           id: 0,
           idPreteur : 0,
@@ -172,6 +172,26 @@ async function arguments_taux(idDemandeur) { // renvoie un tableau d'arguments p
   console.log(tab);
   return tab;
 }
+
+// A TESTER
+async function remove(req, res) { // supprime une demande de prêt lorsque la requête est effectuée par le demandeur (bien sûr !)
+  // à envoyer : pret et pret._id utilisé pour identifier la demande : à modifier si nécessaire
+  let user = jwt.decode(req.body.user, config.secret);
+  let findUser = await Users.findOne({_id : user._id});
+  let findLoan = await Prets.findOne({_id : req.body.pret._id, _idEmprunteur : user._id}); // vérification : demandeur autorisé à supprimer son prêt
+  if (findUser && findLoan) {
+    Prets.remove({_id : req.body.pret._id})
+    return res.status(200).json({
+        text: "Demande de prêt supprimée"
+    });
+  }
+  else {
+    return res.status(400).json({
+        text: "Requête invalide"
+    });
+  }
+}
+
 
 exports.add = add;
 exports.get_all = get_all;
