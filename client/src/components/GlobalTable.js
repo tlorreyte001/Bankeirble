@@ -28,7 +28,8 @@ export class GlobalTable extends React.Component {
         console.log(data);
         for (let i = 0; i < data.loans.length; i++) {
             temp.push([
-                i, "Un COVID-19 Sauvage",
+                i,
+                data.loans[i].demandeur,
                 data.loans[i].montant.toString() + " €",
                 data.loans[i].duree + " mois",
                 data.loans[i].taux.toString() + " %",
