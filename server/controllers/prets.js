@@ -5,9 +5,12 @@ const config = require("../config/config");
 const mongoose = require("mongoose");
 
 async function add (req, res) { // ajoute une demande de prêt dans la bdd
+
     let user = jwt.decode(req.body.user, config.secret);
-    let findUser = await Users.findOne({_id : user._id}); //mongoose.Types.ObjectId("5e5c1d0ee4bee76ce584b7c8")
-    if (findUser && (0 <= req.body.amount <= 700) && (1 <= req.body.num_months <= 12)) { // ajout test pour date et paiement auto ?
+    let findUser = await Users.findOne({_id : user._id});
+    let nbDemandes = await Prets.find({_idEmprunteur : user._id, status: 0,  dateExp : { $gt : Date.now()} }).countDocuments(); // compte le nb de demandes de prêt d'un utilisateur encore valides
+
+    if (findUser && (0 <= req.body.amount <= 700) && (1 <= req.body.num_months <= 12) && (nbDemandes < 5) ) { 
        const pret = new Prets({ // paiement auto à ajouter
           id: 0,
           idPreteur : 0,
@@ -19,18 +22,21 @@ async function add (req, res) { // ajoute une demande de prêt dans la bdd
           status : 0, // 0 : en attente; 1 : en cours/accepté; 2 : terminé
           mensualite : 0
       });
+
       pret.save();
-      console.log(user._id, "demande un prêt !");
+      console.log(user.pseudo, "demande un prêt !");
       return res.status(200).json({
           text: "Demande de prêt enregistrée !"
       });
     }
+
     else {
       console.log("\nRequête invalide !");
       return res.status(400).json({
           text: "Requête invalide"
       });
    }
+
 }
 
 async function get_all (req, res) { // renvoie l'ensemble des prêts enregistrés dans la bdd
@@ -62,13 +68,7 @@ async function get_all_available (req, res) { // renvoie l'ensemble des prêts e
     let loans = [];
     let prets_db = [];
     if (findUser) {
-      // const query = Prets.find({status : 0});
-    //   await query.exec(async function (err, prets) {
-    //       if (err) {
-    //           throw err;
-    //       }
-    //   });
-        prets_db = await Prets.find({status : 0, dateExp : { $gt : Date.now()} }); // demandes de prêt non expirées 
+        prets_db = await Prets.find({status : 0, dateExp : { $gt : Date.now()} }); // demandes de prêt non expirées
         await transformLoans(prets_db).then((res)=>{
             loans = [...res];
         });
