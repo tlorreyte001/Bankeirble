@@ -20,7 +20,8 @@ async function add (req, res) { // ajoute une demande de prêt dans la bdd
           duree : req.body.num_months,
           dateExp : Date.parse(req.body.expiration_date),
           status : 0, // 0 : en attente; 1 : en cours/accepté; 2 : terminé
-          mensualite : 0
+          mensualite : 0,
+          paiementAuto : req.body.remb_auto
       });
 
       pret.save();
@@ -124,28 +125,31 @@ async function get_by_user (req, res) { // renvoie l'ensemble des prêts enregis
       });
     }
 }
-// A TESTER
+
 async function accept_loan (req, res) { // met à jour la bdd après accord d'un prêt
     let user = jwt.decode(req.body.user, config.secret);
     let findUser = await Users.findOne({_id : user._id});
     if (findUser) {
-      Prets.findByIdAndUpdate(req.body.id, {"status": 1, "_idPreteur": user._id},{}, function (err, res) { // màj du prêt
+      await Prets.findByIdAndUpdate(req.body.idLoan, {"status": 1, "_idPreteur": user._id}, {useFindAndModify : false}, function (err) { // màj du prêt
         // il faudra aussi modifier la date de début du prêt
           if (err) {
               throw err;
           }
-          else {
-            let idDemandeur = res._idEmprunteur;
-          }
       });
-      // à tester
-      Users.findByIdAndUpdate(idDemandeur, { $inc: { pretEnCours: 1 }},{}, function (err) { // màj du nb de prêt en cours pour le demandeur
-          if (err) {
-              throw err;
+      await Prets.findById(req.body.idLoan, {}, function (err, loan) {
+        Users.findByIdAndUpdate(loan._idEmprunteur, { $inc: { pretEnCours: 1 }}, {useFindAndModify : false}, function (err) { // màj du nb de prêt en cours pour le demandeur
+        if (err) {
+            throw err;
           }
+        });
       });
       return res.status(200).json({
           text: "Prêt accepté !"
+      });
+    }
+    else {
+      return res.status(400).json({
+          text: "Requête invalide"
       });
     }
 }
@@ -173,19 +177,20 @@ async function arguments_taux(idDemandeur) { // renvoie un tableau d'arguments p
   return tab;
 }
 
-// A TESTER
-async function remove(req, res) { // supprime une demande de prêt lorsque la requête est effectuée par le demandeur (bien sûr !)
-  // à envoyer : pret et pret._id utilisé pour identifier la demande : à modifier si nécessaire
+async function remove_loan(req, res) { // supprime une demande de prêt lorsque la requête est effectuée par le demandeur (bien sûr !)
+  // à envoyer : idLoan
   let user = jwt.decode(req.body.user, config.secret);
   let findUser = await Users.findOne({_id : user._id});
-  let findLoan = await Prets.findOne({_id : req.body.pret._id, _idEmprunteur : user._id}); // vérification : demandeur autorisé à supprimer son prêt
+  let findLoan = await Prets.findOne({_id : req.body.idLoan, _idEmprunteur : user._id}); // vérification : demandeur autorisé à supprimer son prêt
   if (findUser && findLoan) {
-    Prets.remove({_id : req.body.pret._id})
+    await Prets.deleteOne({_id : req.body.idLoan});
+    console.log("Demande de prêt supprimée");
     return res.status(200).json({
         text: "Demande de prêt supprimée"
     });
   }
   else {
+    console.log("Echec de la suppression de demande de prêt");
     return res.status(400).json({
         text: "Requête invalide"
     });
@@ -198,3 +203,4 @@ exports.get_all = get_all;
 exports.get_all_available = get_all_available;
 exports.get_by_user = get_by_user;
 exports.accept_loan = accept_loan;
+exports.remove_loan = remove_loan;

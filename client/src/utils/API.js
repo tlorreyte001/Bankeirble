@@ -31,14 +31,15 @@ export default {
     return localStorage.getItem("token") !== null;
   },
 
-  add_loan: function(user, amount, num_months, expiration_date) {
+  add_loan: function(user, amount, num_months, expiration_date, remb_auto) {
     return axios.post(
       `${burl}/loan/add`,
       {
           user,
           amount,
           num_months,
-          expiration_date
+          expiration_date,
+          remb_auto
       },
       {
         headers: headers
@@ -55,5 +56,18 @@ export default {
         {
           headers: headers
         })
+  },
+
+  remove_loan: function(user, idLoan){
+    return axios.post(
+        `${burl}/loan/accept_loan`,
+        {
+            user,
+            idLoan
+        },
+        {
+          headers: headers
+        })
   }
+
 };
