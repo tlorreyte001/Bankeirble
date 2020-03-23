@@ -3,6 +3,8 @@ import API from "../utils/API";
 
 import MUIDataTable from "mui-datatables";
 import {Button, TableCell, TableRow} from "@material-ui/core";
+import Backdrop from "@material-ui/core/Backdrop";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 
 
@@ -10,7 +12,8 @@ export class GlobalTable extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            rows: []
+            rows: [],
+            open: false
         };
     }
 
@@ -29,6 +32,7 @@ export class GlobalTable extends React.Component {
             event.target.offsetParent.id
         );
         console.log(res);
+        this.handleToggle();
     };
 
     get = async () => {
@@ -47,6 +51,12 @@ export class GlobalTable extends React.Component {
             ]);
         }
         this.setState({rows: temp});
+    };
+
+    handleToggle = () => {
+        this.setState({open: true});
+        setTimeout(this.setState({open: false}), 1000);
+        this.get();
     };
 
     render() {
@@ -125,7 +135,7 @@ export class GlobalTable extends React.Component {
             expandableRows: true,
             textLabels: {
                 body: {
-                    noMatch: "Désolé, Il y a eu un problème interne",
+                    noMatch: "Désolé, pas de prêt disponible",
                     toolTip: "Trier",
                     columnHeaderTooltip: column => `Trier par ${column.label}`
                 },
@@ -159,7 +169,6 @@ export class GlobalTable extends React.Component {
             },
             expandableRowsOnClick: true,
             renderExpandableRow: (rowData, rowMeta) => {
-                console.log(rowData, rowMeta);
                 return (
                     <TableRow>
                         <TableCell/>
@@ -181,6 +190,14 @@ export class GlobalTable extends React.Component {
 
         return (
             <div className="globalTable">
+                <Backdrop open={this.state.open} transitionDuration={1000}
+                    style={{
+                        zIndex: 1000,
+                        color: '#fff',
+                    }}
+                >
+                    <CircularProgress color="inherit" />
+                </Backdrop>
                 <MUIDataTable
                     title={"Marché des prêts"}
                     data={this.state.rows}
