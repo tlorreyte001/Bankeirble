@@ -24,7 +24,7 @@ export class GlobalTable extends React.Component {
 
     accept = (event) => {
         // console.log(event.target.offsetParent.id);
-        let {res} = API.delete_loan(
+        let {res} = API.accept_loan(
             localStorage.getItem("token"),
             event.target.offsetParent.id
         );

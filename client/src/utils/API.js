@@ -58,7 +58,7 @@ export default {
         })
   },
 
-  delete_loan: function(user, idLoan){
+  accept_loan: function(user, idLoan){
     return axios.post(
         `${burl}/loan/accept_loan`,
         {
