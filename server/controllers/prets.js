@@ -11,6 +11,7 @@ async function add (req, res) { // ajoute une demande de prêt dans la bdd
     let nbDemandes = await Prets.find({_idEmprunteur : user._id, status: 0,  dateExp : { $gt : Date.now()} }).countDocuments(); // compte le nb de demandes de prêt d'un utilisateur encore valides
 
     if (findUser && (0 <= req.body.amount <= 700) && (1 <= req.body.num_months <= 12) && (nbDemandes < 5) ) {
+      // let taux = calcul_taux(req,res);
        const pret = new Prets({ // paiement auto à ajouter
           id: 0,
           idPreteur : 0,
@@ -154,27 +155,32 @@ async function accept_loan (req, res) { // met à jour la bdd après accord d'un
     }
 }
 
-// A TESTER
-async function arguments_taux(idDemandeur) { // renvoie un tableau d'arguments permettant le calcul du taux d'une demande de prêt
-  let tab = [];
-  let nbPretsTermines = await Prets.find({_idEmprunteur: idDemandeur, status: 2}).countDocuments(); // nb de prêts terminés par le demandeur
-  let nbDemandes = await Prets.find({status: 0}).countDocuments(); // nb de demandes de prêts en cours
-  Users.find({_id : idDemandeur}, {}, function (err, res) { // récupération des informations
-      if (err) {
-          throw err;
-      }
-      else {
-          let args = {
-            reputation: res.reputation, // réputation du demandeur
-            nbPretsCours: res.pretEnCours, // nb de prêts en cours du demandeur
-            nbPretsTermines: nbPretsTermines,
-            nbDemandes: nbDemandes
-          };
-          tab.push(args);
-      }
+async function calcul_taux(req, res) { // calcule le taux pour une certaine demande de prêt
+  let user = jwt.decode(req.body.user, config.secret);
+  let findUser = Users.findOne({_id : user._id});
+  if (findUser) {
+    // let nbDemandes = Prets.find({status: 0}).countDocuments(); // nb de demandes de prêts en cours : pour calcul de x et y
+    let x = 3;
+    let y = 6;
+    // let nbPretsTermines = Prets.find({_idEmprunteur:user._id, status: 2}).countDocuments(); // nb de prêts terminés par le demandeur
+    let dateExpiration = new Date(req.body.expiration_date);
+    let dateActuelle = new Date(Date.now());
+    let joursExpiration = Math.round( (dateExpiration.getTime() - dateActuelle.getTime() ) / (8.64*Math.pow(10,7)) );
+    let l = 0.35 * (1 - (joursExpiration / 30)) + 0.25 * (parseInt(req.body.num_months) / 12) + 0.25 * (1 - ((parseInt(user.reputation) + 50) / 100)) + 0.1 * (parseInt(user.pretEnCours) / 5) + 0.05 * parseInt(req.body.amount) / 700;
+    let taux = Math.round((((1 - l) * x + l * y)*100))/100;
+    return taux;
+    return res.status(200).json({
+        taux: taux
     });
-  console.log(tab);
-  return tab;
+  }
+  else {
+    return res.status(400).json({
+        text: "Requête invalide"
+    });
+  }
+
+
+
 }
 
 async function remove_loan(req, res) { // supprime une demande de prêt lorsque la requête est effectuée par le demandeur (bien sûr !)
@@ -197,10 +203,10 @@ async function remove_loan(req, res) { // supprime une demande de prêt lorsque 
   }
 }
 
-
 exports.add = add;
 exports.get_all = get_all;
 exports.get_all_available = get_all_available;
 exports.get_by_user = get_by_user;
 exports.accept_loan = accept_loan;
 exports.remove_loan = remove_loan;
+exports.calcul_taux = calcul_taux;
