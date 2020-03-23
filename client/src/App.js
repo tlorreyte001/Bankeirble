@@ -6,7 +6,7 @@ import { PrivateRoute } from "./components/PrivateRoute.js";
 import { Acceuil } from "./pages/Acceuil.js";
 import "./App.css";
 import './pages/styleAcceuil.css';
-import {Welcome} from './pages/Welcome';
+import {Welcome} from './pages/Welcome.js';
 import { createMuiTheme, ThemeProvider  } from '@material-ui/core/styles';
 
 
@@ -38,7 +38,7 @@ class App extends Component {
               <Route exact path="/" component={Welcome} />
               <Route exact path="/login" component={Login} />
               <Route exact path="/signup" component={Signup} />
-              <PrivateRoute exact path="/acceuil" component={Acceuil} />
+              <PrivateRoute exact path="/accueil" component={Acceuil} />
             </Switch>
           </ThemeProvider>
         </div>

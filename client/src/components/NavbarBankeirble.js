@@ -38,7 +38,7 @@ export class NavbarBankeirble extends React.Component {
                     </div>
                     <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
                         <a className="dropdown-item" href={"/"}>Tableau de Bord</a>
-                        <a className="dropdown-item" href={"/"} onClick={this.logout}>Déconnection</a>
+                        <a className="dropdown-item" href={"/"} onClick={this.logout}>Déconnexion</a>
                     </div>
                 </div>
             </header>

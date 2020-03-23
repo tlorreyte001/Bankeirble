@@ -19,13 +19,21 @@ export class GlobalTable extends React.Component {
         //     () => this.get(),
         //     1000
         // );
-        this.get()
+        this.get();
     }
+
+    accept = (event) => {
+        // console.log(event.target.offsetParent.id);
+        let {res} = API.delete_loan(
+            localStorage.getItem("token"),
+            event.target.offsetParent.id
+        );
+        console.log(res);
+    };
 
     get = async () => {
         let temp = [];
         let {data} = await API.get_loans(localStorage.getItem("token"));
-        console.log(data);
         for (let i = 0; i < data.loans.length; i++) {
             temp.push([
                 i,
@@ -34,7 +42,8 @@ export class GlobalTable extends React.Component {
                 data.loans[i].duree + " mois",
                 data.loans[i].taux.toString() + " %",
                 (data.loans[i].montant*(1+0.01*data.loans[i].taux)).toString() + " €" ,
-                data.loans[i].dateExp
+                data.loans[i].dateExp,
+                data.loans[i]._id
             ]);
         }
         this.setState({rows: temp});
@@ -97,6 +106,15 @@ export class GlobalTable extends React.Component {
                     filter: false,
                     sort: true,
                 }
+            },
+            {
+                name: "_id",
+                label: "_id",
+                options: {
+                    filter: false,
+                    sort: true,
+                    display: false
+                }
             }
         ];
 
@@ -140,18 +158,25 @@ export class GlobalTable extends React.Component {
                 },
             },
             expandableRowsOnClick: true,
-            renderExpandableRow: () => (
-                <TableRow>
-                    <TableCell />
-                    <TableCell colSpan={3}>
-                        <h4>D'autres infos</h4>
-                    </TableCell>
-                    <TableCell />
-                    <TableCell />
-                    <TableCell />
-                    <TableCell />
-                </TableRow>
-            )
+            renderExpandableRow: (rowData, rowMeta) => {
+                console.log(rowData, rowMeta);
+                return (
+                    <TableRow>
+                        <TableCell/>
+                        <TableCell colSpan={3}>
+                            <h4>Infos user :</h4>
+                            <Button className={"mx-auto mt-3"} onClick={this.accept} variant="contained"
+                                    color="secondary" type="submit" id={rowData[7]}>
+                                Accepter
+                            </Button>
+                        </TableCell>
+                        <TableCell/>
+                        <TableCell/>
+                        <TableCell/>
+                        <TableCell/>
+                    </TableRow>
+                );
+            }
         };
 
         return (

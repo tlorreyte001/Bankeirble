@@ -7,10 +7,12 @@
 }
 
 body {
+    /*font-family: 'Poppins', sans-serif;*/
 
 }
 
 button{
+    /*font-family: 'Poppins', sans-serif;*/
 
 }
 header{
@@ -21,10 +23,11 @@ header{
     align-items: center;
 
 }
-.logo-container,.nav-links,.account-icon{
+.logo-container,.account-icon,.sectionsBar{
     display: flex;
     
 }
+
 .logo-container{
     flex: 1;
 }
@@ -36,14 +39,22 @@ header{
     flex: 1;
     justify-content: flex-end;  
 }
-.nav-links{
+.sectionsBar{
     justify-content: space-around;
     list-style: none;
     margin-right:30px; 
+    position: fixed;
+
+}
+.sectionsBar > .active{
+    border-bottom: 1px solid #d36362;
+    animation: drop 1s ease;
+    
 
 }
 
 .nav-link{
+    justify-content: flex-end;  
     color: #3f3f3f;
     font-size: 18px;
     text-decoration: none;
@@ -54,6 +65,12 @@ header{
 .imgaccount{
     width: 30px;
     height: 30px; 
+}
+.signup{
+    float: left;
+    margin-top: auto;
+    padding-left: 5px;
+    color:rgb(211,99,98);
 }
 
 .imglogo{
@@ -67,12 +84,29 @@ header{
     color:rgb(211,99,98);
 
 }
-.presentation {
+.presentation-1{
     display: flex;
-    width: 90%;
     margin: auto;
-    min-height: 80vh;
     align-items: center;
+    height: 100vh;
+
+}
+
+.presentation-2{
+    display: flex;
+    margin: auto;
+    align-items: center;
+    height: 100vh;
+    
+
+}
+
+.presentation-3{
+    display: flex;
+    margin: auto;
+    align-items: center;
+    height: 100vh;
+    
 }
 .introduction{
     flex: 1;
@@ -83,7 +117,6 @@ header{
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     /* margin-left: 100px; */
-    padding-left: 10%;
     min-width: 700px;
 
 }
@@ -97,6 +130,34 @@ header{
     margin-top: 5px;
     color: #3f3f3f;
     font-size: calc(40px + 2vmin);
+    
+
+}
+.intro-text-2{
+    background: linear-gradient(to right,#e0881d,#d36362);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    /* margin-left: 100px; */
+    min-width: 700px;
+
+}
+
+.intro-text-2 p{
+    margin-right: 200px;
+    
+    margin-top: 5px;
+    color: #3f3f3f;
+    font-size: calc(10px + 2vmin);
+   
+
+}
+.intro-text-2 h1{
+    padding-top: 200px;
+    margin-right: 180px;
+    margin-top: 5px;
+    color: #3f3f3f;
+    font-size: calc(40px + 2vmin);
+    
     
 
 }
@@ -123,34 +184,34 @@ header{
     border: none;
     margin: 30px 0px 0px 30px;
 }
-.FormField__Button:hover{
-    background: #d36362;
-}
-
-.cover{
+.cover-1,.cover-2,.cover-3{
     flex: 1;
 }
 
-.cover img{
+.cover-2 img{
     
     /* animation: drop 1.5s ease; */
     animation: spin  infinite 80s linear ;
     height: 600px;
     margin: 0px;
+    float: left;
+    
   
 
     /*filter: drop-shadow(0px 5px 3px black);*/
 }
 
-.cover1 img{
+.cover-1 img{
     
-    animation: spin 100s ;
-    position: absolute;;
+    animation: drop 3s ease;
     right: 500px;
 
     /*filter: drop-shadow(0px 5px 3px black);*/
 }
-
+.cover-3 img{
+    animation-duration: 1s;
+    animation-name: slidein;
+}
 .big-circle {
 	position: absolute;
 	top: 0px;
@@ -176,6 +237,7 @@ header{
 
 /* Formulaire*/
 .Formulaire{
+    /*font-family: 'Poppins', sans-serif;*/
 }
 
 .FormFields {
@@ -250,6 +312,17 @@ header{
 		transform: translateY(0px);
 	}
 }
+@keyframes slidein {
+    from {
+      margin-left: 100%;
+      width: 25%; 
+    }
+  
+    to {
+      margin-left: 0%;
+      width: 100%;
+    }
+  }
 @media screen and (max-width: 1024px) {
 
 	.introduction {
@@ -270,7 +343,7 @@ header{
 	.big-circle {
 		opacity: 0.2;
     }
-    .cover1 img,.cover img{
+    .cover-1 img,.cover-2 img,.cover-3 img{
         position: inherit;
     }
 }
