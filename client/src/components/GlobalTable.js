@@ -25,9 +25,9 @@ export class GlobalTable extends React.Component {
         this.get();
     }
 
-    accept = (event) => {
+    accept = async (event) => {
         // console.log(event.target.offsetParent.id);
-        let {res} = API.accept_loan(
+        let {res} = await API.accept_loan(
             localStorage.getItem("token"),
             event.target.offsetParent.id
         );
@@ -55,8 +55,12 @@ export class GlobalTable extends React.Component {
 
     handleToggle = () => {
         this.setState({open: true});
-        setTimeout(this.setState({open: false}), 1000);
+        setTimeout(this.closeIt, 1000);
         this.get();
+    };
+
+    closeIt = () => {
+        this.setState({open: false});
     };
 
     render() {
