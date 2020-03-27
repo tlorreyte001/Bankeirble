@@ -41,7 +41,7 @@ async function signup (req, res) {
     let findUser = await Users.findOne({mailPerso: user.mailPerso});
 
     if (findUser) {
-        return res.status(400).json({
+        return res.status(401).json({
             text: "L'utilisateur existe déjà",
         });
     }
@@ -74,12 +74,12 @@ async function login (req, res) {
     const findUser = await Users.findOne({ mailPerso: user.mailPerso });
 
     if (!findUser)
-        return res.status(401).json({
+        return res.status(403).json({
             text: "L'utilisateur n'existe pas"
     });
 
     if (!passwordHash.verify(user.password, findUser.password))
-        return res.status(401).json({
+        return res.status(404).json({
             text: "Mot de passe incorrect"
     });
 

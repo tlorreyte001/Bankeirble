@@ -4,6 +4,7 @@ const userSchema = mongoose.Schema(
   {
     genre: String,
     nom: String,
+    nomNaissance : String,
     prenom: String,
     dateNaissance: Date,
     villeNaissance: String,
