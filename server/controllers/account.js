@@ -41,19 +41,20 @@ async function signup (req, res) {
     let findUser = await Users.findOne({mailPerso: user.mailPerso});
 
     if (findUser) {
-        return res.status(400).json({
+        return res.status(401).json({
             text: "L'utilisateur existe déjà",
         });
     }
 
     // Sauvegarde de l'utilisateur en base
     const userData = new Users(user);
+    let infoUser = `{"nom" : ${JSON.stringify(userData.nom)}, "prenom" : ${JSON.stringify(userData.prenom)} }`; // on envoie seulement le nom et le prénom de l'utilisateur
     userData.save();
     console.log("Un new !");
     return res.status(200).json({
         text: "Succès",
         token: jwt.encode(userData, config.secret),
-        user: userData
+        user: infoUser
     });
 }
 
@@ -72,21 +73,22 @@ async function login (req, res) {
 
     // On check si l'utilisateur existe en base
     const findUser = await Users.findOne({ mailPerso: user.mailPerso });
+    let infoUser = `{"nom" : ${JSON.stringify(findUser.nom)}, "prenom" : ${JSON.stringify(findUser.prenom)} }`; // on envoie seulement le nom et le prénom de l'utilisateur
 
     if (!findUser)
-        return res.status(401).json({
+        return res.status(403).json({
             text: "L'utilisateur n'existe pas"
     });
 
     if (!passwordHash.verify(user.password, findUser.password))
-        return res.status(401).json({
+        return res.status(404).json({
             text: "Mot de passe incorrect"
     });
 
     return res.status(200).json({
         text: "Authentification réussie",
         token: jwt.encode(findUser, config.secret),
-        user: findUser
+        user: infoUser
     });
 }
 
