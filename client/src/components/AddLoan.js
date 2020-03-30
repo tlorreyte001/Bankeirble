@@ -1,10 +1,12 @@
 import React from "react";
-import API from "../utils/API";
 
 import {Button, FormLabel, Slider, Switch} from '@material-ui/core';
 import {DateTimePicker, MuiPickersUtilsProvider} from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 import frLocale from "date-fns/locale/fr";
+
+import {PopUpForm} from "../components/PopUpForm";
+import API from "../utils/API";
 
 
 export class AddLoan extends React.Component {
@@ -17,16 +19,16 @@ export class AddLoan extends React.Component {
             expiration_date: new Date(),
             remb_auto: true,
             remb_amount: "",
+            openPopUp: false,
         };
     };
 
-    send = async () => {
-        const {amount, num_months, expiration_date, remb_auto} = this.state;
-        try {
-            await API.add_loan(localStorage.getItem("token"), amount, num_months, expiration_date, remb_auto);
-        } catch (error) {
-            console.error(error);
-        }
+    handleClickOpen = () => {
+        this.setState({openPopUp: true});
+    };
+
+    handleClose = () => {
+        this.setState({openPopUp: false});
     };
 
     handleChange = (event) => {
@@ -45,6 +47,16 @@ export class AddLoan extends React.Component {
         this.setState({
             [event.target.id]: value
         });
+    };
+
+    send = async () => {
+
+        const {amount, num_months, expiration_date, remb_auto} = this.state.data;
+        try {
+            await API.add_loan(localStorage.getItem("token"), amount, num_months, expiration_date, remb_auto);
+        } catch (error) {
+            console.error(error);
+        }
     };
 
     render() {
@@ -124,10 +136,11 @@ export class AddLoan extends React.Component {
                         </div>
                     </div>
                     <div className={"row"}>
-                        <Button className={"mx-auto"} onClick={this.send} variant="contained" color="secondary" type="submit">
+                        <Button className={"mx-auto"} onClick={this.handleClickOpen} variant="contained" color="secondary" type="submit">
                             Envoyer la demande
                         </Button>
                     </div>
+                    <PopUpForm open={this.state.openPopUp} onClose={this.handleClose} send={this.send}/>
                 </div>
             </div>
         );

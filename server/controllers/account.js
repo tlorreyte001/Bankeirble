@@ -59,7 +59,7 @@ async function signup (req, res) {
 
 async function login (req, res) {
     const user = {
-        mailPerso: req.body.mail_perso,
+        mailPerso: req.body.email,
         password: req.body.password
     };
 

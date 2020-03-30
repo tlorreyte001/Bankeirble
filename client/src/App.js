@@ -3,11 +3,13 @@ import { Route, Switch } from "react-router-dom";
 import { Login } from "./pages/Login.js";
 import { Signup } from "./pages/Signup.js";
 import { PrivateRoute } from "./components/PrivateRoute.js";
-import { Acceuil } from "./pages/Acceuil.js";
+import { Accueil } from "./pages/Accueil.js";
 import "./App.css";
 import './pages/styleAcceuil.css';
 import {Welcome} from './pages/Welcome.js';
 import { createMuiTheme, ThemeProvider  } from '@material-ui/core/styles';
+import {Preteurs} from "./pages/Preteurs";
+import {Moc} from "./pages/Moc";
 
 
 class App extends Component {
@@ -28,17 +30,28 @@ class App extends Component {
           contrastText: '#fff',
         },
       },
+      typography: {
+        htmlFontSize: 16,
+        fontFamily: "Manrope VF",
+        fontSize: 14,
+        fontWeightLight: 300,
+        fontWeightRegular: 400,
+        fontWeightMedium: 500,
+        fontWeightBold: 700,
+      }
     });
 
     return (
-      <div className="App">
-        <div className="App-content">
+      <div className="">
+        <div className="">
           <ThemeProvider theme={theme}>
             <Switch>
               <Route exact path="/" component={Welcome} />
               <Route exact path="/login" component={Login} />
               <Route exact path="/signup" component={Signup} />
-              <PrivateRoute exact path="/accueil" component={Acceuil} />
+              <PrivateRoute exact path="/accueil" component={Accueil} />
+              <PrivateRoute exact path="/preteurs" component={Preteurs} />
+              <PrivateRoute exact path="/test" component={Moc} />
             </Switch>
           </ThemeProvider>
         </div>

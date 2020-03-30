@@ -1,45 +1,40 @@
 import React from "react";
 import API from "../utils/API";
 import {Link} from "react-router-dom";
+import Alert from '@material-ui/lab/Alert';
 
 export class Signup extends React.Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      nom:"",
-      prenom:"",
-      password:"",
-      mail_perso:"",
-        hasAgreed: false
+      lastName:"", //lastName typed
+      firstName:"", //firstName typed
+      password:"", //password typed
+      email:"", //email typed
+        status: "", //Status code of the server response
     };
   }
 
+  //Send the POST request to the server and wait the response.
   send = async () => {
-    const { password, mail_perso, nom, prenom, hasAgreed } = this.state;
-    if(!hasAgreed){
-        return;
-    }
-    if (!mail_perso || mail_perso.length === 0) {
-      return;
-    }
-    if (!password || password.length === 0) {
-      return;
-    }
+    const { password, email, lastName, firstName } = this.state;
     try {
-      const { data } =  await API.signup(mail_perso, password, nom, prenom);
-      localStorage.setItem("token", data.token);
-      localStorage.setItem("user", JSON.stringify(data.user));
-      window.location = "/accueil";
+      const { data, status } =  await API.signup(email, password, lastName, firstName);
+        if (status === 200) {
+            localStorage.setItem("token", data.token);
+            localStorage.setItem("user", JSON.stringify(data.user));
+            window.location = "/accueil";
+        }
+        else{
+            this.setState({status: status});
+        }
     } catch (error) {
       console.error(error);
     }
   };
 
-  change = () => {
-    window.location = "/";
-  };
-
+  //Taking note of what is typed
   handleChange = (event) => {
     this.setState({
       [event.target.id]: event.target.value
@@ -47,28 +42,36 @@ export class Signup extends React.Component {
   };
 
   render() {
+
+      //Message PopUp red
+      let alertPopUp = null;
+      if (this.state.status === 405){
+          alertPopUp = <Alert className={"mb-3"} severity="error">Cette adresse mail est déjà liée à un compte !</Alert>
+      }
+
     return (
         <div className="text-center mx-auto pt-5" style={{maxWidth: "35em",}}>
+            {alertPopUp}
           <div className="FormField">
             <label className="FormField__Label" htmlFor="name">Nom</label>
-            <input type="text" id="nom" className="FormField__Input" name="name" value={this.state.nom} onChange={this.handleChange} />
+            <input type="text" id="lastName" className="FormField__Input" value={this.state.lastName} onChange={this.handleChange} />
           </div>
           <div className="FormField">
             <label className="FormField__Label" htmlFor="name">Prénom</label>
-            <input type="text" id="prenom" className="FormField__Input" name="name" value={this.state.prenom} onChange={this.handleChange} />
+            <input type="text" id="firstName" className="FormField__Input" value={this.state.firstName} onChange={this.handleChange} />
           </div>
             <div className="FormField">
                 <label className="FormField__Label" htmlFor="email">E-Mail</label>
-                <input type="email" id="mail_perso" className="FormField__Input" name="email" value={this.state.mail_perso} onChange={this.handleChange} />
+                <input type="email" id="email" className="FormField__Input" value={this.state.email} onChange={this.handleChange} />
             </div>
           <div className="FormField">
             <label className="FormField__Label" htmlFor="password">Mot de passe</label>
-            <input type="password" id="password" className="FormField__Input" name="password" value={this.state.password} onChange={this.handleChange} />
+            <input type="password" id="password" className="FormField__Input" value={this.state.password} onChange={this.handleChange} />
           </div>
 
           <div className="FormField">
             <label className="FormField__CheckboxLabel">
-              <input className="FormField__Checkbox" type="checkbox" id="hasAgreed" value={this.state.hasAgreed} onChange={this.handleChange} /> J'accepte toutes les<a href="/" className="FormField__TermsLink">conditions d'utilisation</a>
+              <input required className="FormField__Checkbox" type="checkbox" /> J'accepte toutes les<a href="/" className="FormField__TermsLink">conditions d'utilisation</a>
             </label>
           </div>
           <div className="FormField">

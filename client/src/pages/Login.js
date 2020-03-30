@@ -1,55 +1,90 @@
 import React from "react";
 import API from "../utils/API";
 import {Link} from "react-router-dom";
+import Input from "@material-ui/core/Input";
+import InputAdornment from "@material-ui/core/InputAdornment";
+import IconButton from "@material-ui/core/IconButton";
+import {Visibility, VisibilityOff} from "@material-ui/icons";
+import Alert from "@material-ui/lab/Alert";
 
 export class Login extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            mail_perso: "",
-            password: ""
+            email: "", //Email typed
+            password: "", //Password typed
+            status: "", //Status code of the server response
+            showPassword: false //Boolean to show or not the password
         };
     };
 
+    //Send the POST request to the server and wait the response.
     send = async () => {
-        const { mail_perso, password } = this.state;
-        if (!mail_perso || mail_perso.length === 0) {
-            return;
-        }
-        if (!password || password.length === 0) {
-            return;
-        }
+        const { email, password } = this.state;
         try {
-            const { data } = await API.login(mail_perso, password);
-            localStorage.setItem("token", data.token);
-            localStorage.setItem("user", JSON.stringify(data.user));
-            window.location = "/accueil";
+            const { status, data } = await API.login(email, password);
+            if (status === 200) {
+                localStorage.setItem("token", data.token);
+                localStorage.setItem("user", JSON.stringify(data.user));
+                window.location = "/accueil";
+            }
+            else {
+                this.setState({status: status})
+            }
         } catch (error) {
             console.error(error);
         }
     };
 
-    change(){
-        window.location = "/sign-up";
-    };
-
+    //Taking note of what is typed
     handleChange = (event) => {
         this.setState({
             [event.target.id]: event.target.value
         });
     };
 
+    //Taking note of the password visibility
+    handleClickShowPassword = () => {
+        this.setState({showPassword: !this.state.showPassword});
+    };
+
     render() {
+
+        let input1, input2;
+
+        let alertPopUp = null;
+
+        let Adornment =
+            <InputAdornment position="end">
+                <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={this.handleClickShowPassword}
+                >
+                    {this.state.showPassword ? <Visibility /> : <VisibilityOff />}
+                </IconButton>
+            </InputAdornment>;
+
+        if (this.state.status === 403 || this.state.status === 407){
+            alertPopUp = <Alert className={"mb-3"} severity="error">Email ou mot de passe incorrect !</Alert>;
+            input1 = <Input error type="email" id="email" className="FormField__Input" value={this.state.email} onChange={this.handleChange} required/>;
+            input2 = <Input error type={this.state.showPassword ? 'text' : 'password'} id="password" className="FormField__Input" value={this.state.password} onChange={this.handleChange} required endAdornment={Adornment}/>;
+        }
+        else {
+            input1 = <Input type="email" id="email" className="FormField__Input" value={this.state.email} onChange={this.handleChange} required/>;
+            input2 = <Input type={this.state.showPassword ? 'text' : 'password'} id="password" className="FormField__Input" value={this.state.password} onChange={this.handleChange} required endAdornment={Adornment}/>;
+        }
+
         return (
             <div className="text-center mx-auto pt-5" style={{maxWidth: "35em",}}>
+                {alertPopUp}
                 <div className="FormField">
                     <label className="FormField__Label" htmlFor="email">E-Mail</label>
-                    <input type="email" id="mail_perso" className="FormField__Input" name="email" value={this.state.mail_perso} onChange={this.handleChange} />
+                    {input1}
                 </div>
                 <div className="FormField">
                     <label className="FormField__Label" htmlFor="password">Mot de passe</label>
-                    <input type="password" id="password" className="FormField__Input" name="password" value={this.state.password} onChange={this.handleChange} />
+                    {input2}
                 </div>
                 <div className="FormField">
                     <button onClick={this.send} className="FormField__Button mr-20">Se connecter</button> <Link to="/signup" className="FormField__Link">Je n'ai pas de compte</Link>

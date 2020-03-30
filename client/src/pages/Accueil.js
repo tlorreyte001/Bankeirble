@@ -4,18 +4,18 @@ import { NavbarBankeirble } from "../components/NavbarBankeirble.js";
 import {AddLoan} from "../components/AddLoan";
 import {GlobalTable} from "../components/GlobalTable";
 
-export class Acceuil extends React.Component {
+export class Accueil extends React.Component {
     render() {
         return (
             <div>
                 <NavbarBankeirble/>
-                <div className={"container-fluid m-3"}>
+                <div className={"container-fluid mt-3"}>
                     <div className={"row"}>
                         <div className={"col mt-2"}>
-                            <GlobalTable/>
+                            {/*<GlobalTable/>*/}
                         </div>
                         <div className={"col mr-3"}>
-                            <AddLoan/>
+                            {/*<AddLoan/>*/}
                         </div>
                     </div>
                 </div>
