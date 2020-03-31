@@ -12,8 +12,8 @@ contract Contract {
     uint taux;
     uint montant_total;
     uint echeance_totale;
-    uint date_reelle;
-    uint date_theorique;
+    int date_reelle;
+    int date_theorique;
     uint echeance_restante;
     uint montant_restant;
     bool status;
@@ -45,7 +45,7 @@ contract Contract {
     nombre_transaction[contract_count] = 0;
   }
 
-  function createContract3(uint _date_reelle,uint _id) public{
+  function createContract3(int _date_reelle,uint _id) public{
     contract_users[contract_count][0].date_reelle = _date_reelle;
     contract_users[contract_count][0].id = _id;
   }
@@ -66,7 +66,7 @@ contract Contract {
         }
   }
 
-  function transaction2(uint _id,uint _date_reelle) public{
+  function transaction2(uint _id,int _date_reelle) public{
         uint numero_transaction = nombre_transaction[_id];
         contract_users[_id][numero_transaction+1].date_reelle = _date_reelle;
         if (numero_transaction ==0){
@@ -118,12 +118,12 @@ contract Contract {
     return _preteur;
   }
 
-  function getDate_reelle(uint numero_contrat, uint numero_transaction) public view returns (uint _date_reelle){
+  function getDate_reelle(uint numero_contrat, uint numero_transaction) public view returns (int _date_reelle){
     _date_reelle = contract_users[numero_contrat][numero_transaction].date_reelle;
     return _date_reelle;
   }
 
-  function getDate_theorique(uint numero_contrat, uint numero_transaction) public view returns (uint _date_theorique){
+  function getDate_theorique(uint numero_contrat, uint numero_transaction) public view returns (int _date_theorique){
     _date_theorique = contract_users[numero_contrat][numero_transaction].date_theorique;
     return _date_theorique;
   }
@@ -182,5 +182,42 @@ function diff_date(int date1, int date2) public view returns (int) {
   return res;
 }
 
+function reputation(string memory user) public view returns(int){
+  int reput = 0;
+  for (uint i = 0; i<contract_count; i++){
+    if (keccak256(abi.encodePacked((contract_users[i][0].preteur))) == keccak256(abi.encodePacked((user)))){
+      uint montant = contract_users[i][0].montant_total;
+      if (montant > 20000){
+        if (montant > 50000){
+          reput = reput = 6;
+        }
+        else{
+        reput = reput + 3;
+        }
+      }
+      else{
+        reput = reput + 1;
+      }
+    }
+    if (keccak256(abi.encodePacked((contract_users[i][0].emprunteur))) == keccak256(abi.encodePacked((user)))){
+      reput ++;
+      uint transactions = nombre_transaction[i];
+      for (uint j=1; j<transactions+1; j++){
+        int date_r = contract_users[i][j].date_reelle;
+        int date_t = contract_users[i][j].date_theorique;
+        int diff = diff_date(date_t,date_r);
+        if (diff>0){
+          if (diff>=100){
+            reput = reput - diff/10;
+          }
+          else{
+            reput = reput - diff/3;
+          }
+        }
+      }
+    }
+  }
+  return reput;
+}
 
 }
