@@ -2,8 +2,6 @@ const prets = require('./prets.js');
 
 module.exports = function (app) {
     app.post('/nb_demande', prets.nb_demandes);
-    app.post('/verifInfo', prets.verif_info);
-    app.post('/addInfo', prets.add_info);
     app.post('/add', prets.add);
     app.post('/get_all', prets.get_all);
     app.post('/get_all_available', prets.get_all_available);

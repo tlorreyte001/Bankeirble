@@ -2,18 +2,16 @@ const mongoose = require("mongoose");
 
 const pretsSchema = mongoose.Schema(
   {
-    _idPreteur: String,
-    _idEmprunteur: String,
-    montant: Number,
-    taux: Number,
-    duree: Number,
-    dateExp: Date,
+    _idLender: String,
+    _idBorrower: String,
+    amount: Number,
+    rate: Number,
+    nbMonths: Number,
+    expirationDate: Date,
     status: Number,
-    dateDepart: Date,
-    mensualite: Number,
-    paiementAuto : Boolean,
-    litige: String
-  },
+    date: Date,
+    reimbursementAuto : Boolean
+   },
 );
 
-module.exports = mongoose.model("Prets", pretsSchema);
+module.exports = mongoose.model("Loans", pretsSchema);

@@ -15,44 +15,37 @@ async function signup (req, res) {
 
     let num = await Users.find({}).countDocuments(); // compte le nombre d'utilisateurs dans la base de données
     const user = {
-        genre:"", prenom:req.body.prenom, nom:req.body.nom,
-        adresse: {
-            numRue:"",
-            rue:"",
-            codePostal:"",
-            ville:"",
-            autre:"",
-        },
-        tel:"",
+        lastName : req.body.lastName,
+        firstName : req.body.firstName,
         pseudo : find_pseudo(num),
-        mailPerso: req.body.mail_perso, dateNaissance:"", villeNaissance:"",
-        password: passwordHash.generate(req.body.password),
-        pretEnCours: 0,
-        reputation : 0
+        email: req.body.email,
+        password: passwordHash.generate(req.body.password)
     };
 
     //Cas où un des champs obligatoires est nul
-    if (user.password === "" || user.mailPerso === "") {
-        return res.status(400).json({
-            text: "Requête invalide"
-        });
-    }
+    // if (user.password === "" || user.email === "") {
+    //     return res.status(400).json({
+    //         text: "Requête invalide"
+    //     });
+    // }
 
-    let findUser = await Users.findOne({mailPerso: user.mailPerso});
+    let findUser = await Users.findOne({email: user.email});
 
     if (findUser) {
-        return res.status(401).json({
-            text: "L'utilisateur existe déjà",
+        return res.status(405).json({
+            text: "User already exists",
         });
     }
 
     // Sauvegarde de l'utilisateur en base
     const userData = new Users(user);
-    let infoUser = `{"nom" : ${JSON.stringify(userData.nom)}, "prenom" : ${JSON.stringify(userData.prenom)} }`; // on envoie seulement le nom et le prénom de l'utilisateur
     userData.save();
-    console.log("Un new !");
+
+    console.log(`Un nouvel utilisateur ${userData.pseudo} vient de s'inscrire !`);
+    let infoUser = `{"lastName" : ${JSON.stringify(userData.lastName)}, "firstName" : ${JSON.stringify(userData.firstName)} }`; // on envoie seulement le nom et le prénom de l'utilisateur
+
     return res.status(200).json({
-        text: "Succès",
+        text: "Successfull Authentification",
         token: jwt.encode(userData, config.secret),
         user: infoUser
     });
@@ -60,37 +53,95 @@ async function signup (req, res) {
 
 async function login (req, res) {
     const user = {
-        mailPerso: req.body.email,
-        password: req.body.password
+        email : req.body.email,
+        password : req.body.password
     };
 
     //Cas où un des champs obligatoires est nul
-    if (!user.mailPerso || !user.password) {
-        return res.status(400).json({
-            text: "Requête invalide"
-        });
-    }
+    // if (!user.email || !user.password) {
+    //     return res.status(400).json({
+    //         text: "Requête invalide"
+    //     });
+    // }
 
     // On check si l'utilisateur existe en base
-    const findUser = await Users.findOne({ mailPerso: user.mailPerso });
-    let infoUser = `{"nom" : ${JSON.stringify(findUser.nom)}, "prenom" : ${JSON.stringify(findUser.prenom)} }`; // on envoie seulement le nom et le prénom de l'utilisateur
+    const findUser = await Users.findOne({ email: user.email });
+    let infoUser = `{"lastName" : ${JSON.stringify(findUser.lastName)}, "firstName" : ${JSON.stringify(findUser.firstName)} }`; // on envoie seulement le nom et le prénom de l'utilisateur
 
     if (!findUser)
         return res.status(403).json({
-            text: "L'utilisateur n'existe pas"
+            text: "User not found"
     });
 
     if (!passwordHash.verify(user.password, findUser.password))
-        return res.status(404).json({
-            text: "Mot de passe incorrect"
+        return res.status(407).json({
+            text: "Wrong Password"
     });
 
     return res.status(200).json({
-        text: "Authentification réussie",
+        text: "Successfull Authentification",
         token: jwt.encode(findUser, config.secret),
         user: infoUser
     });
 }
 
-exports.login = login;
+async function checkInfo (req, res) { // teste si le demandeur a déjà donné les infos nécessaires à la constitution du contrat (1ere demande ou non)
+  let user = jwt.decode(req.query.user, config.secret);
+  let findUser = await Users.findOne({_id : user._id});
+  if (findUser) {
+
+     if  ((user.gender === null) ||
+          (user.lastName === null) ||
+          (user.firstName === null) ||
+          (user.birthDate === null) ||
+          (user.birthPlace === null)) { // test sur tous les champs nécessaires à la constitution d'un contrat
+       return res.status(402).json({
+           text: "Missing information"
+       });
+     }
+
+     else { // toutes les infos sont présentes
+       return res.status(200).json({
+           text: "Success"
+       });
+     }
+  }
+
+  else {
+    return res.status(401).json({
+        text: "Access token is missing or invalid"
+    });
+  }
+}
+
+async function addInfo (req, res) { // ajoute les infos complémentaires nécessaires au contrat dans la bdd
+  let user = jwt.decode(req.body.user, config.secret);
+  let findUser = await Users.findOne({_id : user._id});
+  if (findUser) {
+    await Users.findByIdAndUpdate(user._id, {
+    "address": req.body.address, // doute pour adresse : enregistrement du json ou besoin de le faire champ par champ ?
+    "gender": req.body.gender,
+    "birthDate": req.body.birthDate,
+    "birthPlace": req.body.birthPlace
+    },
+    {useFindAndModify : false},
+    function (err) { // màj des infos de l'utilisateur
+        if (err) {
+            throw err;
+        }
+    });
+     return res.status(200).json({
+         text: "Succès"
+     });
+  }
+  else {
+    return res.status(400).json({
+        text: "Requête invalide"
+    });
+  }
+}
+
 exports.signup = signup;
+exports.login = login;
+exports.checkInfo = checkInfo;
+exports.addInfo = addInfo;
