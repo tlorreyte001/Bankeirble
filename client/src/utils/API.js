@@ -4,6 +4,9 @@ import axios from "axios";
 const headers = {
   "Content-Type": "application/json",
 };
+const requestOptions = {
+    responseType: 'blob'
+};
 const burl = "http://localhost:8800";
 
 export default {
@@ -162,6 +165,16 @@ export default {
 
     isAuth: function() {
         return localStorage.getItem("token") !== null;
+    },
+
+    generate_contract: function() {
+        return axios.post(
+          `${burl}/loan/generateContract`,
+          {
+            
+          },
+          requestOptions
+        );
     }
 
 };
