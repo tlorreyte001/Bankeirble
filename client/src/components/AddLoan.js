@@ -7,6 +7,7 @@ import frLocale from "date-fns/locale/fr";
 
 import {PopUpForm} from "../components/PopUpForm";
 import API from "../utils/API";
+import APIBC from "../utils/APIBlockchain";
 
 
 export class AddLoan extends React.Component {
@@ -15,12 +16,34 @@ export class AddLoan extends React.Component {
         super(props);
         this.state = {
             amount: 300,
-            num_months: 3,
-            expiration_date: new Date(),
-            remb_auto: true,
-            remb_amount: "",
+            nbMonths: 3,
+            rate: 1,
+            expirationDate: new Date(),
+            reimbursementAuto: true,
+            reimbursementAmount: "",
             openPopUp: false,
+            nbRequest: ""
         };
+    };
+
+    componentDidMount() {
+        this.nbLoanRequest();
+        this.blockchainLoan();
+    }
+
+    nbLoanRequest = async () => {
+        try {
+            const {status, data} = await API.nbRequest(localStorage.getItem("token"));
+            if (status === 200) {
+                this.setState({nbRequest: data.nbLoanRequest});
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    blockchainLoan = () => {
+        APIBC.loan();
     };
 
     handleClickOpen = () => {
@@ -39,7 +62,7 @@ export class AddLoan extends React.Component {
 
     handleDateChange = (date) => {
         this.setState({
-            expiration_date: date
+            expirationDate: date
         });
     };
 
@@ -49,17 +72,8 @@ export class AddLoan extends React.Component {
         });
     };
 
-    send = async () => {
-
-        const {amount, num_months, expiration_date, remb_auto} = this.state.data;
-        try {
-            await API.add_loan(localStorage.getItem("token"), amount, num_months, expiration_date, remb_auto);
-        } catch (error) {
-            console.error(error);
-        }
-    };
-
     render() {
+        let data = this.state;
         return (
             <div className="Loan">
                 <div className={"mx-auto"} style={{maxWidth: "30em",}}>
@@ -86,13 +100,13 @@ export class AddLoan extends React.Component {
                     <div className={"row pb-3 pt-2"}>
                         <Slider
                             aria-labelledby="discrete-slider-always"
-                            id={"num_months"}
+                            id={"nbMonths"}
                             step={1}
                             valueLabelDisplay="on"
                             min={1}
                             max={12}
                             onChange={this.handleChangeSlider}
-                            value={this.state.num_months}
+                            value={this.state.nbMonths}
                             color={"secondary"}
                         />
                     </div>
@@ -104,7 +118,7 @@ export class AddLoan extends React.Component {
                         <div className={"col"}>
                             <MuiPickersUtilsProvider utils={DateFnsUtils} locale={frLocale}>
                                 <DateTimePicker
-                                    value={this.state.expiration_date}
+                                    value={this.state.expirationDate}
                                     disablePast
                                     onChange={this.handleDateChange}
                                     showTodayButton
@@ -123,10 +137,10 @@ export class AddLoan extends React.Component {
                         <div className={"col"}>
                             <Switch
                                 onChange={this.handleChange}
-                                id="remb_auto"
+                                id="reimbursementAuto"
                                 inputProps={{ 'aria-label': 'secondary checkbox' }}
                                 color="secondary"
-                                checked={this.state.remb_auto}
+                                checked={this.state.reimbursementAuto}
                             />
                         </div>
                     </div>
@@ -140,7 +154,7 @@ export class AddLoan extends React.Component {
                             Envoyer la demande
                         </Button>
                     </div>
-                    <PopUpForm open={this.state.openPopUp} onClose={this.handleClose} send={this.send}/>
+                    <PopUpForm open={this.state.openPopUp} onClose={this.handleClose} data={data}/>
                 </div>
             </div>
         );

@@ -2,7 +2,7 @@ import React from "react";
 
 import { NavbarBankeirble } from "../components/NavbarBankeirble.js";
 import {AddLoan} from "../components/AddLoan";
-import {GlobalTable} from "../components/GlobalTable";
+// import {GlobalTable} from "../components/GlobalTable";
 
 export class Accueil extends React.Component {
     render() {
@@ -15,7 +15,7 @@ export class Accueil extends React.Component {
                             {/*<GlobalTable/>*/}
                         </div>
                         <div className={"col mr-3"}>
-                            {/*<AddLoan/>*/}
+                            <AddLoan/>
                         </div>
                     </div>
                 </div>

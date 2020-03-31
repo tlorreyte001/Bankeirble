@@ -18,26 +18,69 @@ export class PopUpForm extends React.Component {
             form: false,
             checked: false,
 
-            nom: "",
-            prenom: "",
-            adresse:{
-                rue: "",
-                codePostal: "",
-                autre: "",
-                nomRue: "",
-                ville: "",
+            address:{
+                addressNumber: "",
+                postcode: "",
+                other: "",
+                street: "",
+                city: "",
             },
-            dateNaissance: new Date(),
-            villeNaissance: "",
-            tel: "",
-            genre: "M.",
+            birthDate: new Date(),
+            birthPlace: "",
+            phoneNumber: "",
+            gender: "M.",
 
         };
     };
 
     componentWillMount() {
-       if (JSON.parse(localStorage.getItem('user')).adresse.rue === "")
-           this.setState({form: true});
+        this.checkInfo();
+    };
+
+    checkInfo = async () => {
+        try {
+            const {status} = await API.checkInfo(localStorage.getItem("token"));
+            if (status === 402){
+                this.setState({form: true});
+            }
+            else if (status === 400 || status === 401){
+                console.log("error");
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    updateInfo = async () => {
+        if (this.state.form) {
+            const {address, birthDate, birthPlace, gender} = this.state;
+            try {
+                const {status} = await API.addInfo(localStorage.getItem("token"), address, gender, birthDate, birthPlace);
+                if (status === 200){
+                    this.send();
+                    this.props.onClose();
+                }
+                else {
+                    console.log("error");
+                }
+            } catch (error) {
+                console.error(error);
+            }
+        }
+        else {
+            this.send();
+            this.props.onClose();
+        }
+    }
+    ;
+
+    send = async () => {
+        const {amount, nbMonths, rate, expirationDate, reimbursementAuto} = this.props.data;
+        try {
+            await API.add_loan(localStorage.getItem("token"), amount, nbMonths, rate, expirationDate, reimbursementAuto);
+        } catch (error) {
+            console.error(error);
+        }
     };
 
     handleVerif = () => {
@@ -47,27 +90,15 @@ export class PopUpForm extends React.Component {
             this.setState({checked: false});
     };
 
-    updateInfo = async () => {
-        if (this.state.form) {
-            const {adresse, dateNaissance, villeNaissance, tel, genre} = this.state;
-            try {
-                console.log(this.state);
-            } catch (error) {
-                console.error(error);
-            }
-        }
-        this.props.onClose();
-    };
-
     handleDateChange = (date) => {
         this.setState({
-            dateNaissance: date
+            birthDate: date
         });
     };
 
     handleGenreChange = (event) => {
         this.setState({
-            genre: event.target.value
+            gender: event.target.value
         });
     };
 
@@ -89,7 +120,7 @@ export class PopUpForm extends React.Component {
                         Avant de poursuivre, nous avons besoin de quelques informations supplémentaires.
                     </DialogContentText>
                     <Select
-                        value={this.state.genre}
+                        value={this.state.gender}
                         onChange={this.handleGenreChange}
                     >
                         <MenuItem value={"M."}>M.</MenuItem>
@@ -98,8 +129,8 @@ export class PopUpForm extends React.Component {
                     <TextField
                         autoFocus
                         margin="dense"
-                        id="tel"
-                        value={this.state.tel}
+                        id="phoneNumber"
+                        value={this.state.phoneNumber}
                         onChange={this.handleFormChange}
                         label="Numéro de téléphone"
                         type="number"
@@ -114,7 +145,7 @@ export class PopUpForm extends React.Component {
                         <div className={"col"}>
                         <MuiPickersUtilsProvider utils={DateFnsUtils} locale={frLocale}>
                             <DatePicker
-                                value={this.state.dateNaissance}
+                                value={this.state.birthDate}
                                 onChange={this.handleDateChange}
                                 maxDate={new Date("2021-01-01")}
                                 color={"secondary"}
@@ -126,9 +157,9 @@ export class PopUpForm extends React.Component {
                     <TextField
                         autoFocus
                         margin="dense"
-                        id="villeNaissance"
+                        id="birthPlace"
                         label="Ville de Naissance"
-                        value={this.state.villeNaissance}
+                        value={this.state.birthPlace}
                         onChange={this.handleFormChange}
                         type="text"
                         fullWidth
@@ -137,8 +168,8 @@ export class PopUpForm extends React.Component {
                     <TextField
                         autoFocus
                         margin="dense"
-                        id="nomRue"
-                        value={this.state.nomRue}
+                        id="street"
+                        value={this.state.street}
                         onChange={this.handleFormChange}
                         label="Adresse"
                         type="text"
@@ -148,8 +179,8 @@ export class PopUpForm extends React.Component {
                     <TextField
                         autoFocus
                         margin="dense"
-                        id="autre"
-                        value={this.state.autre}
+                        id="other"
+                        value={this.state.other}
                         onChange={this.handleFormChange}
                         label="Adresse (ligne 2)"
                         type="text"
@@ -158,8 +189,8 @@ export class PopUpForm extends React.Component {
                     <TextField
                         autoFocus
                         margin="dense"
-                        id="codePostal"
-                        value={this.state.codePostal}
+                        id="postcode"
+                        value={this.state.postcode}
                         onChange={this.handleFormChange}
                         label="Code Postal"
                         type="number"
@@ -169,8 +200,8 @@ export class PopUpForm extends React.Component {
                     <TextField
                         autoFocus
                         margin="dense"
-                        id="ville"
-                        value={this.state.ville}
+                        id="city"
+                        value={this.state.city}
                         onChange={this.handleFormChange}
                         label="Ville"
                         type="text"
@@ -201,6 +232,7 @@ export class PopUpForm extends React.Component {
                                         inputProps={{'aria-label': 'secondary checkbox'}}
                                         color="primary"
                                         checked={this.state.checked}
+                                        required
                                 />
                             </div>
                         </div>

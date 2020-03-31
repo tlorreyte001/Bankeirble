@@ -6,8 +6,8 @@ export class NavbarBankeirble extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            nom: "",
-            prenom: "",
+            lastName: "",
+            firstName: "",
             open: false,
             Anchor: null
         }
@@ -20,10 +20,8 @@ export class NavbarBankeirble extends React.Component {
 
     getUser(){
         let temp = JSON.parse(localStorage.getItem("user"));
-        console.log(temp);
-        console.log(temp.nom);
-        this.setState({nom: temp.nom});
-        this.setState({prenom: temp.prenom});
+        this.setState({lastName: temp.lastName});
+        this.setState({firstName: temp.firstName});
     };
 
     handleMenu = (event) => {

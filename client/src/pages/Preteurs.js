@@ -3,13 +3,10 @@ import React from "react";
 import { GlobalTable } from "../components/GlobalTable.js";
 import { NavbarBankeirble } from "../components/NavbarBankeirble";
 
-import Web3 from 'web3';
 
 export class Preteurs extends React.Component {
 
     render() {
-        const web3 = new Web3(Web3.givenProvider || 'http://localhost:8545');
-        console.log(web3.eth);
 
         return (
             <div>
