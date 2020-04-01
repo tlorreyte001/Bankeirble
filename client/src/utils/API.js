@@ -30,13 +30,15 @@ export default {
     },
 
     checkInfo: function(user){
-        return axios.post(
+        return axios.get(
             burl + "/user/checkInfo",
             {
-                user: user
-            },
-            {
-                headers: headers
+                params: {
+                    user: user
+                },
+                headers: {
+                    headers
+                }
             }
         );
     },

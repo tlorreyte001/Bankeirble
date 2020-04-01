@@ -74,7 +74,7 @@ export class NavbarBankeirble extends React.Component {
                             >
                                 <Image className={"text-right imgaccount"} alt="" src={"/img/user-1.png"}/>
                             </IconButton>
-                            {this.state.prenom} {this.state.nom}
+                            {this.state.firstName} {this.state.lastName}
                             <Menu
                                 id="menu-appbar"
                                 anchorEl={this.state.Anchor}
