@@ -33,7 +33,7 @@ async function add (req, res) { // ajoute une demande de prêt dans la bdd
        const loan = new Loans({
           _idBorrower : user._id,
           amount : req.body.amount,
-          rate : Math.round((Math.pow(1.17852,req.body.rate)-0.17852)*100)/100,
+          rate : req.body.rate,
           nbMonths : req.body.nbMonths,
           expirationDate : Date.parse(req.body.expirationDate),
           status : 0, // 0 : en attente; 1 : en cours/accepté; 2 : terminé
@@ -107,7 +107,7 @@ async function accept_loan (req, res) { // met à jour la bdd après accord d'un
     let user = jwt.decode(req.body.user, config.secret);
     let findUser = await Users.findOne({_id : user._id});
     if (findUser) {
-      await Loans.findByIdAndUpdate(req.body.LoanId, {"status": 1, "_idLender": user._id}, {useFindAndModify : false}, function (err) { // màj du prêt
+      await Loans.findByIdAndUpdate(req.body.loanId, {"status": 1, "_idLender": user._id}, {useFindAndModify : false}, function (err) { // màj du prêt
         // il faudra aussi modifier la date de début du prêt
           if (err) {
               throw err;
@@ -133,11 +133,11 @@ async function accept_loan (req, res) { // met à jour la bdd après accord d'un
 
 async function remove_loan(req, res) { // supprime une demande de prêt lorsque la requête est effectuée par le demandeur (bien sûr !)
 
-  let user = jwt.decode(req.body.user, config.secret);
+  let user = jwt.decode(req.query.user, config.secret);
   let findUser = await Users.findOne({_id : user._id});
-  let findLoan = await Loans.findOne({_id : req.body.idLoan, _idBorrower : user._id}); // vérification : demandeur autorisé à supprimer son prêt
+  let findLoan = await Loans.findOne({_id : req.query.loanId, _idBorrower : user._id}); // vérification : demandeur autorisé à supprimer son prêt
   if (findUser && findLoan) {
-    await Loans.deleteOne({_id : req.body.idLoan});
+    await Loans.deleteOne({_id : req.query.loanId});
     console.log("Demande de prêt supprimée");
   }
   else {

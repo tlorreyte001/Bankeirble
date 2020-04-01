@@ -110,7 +110,7 @@ export class Moc extends React.Component {
 
     contract = async () => {
         try {
-            const {data, status} = await API.delete(this.state.user, 0);
+            const {data, status} = await API.contract(this.state.user, 0);
             console.log("Code réponse :", status);
             console.log("Body réponse :", data);
         } catch (error) {
