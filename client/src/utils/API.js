@@ -44,7 +44,7 @@ export default {
     },
 
     addInfo: function(user, address, gender, birthDate, birthPlace){
-        return axios.post(
+        return axios.put(
             burl + "/user/addInfo",
             {
                 user: user,
@@ -60,13 +60,15 @@ export default {
     },
 
     nbRequest: function(user){
-        return axios.post(
+        return axios.get(
             burl + "/user/nbRequest",
             {
-                user: user,
-            },
-            {
-                headers: headers
+                params: {
+                    user: user
+                },
+                headers: {
+                    headers
+                }
             }
         );
     },
@@ -89,31 +91,35 @@ export default {
     },
 
     rate: function(user){
-        return axios.post(
-            `${burl}/loan/rate`,
+        return axios.get(
+            burl + "/loan/rate",
             {
-                user: user,
-            },
-            {
-                headers: headers
+                params: {
+                    user: user
+                },
+                headers: {
+                    headers
+                }
             }
         );
     },
 
     table: function(user){
-        return axios.post(
-            `${burl}/loan/table`,
+        return axios.get(
+            burl + "/loan/table",
             {
-                user: user,
-            },
-            {
-                headers: headers
+                params: {
+                    user: user
+                },
+                headers: {
+                    headers
+                }
             }
         );
     },
 
     accept: function(user, loanId){
-        return axios.post(
+        return axios.put(
             `${burl}/loan/accept`,
             {
                 user: user,
@@ -125,27 +131,33 @@ export default {
     },
 
     delete: function(user, loanId){
-        return axios.post(
-            `${burl}/loan/delete`,
+        return axios.delete(
+            burl + "/loan/delete",
             {
-                user: user,
-                loanId: loanId
-            },
-            {
-                headers: headers
-            })
+                params: {
+                    user: user,
+                    loanId: loanId
+                },
+                headers: {
+                    headers
+                }
+            }
+        );
     },
 
     contract: function(user, loanId){
-        return axios.post(
-            `${burl}/loan/contract`,
+        return axios.get(
+            burl + "/loan/contract",
             {
-                user: user,
-                loanId: loanId
-            },
-            {
-                headers: headers
-            })
+                params: {
+                    user: user,
+                    loanId: loanId
+                },
+                headers: {
+                    headers
+                }
+            }
+        );
     },
 
     isAuth: function() {
