@@ -1,11 +1,11 @@
-const prets = require('./prets.js');
+const loans = require('./loans.js');
 
 module.exports = function (app) {
-    app.post('/nb_demande', prets.nb_demandes);
-    app.post('/add', prets.add);
-    app.post('/get_all', prets.get_all);
-    app.post('/get_all_available', prets.get_all_available);
-    app.post('/get_by_user', prets.get_by_user);
-    app.post('/accept_loan', prets.accept_loan);
-    app.post('/remove_loan', prets.remove_loan);
+    app.get('/nbRequest/:user', loans.nbRequest)
+    app.post('/add', loans.add);
+    app.get('/rate/:user', loans.rate);
+    app.get('/table/:user', loans.get_all_available);
+    app.put('/accept', loans.accept_loan);
+    app.delete('/delete', loans.remove_loan);
+    app.get('/contract/:user/:idLoan', loans.get_contract);
 };

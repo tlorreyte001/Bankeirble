@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const pretsSchema = mongoose.Schema(
+const loansSchema = mongoose.Schema(
   {
     _idLender: String,
     _idBorrower: String,
@@ -14,4 +14,4 @@ const pretsSchema = mongoose.Schema(
    },
 );
 
-module.exports = mongoose.model("Loans", pretsSchema);
+module.exports = mongoose.model("Loans", loansSchema);
