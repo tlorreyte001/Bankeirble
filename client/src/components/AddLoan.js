@@ -23,7 +23,8 @@ export class AddLoan extends React.Component {
             reimbursementAuto: true,
             reimbursementAmount: "",
             openPopUp: false,
-            nbRequest: ""
+            nbRequest: "",
+            form: false
         };
     };
 
@@ -50,11 +51,28 @@ export class AddLoan extends React.Component {
         }
     };
 
+    checkInfo = async () => {
+        try {
+            const {status} = await API.checkInfo(localStorage.getItem("token"));
+            if (status === 200){
+                this.setState({form: false});
+            }
+        } catch (error) {
+            if (error.response.status === 402){
+                this.setState({form: true});
+            }
+            else if (error.response.status === 400 || error.response.status === 401){
+                console.log("error");
+            }
+        }
+    };
+
     blockchainLoan = () => {
         APIBC.loan();
     };
 
     handleClickOpen = () => {
+        this.checkInfo();
         this.setState({openPopUp: true});
     };
 
@@ -76,9 +94,16 @@ export class AddLoan extends React.Component {
         this.updateRate();
     };
 
-    handleChangeSlider = (event, value) => {
+    handleChangeSlider1 = (event, value) => {
         this.setState({
-            [event.target.id]: value
+            amount: value
+        });
+        this.updateRate();
+    };
+
+    handleChangeSlider2 = (event, value) => {
+        this.setState({
+            nbMonths: value
         });
         this.updateRate();
     };
@@ -103,7 +128,7 @@ export class AddLoan extends React.Component {
                             valueLabelDisplay="on"
                             min={50}
                             max={700}
-                            onChange={this.handleChangeSlider}
+                            onChange={this.handleChangeSlider1}
                             value={this.state.amount}
                             color={"secondary"}
                         />
@@ -119,7 +144,7 @@ export class AddLoan extends React.Component {
                             valueLabelDisplay="on"
                             min={1}
                             max={12}
-                            onChange={this.handleChangeSlider}
+                            onChange={this.handleChangeSlider2}
                             value={this.state.nbMonths}
                             color={"secondary"}
                         />
@@ -168,7 +193,7 @@ export class AddLoan extends React.Component {
                             Envoyer la demande
                         </Button>
                     </div>
-                    <PopUpForm open={this.state.openPopUp} onClose={this.handleClose} data={data}/>
+                    <PopUpForm open={this.state.openPopUp} onClose={this.handleClose} data={data} form={this.state.form}/>
                 </div>
             </div>
         );
