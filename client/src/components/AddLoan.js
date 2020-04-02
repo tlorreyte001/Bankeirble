@@ -8,6 +8,7 @@ import frLocale from "date-fns/locale/fr";
 import {PopUpForm} from "../components/PopUpForm";
 import API from "../utils/API";
 import APIBC from "../utils/APIBlockchain";
+import Calcul from "../utils/TauxCalculateur";
 
 
 export class AddLoan extends React.Component {
@@ -17,7 +18,7 @@ export class AddLoan extends React.Component {
         this.state = {
             amount: 300,
             nbMonths: 3,
-            rate: 1,
+            rate: "",
             expirationDate: new Date(),
             reimbursementAuto: true,
             reimbursementAmount: "",
@@ -29,7 +30,14 @@ export class AddLoan extends React.Component {
     componentDidMount() {
         this.nbLoanRequest();
         this.blockchainLoan();
+        this.updateRate();
+
     }
+
+    updateRate = () => {
+        let data = this.state;
+        this.setState({rate: Calcul.rate(data.expirationDate, data.nbMonths, 0, 0, data.amount)});
+    };
 
     nbLoanRequest = async () => {
         try {
@@ -58,25 +66,31 @@ export class AddLoan extends React.Component {
         this.setState({
             [event.target.id]: event.target.checked
         });
+        this.updateRate();
     };
 
     handleDateChange = (date) => {
         this.setState({
             expirationDate: date
         });
+        this.updateRate();
     };
 
     handleChangeSlider = (event, value) => {
         this.setState({
             [event.target.id]: value
         });
+        this.updateRate();
     };
 
     render() {
         let data = this.state;
+        let monthly = this.state.amount * (1 + 0.01*this.state.rate)/this.state.nbMonths;
+        monthly = Math.round((monthly*100))/100;
+
         return (
             <div className="Loan">
-                <div className={"mx-auto"} style={{maxWidth: "30em",}}>
+                <div className={"mx-auto"} style={{maxWidth: "40em",}}>
                     <h4>Faire une demande de prêt</h4>
                     <div className={"row py-4"}>
                         <FormLabel>Montant du prêt</FormLabel>
@@ -85,7 +99,7 @@ export class AddLoan extends React.Component {
                         <Slider
                             aria-labelledby="discrete-slider-always"
                             id={"amount"}
-                            step={25}
+                            step={50}
                             valueLabelDisplay="on"
                             min={50}
                             max={700}
@@ -146,7 +160,7 @@ export class AddLoan extends React.Component {
                     </div>
                     <div className={"row pb-3"}>
                         <div className={"mx-auto"}>
-                            <FormLabel>Remboursement de</FormLabel> <FormLabel style={{color: "rgb(211,99,98)",}}>{this.state.amount}€</FormLabel> <FormLabel>par mois, soit un taux de</FormLabel> <FormLabel style={{color: "rgb(211,99,98)",}}>Y%</FormLabel>
+                            <FormLabel>Remboursement de</FormLabel> <FormLabel style={{color: "rgb(211,99,98)",}}>{monthly}€</FormLabel> <FormLabel>par mois, soit un taux de</FormLabel> <FormLabel style={{color: "rgb(211,99,98)",}}>{this.state.rate}%</FormLabel>
                         </div>
                     </div>
                     <div className={"row"}>

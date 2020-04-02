@@ -14,7 +14,7 @@ export class Accueil extends React.Component {
                         <div className={"col mt-2"}>
                             {/*<GlobalTable/>*/}
                         </div>
-                        <div className={"col mr-3"}>
+                        <div className={"col mt-2"}>
                             <AddLoan/>
                         </div>
                     </div>
