@@ -24,13 +24,12 @@ export class Signup extends React.Component {
         if (status === 200) {
             localStorage.setItem("token", data.token);
             localStorage.setItem("user", JSON.stringify(data.user));
-            window.location = "/accueil";
-        }
-        else{
-            this.setState({status: status});
+            window.location = "/home";
         }
     } catch (error) {
-      console.error(error);
+        if (error.response.status !== 200){
+            this.setState({status: error.response.status})
+        }
     }
   };
 

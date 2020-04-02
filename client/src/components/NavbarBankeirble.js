@@ -60,8 +60,8 @@ export class NavbarBankeirble extends React.Component {
                 {/*</div>*/}
                 <AppBar position={"static"} color={"transparent"} style={{alignItems: "normal", height: "auto", boxShadow: "unset",}}>
                     <Toolbar>
-                        <Image id="/accueil" onClick={this.router} className="imglogo" src="./img/logo.png" alt="logo" />
-                        <Typography id="/accueil" onClick={this.router} variant="h6" color={"secondary"} style={{flexGrow: 1}}>
+                        <Image id="/home" onClick={this.router} className="imglogo" src="./img/logo.png" alt="logo" />
+                        <Typography id="/home" onClick={this.router} variant="h6" color={"secondary"} style={{flexGrow: 1}}>
                             Bankeirble
                         </Typography>
                         <div>
@@ -91,7 +91,7 @@ export class NavbarBankeirble extends React.Component {
                                 onClose={this.handleClose}
                             >
                                 <MenuItem id={"/preteurs"} onClick={this.router}>Marché des prêts</MenuItem>
-                                <MenuItem id={"/accueil"} onClick={this.router}>Tableau de Bord</MenuItem>
+                                <MenuItem id={"/home"} onClick={this.router}>Tableau de Bord</MenuItem>
                                 <MenuItem id={"/"} onClick={this.router}>Déconnexion</MenuItem>
                             </Menu>
                         </div>

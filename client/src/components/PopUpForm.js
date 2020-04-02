@@ -10,21 +10,20 @@ import MenuItem from "@material-ui/core/MenuItem";
 import DateFnsUtils from "@date-io/date-fns";
 import frLocale from "date-fns/locale/fr";
 import {DatePicker, MuiPickersUtilsProvider} from "@material-ui/pickers";
+import Alert from "@material-ui/lab/Alert";
 
 export class PopUpForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            form: false,
             checked: false,
+            error: false,
 
-            address:{
-                addressNumber: "",
-                postcode: "",
-                other: "",
-                street: "",
-                city: "",
-            },
+            addressNumber: "",
+            postcode: "",
+            other: "",
+            street: "",
+            city: "",
             birthDate: new Date(),
             birthPlace: "",
             phoneNumber: "",
@@ -33,46 +32,44 @@ export class PopUpForm extends React.Component {
         };
     };
 
-    componentWillMount() {
-        this.checkInfo();
-    };
-
-    checkInfo = async () => {
-        try {
-            const {status} = await API.checkInfo(localStorage.getItem("token"));
-            if (status === 402){
-                this.setState({form: true});
-            }
-            else if (status === 400 || status === 401){
-                console.log("error");
-            }
-        } catch (error) {
-            console.error(error);
-        }
-    };
 
     updateInfo = async () => {
-        if (this.state.form) {
-            const {address, birthDate, birthPlace, gender} = this.state;
+        if (this.props.form) {
+            const {addressNumber, postcode, other, street, city, birthDate, birthPlace, gender} = this.state;
+            console.log(this.state);
+            const address = {
+                addressNumber: addressNumber,
+                postcode: postcode,
+                other: other,
+                street: street,
+                city: city
+            };
+            console.log(address);
             try {
                 const {status} = await API.addInfo(localStorage.getItem("token"), address, gender, birthDate, birthPlace);
-                if (status === 200){
+                if (status === 200 && this.state.checked === true){
                     this.send();
                     this.props.onClose();
                 }
                 else {
-                    console.log("error");
+                    this.setState({error: true});
                 }
             } catch (error) {
-                console.error(error);
+                if (error.response.status !== 200){
+                    this.setState({error: true});
+                }
             }
         }
         else {
-            this.send();
-            this.props.onClose();
+            if (this.state.checked === true) {
+                this.send();
+                this.props.onClose();
+            }
+            else {
+                this.setState({error: true});
+            }
         }
-    }
-    ;
+    };
 
     send = async () => {
         const {amount, nbMonths, rate, expirationDate, reimbursementAuto} = this.props.data;
@@ -108,107 +105,111 @@ export class PopUpForm extends React.Component {
         });
     };
 
+
     render() {
 
         let form;
+        let error = null;
 
-        if (this.state.form) {
-            form =
-                <div>
-                    <DialogContentText>
-                        Il semblerait que ce soit votre première participation.
-                        Avant de poursuivre, nous avons besoin de quelques informations supplémentaires.
-                    </DialogContentText>
-                    <Select
-                        value={this.state.gender}
-                        onChange={this.handleGenreChange}
-                    >
-                        <MenuItem value={"M."}>M.</MenuItem>
-                        <MenuItem value={"Mme"}>Mme</MenuItem>
-                    </Select>
-                    <TextField
-                        autoFocus
-                        margin="dense"
-                        id="phoneNumber"
-                        value={this.state.phoneNumber}
-                        onChange={this.handleFormChange}
-                        label="Numéro de téléphone"
-                        type="number"
-                        fullWidth
-                        required
-                        className={"pb-3"}
-                    />
-                    <div className={"row"}>
-                        <div className={"col pt-1"}>
-                            <FormLabel>Date de Naissance *</FormLabel>
-                        </div>
-                        <div className={"col"}>
-                        <MuiPickersUtilsProvider utils={DateFnsUtils} locale={frLocale}>
-                            <DatePicker
-                                value={this.state.birthDate}
-                                onChange={this.handleDateChange}
-                                maxDate={new Date("2021-01-01")}
-                                color={"secondary"}
-                                format="dd MMMM yyyy"
-                            />
-                        </MuiPickersUtilsProvider>
-                        </div>
+        if (this.state.error){
+            error = <Alert className={"mb-3"} severity="error">Une information fournie est incorrecte !</Alert>;
+        }
+
+        if (this.props.form) {
+        form =
+            <div>
+                <DialogContentText>
+                    Il semblerait que ce soit votre première participation.
+                    Avant de poursuivre, nous avons besoin de quelques informations supplémentaires.
+                </DialogContentText>
+                <Select
+                    value={this.state.gender}
+                    onChange={this.handleGenreChange}
+                >
+                    <MenuItem value={"M."}>M.</MenuItem>
+                    <MenuItem value={"Mme"}>Mme</MenuItem>
+                </Select>
+                <TextField
+                    autoFocus
+                    margin="dense"
+                    id="phoneNumber"
+                    value={this.state.phoneNumber}
+                    onChange={this.handleFormChange}
+                    label="Numéro de téléphone"
+                    type="number"
+                    fullWidth
+                    required
+                    className={"pb-3"}
+                />
+                <div className={"row"}>
+                    <div className={"col pt-1"}>
+                        <FormLabel>Date de Naissance *</FormLabel>
                     </div>
-                    <TextField
-                        autoFocus
-                        margin="dense"
-                        id="birthPlace"
-                        label="Ville de Naissance"
-                        value={this.state.birthPlace}
-                        onChange={this.handleFormChange}
-                        type="text"
-                        fullWidth
-                        required
-                    />
-                    <TextField
-                        autoFocus
-                        margin="dense"
-                        id="street"
-                        value={this.state.street}
-                        onChange={this.handleFormChange}
-                        label="Adresse"
-                        type="text"
-                        fullWidth
-                        required
-                    />
-                    <TextField
-                        autoFocus
-                        margin="dense"
-                        id="other"
-                        value={this.state.other}
-                        onChange={this.handleFormChange}
-                        label="Adresse (ligne 2)"
-                        type="text"
-                        fullWidth
-                    />
-                    <TextField
-                        autoFocus
-                        margin="dense"
-                        id="postcode"
-                        value={this.state.postcode}
-                        onChange={this.handleFormChange}
-                        label="Code Postal"
-                        type="number"
-                        fullWidth
-                        required
-                    />
-                    <TextField
-                        autoFocus
-                        margin="dense"
-                        id="city"
-                        value={this.state.city}
-                        onChange={this.handleFormChange}
-                        label="Ville"
-                        type="text"
-                        fullWidth
-                        required
-                    />
-                </div>;
+                    <div className={"col"}>
+                    <MuiPickersUtilsProvider utils={DateFnsUtils} locale={frLocale}>
+                        <DatePicker
+                            value={this.state.birthDate}
+                            onChange={this.handleDateChange}
+                            maxDate={new Date("2021-01-01")}
+                            color={"secondary"}
+                            format="dd MMMM yyyy"
+                        />
+                    </MuiPickersUtilsProvider>
+                    </div>
+                </div>
+                <TextField
+                    margin="dense"
+                    id="birthPlace"
+                    label="Ville de Naissance"
+                    value={this.state.birthPlace}
+                    onChange={this.handleFormChange}
+                    type="text"
+                    fullWidth
+                    required
+                />
+                <TextField
+                    margin="dense"
+                    id="street"
+                    value={this.state.street}
+                    onChange={this.handleFormChange}
+                    label="Adresse"
+                    type="text"
+                    fullWidth
+                    required
+                />
+                <TextField
+                    autoFocus
+                    margin="dense"
+                    id="other"
+                    value={this.state.other}
+                    onChange={this.handleFormChange}
+                    label="Adresse (ligne 2)"
+                    type="text"
+                    fullWidth
+                />
+                <TextField
+                    autoFocus
+                    margin="dense"
+                    id="postcode"
+                    value={this.state.postcode}
+                    onChange={this.handleFormChange}
+                    label="Code Postal"
+                    type="number"
+                    fullWidth
+                    required
+                />
+                <TextField
+                    autoFocus
+                    margin="dense"
+                    id="city"
+                    value={this.state.city}
+                    onChange={this.handleFormChange}
+                    label="Ville"
+                    type="text"
+                    fullWidth
+                    required
+                />
+            </div>;
         }
         else {
             form = <div></div>;
@@ -219,6 +220,7 @@ export class PopUpForm extends React.Component {
                 <Dialog open={this.props.open} onClose={this.props.onClose} aria-labelledby="form-dialog-title">
                     <DialogTitle id="form-dialog-title">Attention !</DialogTitle>
                     <DialogContent>
+                        {error}
                         {form}
                         <div className={"row py-4"}>
                             <div className={"col pt-1"}>

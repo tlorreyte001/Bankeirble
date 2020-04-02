@@ -12,7 +12,7 @@ async function nbRequest (req, res) { // renvoie le nb de demandes en cours : n�
      let nbDemandes = await Loans.find({status: 0}).countDocuments(); // nb de demandes de prêts en cours
      return res.status(200).json({
          text: "Success",
-         nbDemandesEnCours : nbDemandes
+         nbLoanRequest : nbDemandes
      });
   }
   else {
@@ -71,6 +71,7 @@ async function get_all_available (req, res) { // renvoie l'ensemble des prêts e
         await transformLoans(prets_db).then((res)=>{
             loans = [...res];
         });
+        console.log(loans);
         return res.status(200).json({
             loans: loans
         });
