@@ -90,11 +90,11 @@ async function checkInfo (req, res) { // teste si le demandeur a déjà donné l
   let findUser = await Users.findOne({_id : user._id});
   if (findUser) {
 
-     if  ((user.gender === undefined) ||
-          (user.lastName === undefined) ||
-          (user.firstName === undefined) ||
-          (user.birthDate === undefined) ||
-          (user.birthPlace === undefined)) { // test sur tous les champs nécessaires à la constitution d'un contrat
+     if  ((findUser.gender === undefined) ||
+          (findUser.lastName === undefined) ||
+          (findUser.firstName === undefined) ||
+          (findUser.birthDate === undefined) ||
+          (findUser.birthPlace === undefined)) { // test sur tous les champs nécessaires à la constitution d'un contrat
        return res.status(402).json({
            text: "Missing information"
        });
