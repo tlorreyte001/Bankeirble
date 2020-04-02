@@ -116,40 +116,40 @@ export class AddLoan extends React.Component {
         return (
             <div className="Loan">
                 <div className={"mx-auto"} style={{maxWidth: "40em",}}>
-                    <h4>Faire une demande de prêt</h4>
-                    <div className={"row py-4"}>
-                        <FormLabel>Montant du prêt</FormLabel>
+                    <div className={"mx-3"}>
+                        <div className={"row py-4"}>
+                            <FormLabel>Montant du prêt</FormLabel>
+                        </div>
+                        <div className={"row pb-4 pt-2"}>
+                            <Slider
+                                aria-labelledby="discrete-slider-always"
+                                id={"amount"}
+                                step={50}
+                                valueLabelDisplay="on"
+                                min={50}
+                                max={700}
+                                onChange={this.handleChangeSlider1}
+                                value={this.state.amount}
+                                color={"secondary"}
+                            />
+                        </div>
+                        <div className={"row pb-4"}>
+                            <FormLabel>Nombre de mensualités</FormLabel>
+                        </div>
+                        <div className={"row pb-3 pt-2"}>
+                            <Slider
+                                aria-labelledby="discrete-slider-always"
+                                id={"nbMonths"}
+                                step={1}
+                                valueLabelDisplay="on"
+                                min={1}
+                                max={12}
+                                onChange={this.handleChangeSlider2}
+                                value={this.state.nbMonths}
+                                color={"secondary"}
+                            />
+                        </div>
                     </div>
-                    <div className={"row pb-4 pt-2"}>
-                        <Slider
-                            aria-labelledby="discrete-slider-always"
-                            id={"amount"}
-                            step={50}
-                            valueLabelDisplay="on"
-                            min={50}
-                            max={700}
-                            onChange={this.handleChangeSlider1}
-                            value={this.state.amount}
-                            color={"secondary"}
-                        />
-                    </div>
-                    <div className={"row pb-4"}>
-                        <FormLabel>Nombre de mensualités</FormLabel>
-                    </div>
-                    <div className={"row pb-3 pt-2"}>
-                        <Slider
-                            aria-labelledby="discrete-slider-always"
-                            id={"nbMonths"}
-                            step={1}
-                            valueLabelDisplay="on"
-                            min={1}
-                            max={12}
-                            onChange={this.handleChangeSlider2}
-                            value={this.state.nbMonths}
-                            color={"secondary"}
-                        />
-                    </div>
-
                     <div className={"row pb-3"}>
                         <div className={"col pt-1"}>
                             <FormLabel>Date d'expiration de la demande</FormLabel>
