@@ -3,12 +3,12 @@ import { Route, Switch } from "react-router-dom";
 import { Login } from "./pages/Login.js";
 import { Signup } from "./pages/Signup.js";
 import { PrivateRoute } from "./components/PrivateRoute.js";
-import { Accueil } from "./pages/Accueil.js";
+import { Home } from "./pages/Home.js";
 import "./App.css";
 import './pages/styleAcceuil.css';
 import {Welcome} from './pages/Welcome.js';
 import { createMuiTheme, ThemeProvider  } from '@material-ui/core/styles';
-import {Preteurs} from "./pages/Preteurs";
+import {Loans} from "./pages/Loans";
 import {Moc} from "./pages/Moc";
 
 
@@ -49,8 +49,8 @@ class App extends Component {
               <Route exact path="/" component={Welcome} />
               <Route exact path="/login" component={Login} />
               <Route exact path="/signup" component={Signup} />
-              <PrivateRoute exact path="/home" component={Accueil} />
-              <PrivateRoute exact path="/preteurs" component={Preteurs} />
+              <PrivateRoute exact path="/home" component={Home} />
+              <PrivateRoute exact path="/preteurs" component={Loans} />
               <PrivateRoute exact path="/test" component={Moc} />
             </Switch>
           </ThemeProvider>

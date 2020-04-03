@@ -6,6 +6,7 @@ import {Button, TableCell, TableRow} from "@material-ui/core";
 import Backdrop from "@material-ui/core/Backdrop";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Alert from "@material-ui/lab/Alert";
+import {PopUpForm} from "./PopUpForm";
 
 
 
@@ -15,22 +16,16 @@ export class GlobalTable extends React.Component {
         this.state = {
             rows: [],
             open: false,
-            error: false
+            form: false,
+            error: false,
+            openPopUp: false,
+            _idSelected : ""
         };
     }
 
     componentDidMount() {
         this.get();
     }
-
-    accept = async (event) => {
-        let {res} = await API.accept(
-            localStorage.getItem("token"),
-            event.target.offsetParent.id
-        );
-        console.log(res);
-        this.handleToggle();
-    };
 
     get = async () => {
         let temp = [];
@@ -56,6 +51,20 @@ export class GlobalTable extends React.Component {
         }
     };
 
+    // ---------------- PopUp functions ---------------- //
+
+    handleClickOpen = (event) => {
+        this.checkInfo();
+        this.setState({_idSelected: event.target.offsetParent.id});
+        this.setState({openPopUp: true});
+    };
+
+    handleClose = () => {
+        this.setState({openPopUp: false});
+        this.handleToggle();
+    };
+
+    // -------------- BackDrop Functions ---------------- //
     handleToggle = () => {
         this.setState({open: true});
         setTimeout(this.closeIt, 1000);
@@ -64,6 +73,22 @@ export class GlobalTable extends React.Component {
 
     closeIt = () => {
         this.setState({open: false});
+    };
+
+    checkInfo = async () => {
+        try {
+            const {status} = await API.checkInfo(localStorage.getItem("token"));
+            if (status === 200){
+                this.setState({form: false});
+            }
+        } catch (error) {
+            if (error.response.status === 402){
+                this.setState({form: true});
+            }
+            else if (error.response.status === 400 || error.response.status === 401){
+                console.log("error");
+            }
+        }
     };
 
     render() {
@@ -181,7 +206,7 @@ export class GlobalTable extends React.Component {
                         <TableCell/>
                         <TableCell colSpan={3}>
                             <h4>Infos user :</h4>
-                            <Button className={"mx-auto mt-3"} onClick={this.accept} variant="contained"
+                            <Button className={"mx-auto mt-3"} onClick={this.handleClickOpen} variant="contained"
                                     color="secondary" type="submit" id={rowData[7]}>
                                 Accepter
                             </Button>
@@ -204,23 +229,26 @@ export class GlobalTable extends React.Component {
         return (
             <div className="globalTable">
                 <Backdrop open={this.state.open} transitionDuration={1000}
-                    style={{
-                        zIndex: 1000,
-                        color: '#fff',
-                    }}
+                          style={{
+                              zIndex: 1500,
+                              color: '#fff',
+                          }}
                 >
                     <CircularProgress color="inherit" />
                 </Backdrop>
                 {error}
+                <PopUpForm open={this.state.openPopUp} onClose={this.handleClose} data={this.state._idSelected} form={this.state.form}/>
                 <MUIDataTable
                     title={"Marché des prêts"}
                     data={this.state.rows}
                     columns={columns}
                     options={options}
                 />
-                <Button className={"mx-auto mt-3"} onClick={this.get} variant="contained" color="secondary" type="submit">
-                    Rafraichir les prêts
-                </Button>
+                <div className={"row mx-auto"}>
+                    <Button className={"mt-3"} onClick={this.handleToggle} variant="contained" color="secondary" type="submit">
+                        Rafraichir les prêts
+                    </Button>
+                </div>
             </div>
         );
     }

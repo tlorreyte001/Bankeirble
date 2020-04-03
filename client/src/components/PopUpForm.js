@@ -18,6 +18,7 @@ export class PopUpForm extends React.Component {
         this.state = {
             checked: false,
             error: false,
+            open: false,
 
             addressNumber: "",
             postcode: "",
@@ -72,13 +73,33 @@ export class PopUpForm extends React.Component {
     };
 
     send = async () => {
-        const {amount, nbMonths, rate, expirationDate, reimbursementAuto} = this.props.data;
-        try {
-            await API.add_loan(localStorage.getItem("token"), amount, nbMonths, rate, expirationDate, reimbursementAuto);
-        } catch (error) {
-            console.error(error);
+        if (this.props.data.amount) {
+            console.log("ok")
+            const {amount, nbMonths, rate, expirationDate, reimbursementAuto} = this.props.data;
+            try {
+                const {status} = await API.add_loan(localStorage.getItem("token"), amount, nbMonths, rate, expirationDate, reimbursementAuto);
+            } catch (error) {
+                if (error.response.status !== 200){
+                    this.setState({error: true})
+                }
+            }
+        }
+        else {
+            try {
+                let {status} = await API.accept(
+                    localStorage.getItem("token"),
+                    this.props.data
+                );
+            }
+            catch (error) {
+                if (error.response.status !== 200){
+                    this.setState({error: true})
+                }
+            }
         }
     };
+
+    // -------------- Form Functions ---------------- //
 
     handleVerif = () => {
         if(!this.state.checked)
