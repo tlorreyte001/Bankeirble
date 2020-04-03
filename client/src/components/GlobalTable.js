@@ -5,6 +5,7 @@ import MUIDataTable from "mui-datatables";
 import {Button, TableCell, TableRow} from "@material-ui/core";
 import Backdrop from "@material-ui/core/Backdrop";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import Alert from "@material-ui/lab/Alert";
 
 
 
@@ -13,20 +14,16 @@ export class GlobalTable extends React.Component {
         super(props);
         this.state = {
             rows: [],
-            open: false
+            open: false,
+            error: false
         };
     }
 
     componentDidMount() {
-        // this.timerID = setInterval(
-        //     () => this.get(),
-        //     1000
-        // );
         this.get();
     }
 
     accept = async (event) => {
-        // console.log(event.target.offsetParent.id);
         let {res} = await API.accept_loan(
             localStorage.getItem("token"),
             event.target.offsetParent.id
@@ -37,20 +34,26 @@ export class GlobalTable extends React.Component {
 
     get = async () => {
         let temp = [];
-        let {data} = await API.get_loans(localStorage.getItem("token"));
-        for (let i = 0; i < data.loans.length; i++) {
-            temp.push([
-                i,
-                data.loans[i].demandeur,
-                data.loans[i].montant.toString() + " €",
-                data.loans[i].duree + " mois",
-                data.loans[i].taux.toString() + " %",
-                (data.loans[i].montant*(1+0.01*data.loans[i].taux)).toString() + " €" ,
-                data.loans[i].dateExp,
-                data.loans[i]._id
-            ]);
+        try {
+            let {data} = await API.table(localStorage.getItem("token"));
+            for (let i = 0; i < data.loans.length; i++) {
+                temp.push([
+                    i,
+                    data.loans[i].pseudo,
+                    data.loans[i].amount.toString() + " €",
+                    data.loans[i].nbMonths + " mois",
+                    data.loans[i].rate.toString() + " %",
+                    (data.loans[i].amount * (1 + 0.01 * data.loans[i].rate)).toString() + " €",
+                    data.loans[i].expirationDate,
+                    data.loans[i]._id
+                ]);
+            }
+            this.setState({rows: temp});
+        } catch (error) {
+            //if (error.response.status === 400){
+            //    this.setState({error: true});
+            //}
         }
-        this.setState({rows: temp});
     };
 
     handleToggle = () => {
@@ -192,6 +195,12 @@ export class GlobalTable extends React.Component {
             }
         };
 
+        let error = null;
+
+        if (this.state.error){
+            error = <Alert className={"mb-3"} severity="error">Une information fournie est incorrecte !</Alert>;
+        }
+
         return (
             <div className="globalTable">
                 <Backdrop open={this.state.open} transitionDuration={1000}
@@ -202,6 +211,7 @@ export class GlobalTable extends React.Component {
                 >
                     <CircularProgress color="inherit" />
                 </Backdrop>
+                {error}
                 <MUIDataTable
                     title={"Marché des prêts"}
                     data={this.state.rows}
