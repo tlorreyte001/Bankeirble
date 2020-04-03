@@ -24,7 +24,7 @@ export class GlobalTable extends React.Component {
     }
 
     accept = async (event) => {
-        let {res} = await API.accept_loan(
+        let {res} = await API.accept(
             localStorage.getItem("token"),
             event.target.offsetParent.id
         );
