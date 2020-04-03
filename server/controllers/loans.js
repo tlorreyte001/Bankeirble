@@ -93,12 +93,11 @@ async function transformLoans(prets) { // renvoie tous les éléments nécessair
         let ajout = {}; // éléments à ajouter à l'objet prêt : pseudo demandeur, gain pour le prêteur
         if (demandeur !== null) {
             ajout = { ...pret,
-              pseudo: demandeur.pseudo,
-              gain: Math.round(((pret.rate)/100)*(pret.amount)*100)/100
+              pseudo: demandeur.pseudo
             }
         }
         else {
-            ajout = { ...pret, pseudo: '', gain: ''};
+            ajout = { ...pret, pseudo: ''};
         }
         loans.push(ajout);
       }));
@@ -109,7 +108,7 @@ async function accept_loan (req, res) { // met à jour la bdd après accord d'un
     let user = jwt.decode(req.body.user, config.secret);
     let findUser = await Users.findOne({_id : user._id});
     if (findUser) {
-      await Loans.findByIdAndUpdate(req.body.loanId, {"status": 1, "_idLender": user._id}, {useFindAndModify : false}, function (err) { // màj du prêt
+      await Loans.findByIdAndUpdate(req.body.loanId, {"status": 1, "_idLender": user._id, "date": new Date(Date.now()) }, {useFindAndModify : false}, function (err) { // màj du prêt
         // il faudra aussi modifier la date de début du prêt
           if (err) {
               throw err;
