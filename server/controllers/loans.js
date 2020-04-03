@@ -67,11 +67,11 @@ async function get_all_available (req, res) { // renvoie l'ensemble des prêts e
     let loans = [];
     let prets_db = [];
     if (findUser) {
-        prets_db = await Loans.find({status : 0, expirationDate : { $gt : Date.now()} }); // demandes de prêt non expirées
+        prets_db = await Loans.find({status : 0, expirationDate : { $gt : Date.now()} },
+        {_id: true, _idBorrower: true, amount: true , rate: true , nbMonths: true, expirationDate: true}); // demandes de prêt non expirées
         await transformLoans(prets_db).then((res)=>{
             loans = [...res];
         });
-        console.log(loans);
         return res.status(200).json({
             loans: loans
         });
@@ -88,16 +88,17 @@ async function transformLoans(prets) { // renvoie tous les éléments nécessair
     let loans = []; // sous la forme d'un tableau
     await Promise.all(prets.map(async (element) => {
         let pret = element._doc;
-        let demandeur = await Users.findOne({ _id: pret._idBorrower });
-        let ajout = {}; // éléments à ajouter à l'objet prêt : pseudo demandeur, gain pour le prêteur et nb de prêts en cours
-        if (demandeur != null) {
+        let demandeur = await Users.findOne({ _id: pret._idBorrower});
+        delete pret["_idBorrower"];
+        let ajout = {}; // éléments à ajouter à l'objet prêt : pseudo demandeur, gain pour le prêteur
+        if (demandeur !== null) {
             ajout = { ...pret,
-              demandeur: demandeur.pseudo,
-              gain: Math.round(((pret.rate)/100)*(pret.amount)*100)/100,
-              nbPretsCours: demandeur.pretEnCours };
+              pseudo: demandeur.pseudo,
+              gain: Math.round(((pret.rate)/100)*(pret.amount)*100)/100
+            }
         }
         else {
-            ajout = { ...pret, demandeur: '', gain: '', nbPretsCours: '' };
+            ajout = { ...pret, pseudo: '', gain: ''};
         }
         loans.push(ajout);
       }));

@@ -7,7 +7,7 @@ const filename = "pseudo";
 
 function find_pseudo(num) {
   let file = fs.readFileSync(__dirname+'/'+filename).toString();
-  let pseudos = file.split(',');
+  let pseudos = file.split(',\r\n');
   return pseudos[num];
 }
 
