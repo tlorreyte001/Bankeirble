@@ -149,32 +149,19 @@ export default {
     },
 
     contract: function(user, loanId){
-        return axios.get(
+        return axios.post(
             burl + "/loan/contract",
             {
-                params: {
                     user: user,
                     loanId: loanId
-                },
-                headers: {
-                    headers
-                }
-            }
+                
+            },
+            requestOptions
         );
     },
 
     isAuth: function() {
         return localStorage.getItem("token") !== null;
-    },
-
-    generate_contract: function() {
-        return axios.post(
-          `${burl}/loan/generateContract`,
-          {
-            
-          },
-          requestOptions
-        );
     }
 
 };

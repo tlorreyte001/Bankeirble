@@ -1,305 +1,194 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-<title>Reconnaissance de dettes ou de pr&ecirc;ts entre particuliers</title>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<style type="text/css">
-.petititre {
-	font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;
-}
-.grostitre {
-	font-family: Arial, Helvetica, sans-serif;
-	font-size: 14px;
-	font-weight: bold;
-	background-color: #254772;
-	color: #FFFFFF;
-}
-.pluspetittitre {
-	font-family: Arial, Helvetica, sans-serif;
-	font-size: 10px;
-}
-.couleur {
-	background-color: #FFFFa4;
-	font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;
-	color: #254772;
-}
-.titre {
-	font-family: Arial, Helvetica, sans-serif;
-	font-size: 14px;
-	font-weight: bold;
-	color: #254772;
-	text-align: center;
-}
-.gras {
-	font-family: Arial, Helvetica, sans-serif;
-	font-size: 14px;
-	font-weight: bold;
-	color: #254772;
-	background-color: #FFFFa4;
-}
-</style>
+  <title>Reconnaissance de dettes ou de pr&ecirc;ts entre particuliers</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <style type="text/css">
+    .petititre {
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 12px;
+    }
+
+    .grostitre {
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 14px;
+      font-weight: bold;
+      background-color: #254772;
+      color: #FFFFFF;
+    }
+
+    .pluspetittitre {
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 10px;
+    }
+
+    .couleur {
+      background-color: #FFFFa4;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 12px;
+      color: #254772;
+    }
+
+    .titre {
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 14px;
+      font-weight: bold;
+      color: #254772;
+      text-align: center;
+    }
+
+    .gras {
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 14px;
+      font-weight: bold;
+      color: #254772;
+      background-color: #FFFFa4;
+    }
+  </style>
 </head>
 
 <body>
 
-<table width="570" border="0" align="center" cellpadding="2" cellspacing="2">
-  <tr>
-    <td><div class="titre">Reconnaissance de dettes ou de pr&ecirc;ts entre particuliers</div></td>
-  </tr>
-</table>
-<hr align="center" width="100" size="5" noshade>
-
-
-<form action="" method="post" name="form1" >
-  <table width="570" border="0" align="center" cellpadding="2" cellspacing="0">
-    <!--DWLayoutTable-->
-    <tr class="grostitre">
-      <td height="20" colspan="2">I. R&Eacute;DACTEUR DE L'ACTE</td>
-    </tr>
-    <tr class="couleur">
-      <td height="19" colspan="2"><div align="center">
-          <input type="radio" name="radiobutton" value="radiobutton">
-          Monsieur
-          <input type="radio" name="radiobutton" value="radiobutton">
-          Madame
-          <input type="radio" name="radiobutton" value="radiobutton">
-          Mademoiselle
-          <input type="radio" name="radiobutton" value="radiobutton">
-          Maître</div></td>
-    </tr>
-    <tr class="couleur">
-      <td width="229" height="26" valign="baseline">Nom : </td>
-      <td valign="top"><input name="nom" type="text" id="nom" size="55" maxlength="55"></td>
-    </tr>
-    <tr class="couleur">
-      <td height="26" valign="baseline">Pr&eacute;nom : </td>
-      <td valign="top"><div align="left">
-          <label>
-          <input name="prenom" type="text" id="prenom" size="55" maxlength="55">
-          </label>
-      </div></td>
-    </tr>
-    <tr class="couleur">
-      <td height="26" valign="baseline">Profession  : </td>
-      <td valign="top"><input name="profession" type="text" id="profession" size="55" maxlength="55"></td>
-    </tr>
-    <tr class="couleur">
-      <td height="26" valign="baseline"> N&deg; et nom de la rue : </td>
-      <td valign="top"><div align="left">
-          <label>
-          <input name="adresse" type="text" id="adresse" size="55" maxlength="55">
-          </label>
-      </div></td>
-    </tr>
-    <tr class="couleur">
-      <td height="26" valign="baseline">Code postal : </td>
-      <td valign="top"><div align="left">
-          <label>
-          <input name="code postal" type="text" id="code postal" onBlur="MM_validateForm('code postal','','NisNum');return document.MM_returnValue" size="55" maxlength="5">
-</label>
-      </div></td>
-    </tr>
-    <tr class="couleur">
-      <td height="26" valign="baseline"> Ville : </td>
-      <td valign="top"><div align="left">
-          <label>
-          <input name="ville" type="text" id="ville" size="55" maxlength="55">
-          </label>
-      </div></td>
-    </tr>
-    <tr class="couleur">
-      <td height="26" valign="baseline">Pays : </td>
-      <td valign="top"><input name="pays" type="text" id="pays" size="55" maxlength="55"></td>
-    </tr>
-    <tr class="couleur">
-      <td height="26" valign="baseline">T&eacute;l&eacute;phone : </td>
-      <td valign="top"><input name="téléphone" type="text" id="téléphone" onBlur="MM_validateForm('tel','','NisNum');return document.MM_returnValue" size="55" maxlength="55"></td>
-    </tr>
-    <tr class="couleur">
-      <td height="26" valign="baseline">m&eacute;l : </td>
-      <td valign="top"><div align="left">
-          <label>
-          <input name="mel" type="text" id="mel" size="55" maxlength="55">
-          </label>
-      </div></td>
-    </tr>
+  <table width="570" border="0" align="center" cellpadding="2" cellspacing="2">
     <tr>
-      <td height="20" colspan="2" class="grostitre"> II. DATE DE L'ACTE</td>
-    </tr>
-    <tr class="couleur">
-      <td height="26" valign="baseline">Fait &agrave; : </td>
-      <td valign="top"><div align="left">
-          <label>
-          <input name="lieu" type="text" id="lieu" size="55" maxlength="55">
-</label>
-      </div></td>
-    </tr>
-    <tr class="couleur">
-      <td height="26" valign="baseline">le : </td>
-      <td valign="top"><div align="left">
-          <input name="date" type="text" id="date" value="JJ/MM/AAAA" size="55" maxlength="10">
-      </div></td>
-    </tr>
-    <tr>
-      <td height="20" colspan="2" class="grostitre">III. PARTIES A L'ACTE</td>
-    </tr>
-    <tr class="couleur">
-      <td height="22" colspan="2" valign="middle" class="style2"><div class="gras">        Cr&eacute;ancier (qui pr&ecirc;te)</div>        
-      <div align="center"></div>        <div align="center" class="couleur"></div></td>
-    </tr>
-    <tr valign="middle">
-      <td height="29" class="couleur">Nom : </td>
-      <td width="333" class="couleur"><input name="nom2" type="text" id="nom2" size="55" maxlength="55"></td>
-    </tr>
-    <tr valign="middle">
-      <td height="26" class="couleur">Nom de naissance : </td>
-      <td class="couleur"><input name="nom2" type="text" id="nom2" size="55" maxlength="55"></td>
-    </tr>
-    <tr valign="middle">
-      <td height="26" class="couleur">Pr&eacute;nom : </td>
-      <td class="couleur"><input name="prénom2" type="text" id="prénom2" size="55" maxlength="55"></td>
-    </tr>
-    <tr valign="middle">
-      <td height="26" class="couleur">Date  de naissance : </td>
-      <td class="couleur"><input name="date naiss2" type="text" id="date naiss2" value="JJ/MM/AAAA" size="55" maxlength="10"></td>
-    </tr>
-    <tr valign="middle">
-      <td height="26" class="couleur">Lieu de de naissance : </td>
-      <td class="couleur"><input name="lieu naiss2" type="text" id="lieu naiss2" size="55" maxlength="55"></td>
-    </tr>
-    <tr valign="middle">
-      <td height="26" class="couleur">N&deg; et nom de la rue  :  </td>
-      <td class="couleur"><input name="adresse2" type="text" id="adresse2" size="55" maxlength="55"> </td>
-    </tr>
-    <tr valign="middle">
-      <td height="26" class="couleur">Code postal  : </td>
-      <td class="couleur"><input name="code postal2" type="text" id="code postal2" onBlur="MM_validateForm('code postal2','','NisNum');return document.MM_returnValue" size="55" maxlength="55"></td>
-    </tr>
-    <tr valign="middle">
-      <td height="26" class="couleur">Ville : </td>
-      <td class="couleur"><input name="ville2" type="text" id="ville2" size="55" maxlength="55"></td>
-    </tr>
-    <tr valign="middle">
-      <td height="26" class="couleur">Pays : </td>
-      <td class="couleur"><input name="pays2" type="text" id="pays2" size="55" maxlength="55"></td>
-    </tr>
-    <tr valign="middle" class="couleur">
-      <td height="19" colspan="2"><!--DWLayoutEmptyCell-->&nbsp;</td>
-    </tr>
-    <tr valign="middle" class="couleur">
-      <td height="19" colspan="2" class="gras">
-        D&eacute;biteur (qui emprunte)</td>
-    </tr>
-    <tr valign="middle">
-      <td height="26" class="couleur">Nom : </td>
-      <td class="couleur"><input name="nom3" type="text" id="nom3" size="55" maxlength="55"></td>
-    </tr>
-    <tr valign="middle">
-      <td height="26" class="couleur">Nom de naissance : </td>
-      <td class="couleur"><input name="nom2" type="text" id="nom2" size="55" maxlength="55"></td>
-    </tr>
-    <tr valign="middle">
-      <td height="26" class="couleur">Pr&eacute;nom : </td>
-      <td class="couleur"><input name="pr&eacute;nom3" type="text" id="pr&eacute;nom3" size="55" maxlength="55"></td>
-    </tr>
-    <tr valign="middle">
-      <td height="26" class="couleur">Date de naissance : </td>
-      <td class="couleur"><input name="date naiss3" type="text" id="date naiss3" value="JJ/MM/AAAA" size="55" maxlength="10"></td>
-    </tr>
-    <tr valign="middle">
-      <td height="26" class="couleur">Lieu de de naissance : </td>
-      <td class="couleur"><input name="lieu naiss3" type="text" id="lieu naiss3" size="55" maxlength="55"></td>
-    </tr>
-    <tr valign="middle">
-      <td height="26" class="couleur">N&deg; et nom de la rue  : </td>
-      <td class="couleur"><input name="adresse3" type="text" id="adresse3" size="55" maxlength="55">
+      <td>
+        <div class="titre">Reconnaissance de dettes ou de pr&ecirc;ts entre particuliers</div>
       </td>
     </tr>
-    <tr valign="middle">
-      <td height="26" class="couleur">Code postal : </td>
-      <td class="couleur"><input name="code postal3" type="text" id="code postal3" onBlur="MM_validateForm('code postal3','','RisNum');return document.MM_returnValue" size="55" maxlength="55"></td>
-    </tr>
-    <tr valign="middle">
-      <td height="26" class="couleur">Ville : </td>
-      <td class="couleur"><input name="ville3" type="text" id="ville3" size="55" maxlength="55"></td>
-    </tr>
-    <tr valign="middle">
-      <td height="26" class="couleur">Pays : </td>
-      <td class="couleur"><input name="pays3" type="text" id="pays3" size="55" maxlength="55"></td>
-    </tr>
-    <tr valign="middle" class="couleur">
-      <td height="20" colspan="2"><div align="left"><em>S'il y a plus de 2 intervenants &agrave; l'acte, joindre une annexe reprenant les m&ecirc;mes renseignements demand&eacute;s. <a href="cedant_cession_2.htm">cliquez ici </a></em></div></td>
-    </tr>
-    <tr class="grostitre">
-      <td height="20" colspan="2" class="grostitre">IV. OBJET DE L'ACTE </td>
-    </tr>
-    <tr class="couleur">
-      <td height="19" colspan="2" valign="top"><input type="checkbox" name="checkbox11" value="checkbox"> 
-        pr&ecirc;t &agrave; titre on&eacute;reux     &nbsp;
-        <input type="checkbox" name="checkbox" value="checkbox">
-        pr&ecirc;t &agrave; titre gratuit&nbsp;        <input type="checkbox" name="checkbox" value="checkbox">
-      reconnaissance de dette </td>
-    </tr>
-    <tr class="couleur">
-      <td height="19" colspan="2" valign="top">Nature du (des) bien(s) : 
-        &nbsp;&nbsp;
-        <input type="checkbox" name="checkbox13" value="checkbox">
-        num&eacute;raire (somme d'argent)&nbsp;  &nbsp;
-        <input type="checkbox" name="checkbox" value="checkbox">
-  autres - <a href="objet_acte.htm">&agrave; pr&eacute;ciser</a></td>
-    </tr>
-    <tr>
-      <td height="20" colspan="2" class="grostitre">V. DISPOSITIONS DE L'ACTE</td>
-    </tr>
-    <tr valign="middle">
-      <td height="23" colspan="2" class="couleur">Montant du pr&ecirc;t ou de la dette :
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<input name="montant5" type="text" id="montant5" onBlur="MM_validateForm('montant5','','NisNum');return document.MM_returnValue" size="40" maxlength="35"><span class="petititre"> &euro;</span></td>
-    </tr>
-    <tr valign="middle">
-      <td height="23" colspan="2" class="couleur"><p>Valeur totale du ou des biens pr&ecirc;t&eacute;s :&nbsp;
-        <input name="valeur5" type="text" id="valeur52" size="40" maxlength="35"> 
-        &euro;        
-        
-        </p>      </td>
-    </tr>
-    <tr>
-      <td height="23" colspan="2" valign="middle" class="couleur">D&eacute;lais de restitution  :
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<input name="delai" type="text" id="delai2" size="40" maxlength="35"></td>
-    </tr>
-    <tr>
-      <td height="23" colspan="2" valign="middle" class="couleur"><span class="gras">Modalit&eacute;s
-        de la restitution : </span>        <input name="modalite2" type="text" id="modalite2" size="75" maxlength="70">
-        <input name="modalite22" type="text" id="modalite22" size="75" maxlength="70">
-      <input name="modalite3" type="text" id="modalite3" size="75" maxlength="70"></td>
-    </tr>
-    <tr>
-      <td height="23" colspan="2" valign="middle" class="couleur">Taux d'int&eacute;r&ecirc;t : 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<input name="interets2" type="text" id="interets3" onBlur="MM_validateForm('interets','','NisNum');return document.MM_returnValue" size="40" maxlength="35"></td>
-    </tr>
-    <tr>
-      <td height="20" colspan="2" class="couleur">Montant des int&eacute;r&ecirc;ts ou des loyers :
-      &nbsp;&nbsp;
-      <input name="interets" type="text" id="interets2" onBlur="MM_validateForm('interets','','NisNum');return document.MM_returnValue" size="40" maxlength="35"></td>
-    </tr>
-    <tr>
-      <td height="20" colspan="2" class="grostitre">VI. CLAUSES PARTICULI&Egrave;RES <span class="petititre"></span></td>
-    </tr>
-    <tr class="couleur">
-      <td colspan="2" valign="middle">Nombre de clauses :&nbsp;&nbsp;&nbsp;&nbsp;
-        <input name="nouveau222224" type="text" id="nouveau222224" size="20" maxlength="15">
-        <strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;R&eacute;daction de vos clauses<a href="clause_part_1.htm"> cliquez ici</a></strong> </td>
-    </tr>
-    <tr class="couleur">
-      <td height="28" colspan="2"><div align="right">
-          <input type="reset" name="Submit2" value="R&eacute;tablir">
-      </div></td>
-    </tr>
   </table>
-</form>
+  <hr align="center" width="100" size="5" noshade>
+
+
+  <form action="" method="post" name="form1">
+    <table width="570" border="0" align="center" cellpadding="2" cellspacing="0">
+      <tr>
+        <td height="20" colspan="2" class="grostitre"> I. DATE DE L'ACTE</td>
+      </tr>
+      <tr class="couleur">
+        <td height="26" valign="baseline">Fait le : </td>
+        <td valign="top">
+          <div align="left">
+            <input name="date" type="text" id="date" value={{date}} size="55" maxlength="10">
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td height="20" colspan="2" class="grostitre">II. PARTIES A L'ACTE</td>
+      </tr>
+      <tr class="couleur">
+        <td height="22" colspan="2" valign="middle" class="style2">
+          <div class="gras"> Cr&eacute;ancier (qui pr&ecirc;te)</div>
+          <div align="center"></div>
+          <div align="center" class="couleur"></div>
+        </td>
+      </tr>
+      <tr valign="middle">
+        <td height="29" class="couleur">Nom : </td>
+        <td width="333" class="couleur"><input name="nom2" value="{{preteur_FN}}" type="text" id="nom2" size="55"
+            maxlength="55"></td>
+      </tr>
+      <tr valign="middle">
+        <td height="26" class="couleur">Pr&eacute;nom : </td>
+        <td class="couleur"><input name="prénom2" type="text" value="{{preteur_LN}}" id="prénom2" size="55"
+            maxlength="55"></td>
+      </tr>
+      <tr valign="middle">
+        <td height="26" class="couleur">Date de naissance : </td>
+        <td class="couleur"><input name="date naiss2" type="text" value={{preteur_DN}} id="date naiss2"
+            value="JJ/MM/AAAA" size="55" maxlength="10"></td>
+      </tr>
+      <tr valign="middle">
+        <td height="26" class="couleur">Lieu de de naissance : </td>
+        <td class="couleur"><input name="lieu naiss2" type="text" value="{{preteur_naissance}}" id="lieu naiss2" size="55"
+            maxlength="55"></td>
+      </tr>
+      <tr valign="middle">
+        <td height="26" class="couleur">N&deg; et nom de la rue : </td>
+        <td class="couleur"><input name="adresse2" type="text" value="{{preteur_rue}}" id="adresse2" size="55"
+            maxlength="55"> </td>
+      </tr>
+      <tr valign="middle">
+        <td height="26" class="couleur">Code postal : </td>
+        <td class="couleur"><input name="code postal2" type="text" value="{{preteur_CP}}" id="code postal2" size="55"
+            maxlength="55"></td>
+      </tr>
+      <tr valign="middle">
+        <td height="26" class="couleur">Ville : </td>
+        <td class="couleur"><input name="ville2" type="text" value="{{preteur_ville}}" id="ville2" size="55"
+            maxlength="55"></td>
+      </tr>
+      <tr valign="middle" class="couleur">
+        <td height="19" colspan="2">
+          <!--DWLayoutEmptyCell-->&nbsp;</td>
+      </tr>
+      <tr valign="middle" class="couleur">
+        <td height="19" colspan="2" class="gras">
+          D&eacute;biteur (qui emprunte)</td>
+      </tr>
+      <tr valign="middle">
+        <td height="26" class="couleur">Nom : </td>
+        <td class="couleur"><input name="nom3" value="{{debiteur_FN}}" type="text" id="nom3" size="55" maxlength="55">
+        </td>
+      </tr>
+      <tr valign="middle">
+        <td height="26" class="couleur">Pr&eacute;nom : </td>
+        <td class="couleur"><input name="pr&eacute;nom3" value="{{debiteur_LN}}" type="text" id="pr&eacute;nom3" size="55"
+            maxlength="55"></td>
+      </tr>
+      <tr valign="middle">
+        <td height="26" class="couleur">Date de naissance : </td>
+        <td class="couleur"><input name="date naiss3" type="text" value={{debiteur_DN}} id="date naiss3"
+            value="JJ/MM/AAAA" size="55" maxlength="10"></td>
+      </tr>
+      <tr valign="middle">
+        <td height="26" class="couleur">Lieu de de naissance : </td>
+        <td class="couleur"><input name="lieu naiss3" type="text" value="{{debiteur_naissance}}" id="lieu naiss3"
+            size="55" maxlength="55"></td>
+      </tr>
+      <tr valign="middle">
+        <td height="26" class="couleur">N&deg; et nom de la rue : </td>
+        <td width="333" class="couleur">
+          <input name="adresse3" type="text" value="{{debiteur_rue}}" id="adresse3" size="55" maxlength="55">
+        </td>
+      </tr>
+      <tr valign="middle">
+        <td height="26" class="couleur">Code postal : </td>
+        <td class="couleur">
+          <input name="code postal3" type="text" value="{{debiteur_CP}}" id="code postal3" size="55" maxlength="55">
+        </td>
+      </tr>
+      <tr valign="middle">
+        <td height="26" class="couleur">Ville : </td>
+        <td class="couleur"><input name="ville3" type="text" value="{{debiteur_ville}}" id="ville3" size="55"
+            maxlength="55"></td>
+      </tr>
+
+      <tr>
+        <td height="20" colspan="2" class="grostitre">III. DISPOSITIONS DE L'ACTE</td>
+      </tr>
+      <tr valign="middle">
+        <td height="26" class="couleur">Montant du pr&ecirc;t ou de la dette :</td>
+        <td class="couleur"><input name="ville3" type="text" value={{montant}} id="ville3" size="55"
+            maxlength="55"></td>
+      </tr>
+      <tr valign="middle">
+        <td height="26" class="couleur">Mensualit&eacute; :</td>
+        <td class="couleur"><input name="ville3" type="text" value={{mensualite}} id="ville3" size="55"
+            maxlength="55"></td>
+      </tr>
+      <tr valign="middle">
+        <td height="26" class="couleur">Taux d'int&eacute;r&ecirc;t :</td>
+        <td class="couleur"><input name="ville3" type="text" value={{taux}} id="ville3" size="55"
+            maxlength="55"></td>
+      </tr>
+      <tr valign="middle">
+        <td height="26" class="couleur">Date d'expiration :</td>
+        <td class="couleur"><input name="ville3" type="text" value={{expiration_date}} id="ville3" size="55"
+            maxlength="55"></td>
+      </tr>
+    </table>
+  </form>
 </body>
+
 </html>

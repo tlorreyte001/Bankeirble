@@ -7,6 +7,7 @@ import Backdrop from "@material-ui/core/Backdrop";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Alert from "@material-ui/lab/Alert";
 import {PopUpForm} from "./PopUpForm";
+import saveAs from "file-saver";
 
 
 
@@ -88,6 +89,19 @@ export class GlobalTable extends React.Component {
             else if (error.response.status === 400 || error.response.status === 401){
                 console.log("error");
             }
+        }
+    };
+    
+    generateContract = async (event) => {
+        try {
+            await API.contract(localStorage.getItem("token"), event.target.offsetParent.id).then(
+                resp=>{
+                    var blob = new Blob([resp.data], {type: "application/pdf;charset=utf-8"});
+                    saveAs(blob, "Contrat.pdf");
+                }
+            );
+        } catch (error) {
+            console.error(error);
         }
     };
 

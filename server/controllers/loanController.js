@@ -7,6 +7,5 @@ module.exports = function (app) {
     app.get('/table', loans.get_all_available);
     app.put('/accept', loans.accept_loan);
     app.delete('/delete', loans.remove_loan);
-    app.get('/contract', loans.get_contract);
-    app.post('/generateContract', prets.generateContract);
+    app.post('/contract', loans.get_contract);
 };

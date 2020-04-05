@@ -4,7 +4,6 @@ import { Button, FormLabel, Slider, Switch } from '@material-ui/core';
 import { DateTimePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 import frLocale from "date-fns/locale/fr";
-import saveAs from "file-saver";
 
 
 import {PopUpForm} from "../components/PopUpForm";
@@ -108,18 +107,6 @@ export class AddLoan extends React.Component {
             nbMonths: value
         });
         this.updateRate();
-    };
-
-    generateContract = async (req, res) => {
-        try {
-            await API.generate_contract().then((resp => {
-                console.log(resp.data)
-                var blob = new Blob([resp.data], {type: "application/pdf;charset=utf-8"});
-                saveAs(blob, "Contrat.pdf");
-            }));
-        } catch (error) {
-            console.error(error);
-        }
     };
 
     render() {

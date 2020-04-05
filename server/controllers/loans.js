@@ -4,6 +4,11 @@ const Rates = require("../schema/schemaRates.js");
 const jwt = require("jwt-simple");
 const config = require("../config/config");
 const mongoose = require("mongoose");
+const path = require('path');
+var pdf = require("pdf-creator-node");
+var fs = require('fs');
+const templatePath = path.join(__dirname, '../config/pdf.html');
+const template = fs.readFileSync(templatePath, 'utf8');
 
 
 async function nbRequest (req, res) { // renvoie le nb de demandes en cours : nécessaire au calcul du taux pour une demande de prêt
@@ -170,12 +175,41 @@ async function remove_loan(req, res) { // supprime une demande de prêt lorsque 
 }
 
 async function get_contract (req, res) { // envoie le contrat en cas de litige
-    let user = jwt.decode(req.query.user, config.secret);
+    let user = jwt.decode(req.body.user, config.secret);
     let findUser = await Users.findOne({_id : user._id});
-    if (findUser) {
-      return res.status(200).json({
-          text: "Success"
-      });
+    let loanId = req.body.loanId;
+    let loan = await Loans.findOne({_id : loanId}); // recuperation du pret a partir de l'id
+    let today = `${(new Date().getDate()<10)?`0${new Date().getDate()}`:new Date().getDate()}/${(new Date().getMonth()+1<10)?`0${new Date().getMonth()+1}`:new Date().getMonth()+1}/${new Date().getFullYear()}`
+    if (findUser && loan) {
+      let lender = await Users.findOne({_id : loan._idLender}); // preteur
+      let borrower = await Users.findOne({_id : loan._idBorrower}); //demandeur
+      // options reltives au pdf
+      var options = {
+        format: "A3",
+        orientation: "portrait",
+        border: "10mm"
+      };
+      // construction du pdf a partir du template "html" + injection des données dans "data"
+      var document = {
+        html: template,
+        data: {
+          date: today,preteur_FN: lender.firstName,preteur_LN: lender.lastName,preteur_DN: `${(new Date(lender.birthDate).getDate()<10)?`0${new Date(lender.birthDate).getDate()}`:new Date(lender.birthDate).getDate()}/${(new Date(lender.birthDate).getMonth()+1<10)?`0${new Date(lender.birthDate).getMonth()+1}`:new Date(lender.birthDate).getMonth()+1}/${new Date(lender.birthDate).getFullYear()}`,
+          preteur_naissance: lender.birthPlace,preteur_rue: `${lender.address.street}`,preteur_CP: lender.address.postcode, preteur_ville: lender.address.city,
+          debiteur_FN: borrower.firstName,debiteur_LN: borrower.lastName,debiteur_DN: `${(new Date(borrower.birthDate).getDate()<10)?`0${new Date(borrower.birthDate).getDate()}`:new Date(borrower.birthDate).getDate()}/${(new Date(borrower.birthDate).getMonth()+1<10)?`0${new Date(borrower.birthDate).getMonth()+1}`:new Date(borrower.birthDate).getMonth()+1}/${new Date(borrower.birthDate).getFullYear()}`,
+          debiteur_naissance: borrower.birthPlace,debiteur_rue: borrower.address.street,debiteur_CP: borrower.address.postcode, debiteur_ville: borrower.address.city,
+          montant:loan.amount,mensualite:loan.nbMonths,taux:loan.rate,expiration_date:`${(new Date(loan.expirationDate).getDate()<10)?`0${new Date(loan.expirationDate).getDate()}`:new Date(loan.expirationDate).getDate()}/${(new Date(loan.expirationDate).getMonth()+1<10)?`0${new Date(loan.expirationDate).getMonth()+1}`:new Date(loan.expirationDate).getMonth()+1}/${new Date(loan.expirationDate).getFullYear()}`
+        },
+        path: "./contract.pdf"
+      };
+      //creation du pdf + le retourner sous forme de Blob pour telechargement coté client
+      pdf.create(document, options)
+        .then(file => {
+          console.log(file)
+          res.download(file.filename);
+        })
+        .catch(error => {
+          console.error(error)
+        });
     }
     else {
       return res.status(401).json({
