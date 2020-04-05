@@ -1,5 +1,6 @@
 const Loans = require("../schema/schemaLoans.js");
 const Users = require("../schema/schemaUsers.js");
+const Rates = require("../schema/schemaRates.js");
 const jwt = require("jwt-simple");
 const config = require("../config/config");
 const mongoose = require("mongoose");
@@ -39,9 +40,17 @@ async function add (req, res) { // ajoute une demande de prêt dans la bdd
           status : 0, // 0 : en attente; 1 : en cours/accepté; 2 : terminé
           reimbursementAuto : req.body.reimbursementAuto
       });
-
       loan.save();
       console.log(user.pseudo, "demande un prêt !");
+
+      // ajout du taux proposé dans la bdd
+
+      const rate = new Rates ({
+        rate : req.body.rate,
+        date : new Date(Date.now())
+      });
+      rate.save();
+
       return res.status(200).json({
           text: "Success"
       });
@@ -56,9 +65,21 @@ async function add (req, res) { // ajoute une demande de prêt dans la bdd
 }
 
 async function rate (req, res) { // renvoie l'historique des taux appliqués
-  return res.status(200).json({
-      text: "Success"
-  });
+  let user = jwt.decode(req.query.user, config.secret);
+  let findUser = await Users.findOne({_id : user._id});
+  if (findUser) {
+    rates = await Rates.find({}, {date : true, rate : true});
+    // moyenne des taux pour un même jour ?? 
+    return res.status(200).json({
+      text: "Success",
+      rates : rates
+    });
+  }
+  else {
+    return res.status(401).json({
+        text: "Access token is missing or invalid"
+    });
+  }
 }
 
 async function get_all_available (req, res) { // renvoie l'ensemble des prêts en attente d'acceptation
