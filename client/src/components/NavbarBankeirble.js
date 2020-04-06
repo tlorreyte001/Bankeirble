@@ -1,6 +1,8 @@
 import React from "react";
 import {AppBar, Toolbar, Typography, IconButton, Menu, MenuItem} from "@material-ui/core";
 import Image from "react-bootstrap/Image";
+import Badge from "@material-ui/core/Badge";
+import MediaQuery from "./MediaQuery"
 
 export class NavbarBankeirble extends React.Component {
     constructor(props) {
@@ -9,10 +11,10 @@ export class NavbarBankeirble extends React.Component {
             lastName: "",
             firstName: "",
             open: false,
-            Anchor: null
+            Anchor: null,
+            notifications: 0
         }
-    }
-
+    };
 
     componentWillMount() {
         this.getUser();
@@ -42,6 +44,7 @@ export class NavbarBankeirble extends React.Component {
     };
 
     render() {
+
         return (
             <div style={{flexGrow: 1}}>
                 {/*<div className="logo-container">*/}
@@ -60,10 +63,17 @@ export class NavbarBankeirble extends React.Component {
                 {/*</div>*/}
                 <AppBar position={"static"} color={"transparent"} style={{alignItems: "normal", height: "auto", boxShadow: "unset",}}>
                     <Toolbar>
-                        <Image id="/home" onClick={this.router} className="imglogo" src="./img/logo.png" alt="logo" />
-                        <Typography id="/home" onClick={this.router} variant="h6" color={"secondary"} style={{flexGrow: 1}}>
-                            Bankeirble
-                        </Typography>
+                        <Image id="/home" style={{cursor: "pointer"}} onClick={this.router} className="imglogo" src="./img/logo.png" alt="logo" />
+                        <div className="container-fluid" style={{flexGrow: 1}}>
+                            <div className={"row"}>
+                                <Typography id="/home" variant="h5" color={"secondary"} >
+                                    Bankeirble
+                                </Typography>
+                                <MediaQuery/>
+                            </div>
+                        </div>
+
+
                         <div>
                             <IconButton
                                 aria-label="account of current user"
@@ -72,7 +82,9 @@ export class NavbarBankeirble extends React.Component {
                                 onClick={this.handleMenu}
                                 color="inherit"
                             >
-                                <Image className={"text-right imgaccount"} alt="" src={"/img/user-1.png"}/>
+                                <Badge badgeContent={this.state.notifications} color="secondary">
+                                    <Image className={"text-right imgaccount"} alt="" src={"/img/user-1.png"}/>
+                                </Badge>
                             </IconButton>
                             {this.state.firstName} {this.state.lastName}
                             <Menu
@@ -90,7 +102,6 @@ export class NavbarBankeirble extends React.Component {
                                 open={this.state.open}
                                 onClose={this.handleClose}
                             >
-                                <MenuItem id={"/preteurs"} onClick={this.router}>Marché des prêts</MenuItem>
                                 <MenuItem id={"/home"} onClick={this.router}>Tableau de Bord</MenuItem>
                                 <MenuItem id={"/"} onClick={this.router}>Déconnexion</MenuItem>
                             </Menu>

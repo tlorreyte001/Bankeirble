@@ -50,7 +50,7 @@ class App extends Component {
               <Route exact path="/login" component={Login} />
               <Route exact path="/signup" component={Signup} />
               <PrivateRoute exact path="/home" component={Home} />
-              <PrivateRoute exact path="/preteurs" component={Loans} />
+              <PrivateRoute exact path="/loans" component={Loans} />
               <PrivateRoute exact path="/test" component={Moc} />
             </Switch>
           </ThemeProvider>

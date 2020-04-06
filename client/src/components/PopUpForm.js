@@ -74,13 +74,16 @@ export class PopUpForm extends React.Component {
 
     send = async () => {
         if (this.props.data.amount) {
-            console.log("ok")
             const {amount, nbMonths, rate, expirationDate, reimbursementAuto} = this.props.data;
             try {
                 const {status} = await API.add_loan(localStorage.getItem("token"), amount, nbMonths, rate, expirationDate, reimbursementAuto);
+                if (status === 200){
+                    console.log("ok");
+                    this.props.Success(true);
+                }
             } catch (error) {
-                if (error.response.status !== 200){
-                    this.setState({error: true})
+                if (error.response){
+                    this.props.Success(false);
                 }
             }
         }
