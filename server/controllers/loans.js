@@ -34,31 +34,39 @@ async function add (req, res) { // ajoute une demande de prêt dans la bdd
     let findUser = await Users.findOne({_id : user._id});
     let nbDemandes = await Loans.find({_idBorrower : user._id, status: 0,  expirationDate : { $gt : Date.now()} }).countDocuments(); // compte le nb de demandes de prêt d'un utilisateur encore valides
 
-    if (findUser && (0 <= req.body.amount <= 700) && (1 <= req.body.num_months <= 12) && (nbDemandes < 5) ) {
+    if (findUser && (0 <= req.body.amount <= 700) && (1 <= req.body.num_months <= 12)) {
 
-       const loan = new Loans({
-          _idBorrower : user._id,
-          amount : req.body.amount,
-          rate : req.body.rate,
-          nbMonths : req.body.nbMonths,
-          expirationDate : Date.parse(req.body.expirationDate),
-          status : 0, // 0 : en attente; 1 : en cours/accepté; 2 : terminé
-          reimbursementAuto : req.body.reimbursementAuto
-      });
-      loan.save();
-      console.log(user.pseudo, "demande un prêt !");
+      if (nbDemandes < 5) {
+        const loan = new Loans({
+           _idBorrower : user._id,
+           amount : req.body.amount,
+           rate : req.body.rate,
+           nbMonths : req.body.nbMonths,
+           expirationDate : Date.parse(req.body.expirationDate),
+           status : 0, // 0 : en attente; 1 : en cours/accepté; 2 : terminé
+           reimbursementAuto : req.body.reimbursementAuto
+       });
+       loan.save();
+       console.log(user.pseudo, "demande un prêt !");
 
-      // ajout du taux proposé dans la bdd
+       // ajout du taux proposé dans la bdd
 
-      const rate = new Rates ({
-        rate : req.body.rate,
-        date : new Date(Date.now())
-      });
-      rate.save();
+       const rate = new Rates ({
+         rate : req.body.rate,
+         date : new Date(Date.now())
+       });
+       rate.save();
 
-      return res.status(200).json({
-          text: "Success"
-      });
+       return res.status(200).json({
+           text: "Success"
+       });
+      }
+
+      else { // nb de demandes de prêt en cours limitées à 5 par utilisateur
+        return res.status(408).json({
+            text: "Too many requests"
+        });
+      }
     }
 
     else {
@@ -74,7 +82,7 @@ async function rate (req, res) { // renvoie l'historique des taux appliqués
   let findUser = await Users.findOne({_id : user._id});
   if (findUser) {
     rates = await Rates.find({}, {date : true, rate : true});
-    // moyenne des taux pour un même jour ?? 
+    // moyenne des taux pour un même jour ??
     return res.status(200).json({
       text: "Success",
       rates : rates
