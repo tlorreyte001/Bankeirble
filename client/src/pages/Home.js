@@ -7,9 +7,30 @@ import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 import Image from "react-bootstrap/Image";
 import {FooterB} from "../components/FooterB";
+import Alert from "@material-ui/lab/Alert";
 // import {GlobalTable} from "../components/GlobalTable";
 
 export class Home extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            globalSuccess: false,
+            globalError: false,
+        }
+    }
+
+    handleChange = (bool) => {
+        console.log("okok");
+        if (bool === true) {
+            this.setState({globalSuccess: true});
+            console.log("okokok");
+        }
+        else{
+            this.setState({globalError: true});
+        }
+    };
+
+
     render() {
         let gradient = {
             background: "linear-gradient(to right,#e0881d,#d36362)",
@@ -22,21 +43,30 @@ export class Home extends React.Component {
             height: "100px"
         };
 
+        let alert = null;
+        if (this.state.globalSuccess){
+            alert = <Alert severity="success">Votre demande a été acceptée !</Alert>;
+        }
+        else if (this.state.globalError){
+            alert = <Alert severity="error">Votre demande a été refusée !</Alert>
+        }
+
         return (
             <div>
                 <NavbarBankeirble/>
                 <Container>
+                    {alert}
                     <div className={"row"}>
-                        <div className={"col mt-2"}>
+                        <Grid item xs={12} sm={6} className={"col mt-2"}>
                             <div className={"mx-auto"} style={{maxWidth: "40em",}}>
                                 <h2 style={{fontWeight: "bold",}} className={"py-4 px-2"}>Le crédit, jusqu'à <span style={gradient}>700€</span>,</h2>
                                 <h2 style={{fontWeight: "bold",}} className={"px-2"}>en plus sûr.</h2>
                                 <h4 className={"py-4 px-2"}>Personnalisez votre demande -></h4>
                             </div>
-                        </div>
-                        <div className={"col mt-2"}>
-                            <AddLoan/>
-                        </div>
+                        </Grid>
+                        <Grid item xs={12} sm={6} className={"col mt-2"}>
+                            <AddLoan Success={this.handleChange}/>
+                        </Grid>
                     </div>
                 </Container>
                 <div className={"container-max pt-3 pb-5"}>

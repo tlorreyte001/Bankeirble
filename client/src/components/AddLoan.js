@@ -194,7 +194,7 @@ export class AddLoan extends React.Component {
                             Envoyer la demande
                         </Button>
                     </div>
-                    <PopUpForm open={this.state.openPopUp} onClose={this.handleClose} data={data} form={this.state.form}/>
+                    <PopUpForm open={this.state.openPopUp} onClose={this.handleClose} data={data} form={this.state.form} Success={this.props.Success} />
                 </div>
             </div>
         );
