@@ -241,11 +241,11 @@ export class GlobalTable extends React.Component {
                         <TableCell colSpan={3}>
                             <h4>Infos user :</h4>
                             <Button className={"mx-auto mt-3"} onClick={this.handleClickOpen} variant="contained"
-                                    color="secondary" type="submit" id={rowData[7]}>
+                                    color="secondary" type="submit" id={rowData[8]}>
                                 Accepter
                             </Button>
                             <Button className={"mx-auto mt-3"} onClick={this.delete} variant="contained"
-                                    color="secondary" type="submit" id={rowData[7]}>
+                                    color="secondary" type="submit" id={rowData[8]}>
                                 Supprimer
                             </Button>
                         </TableCell>
