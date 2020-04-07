@@ -93,6 +93,15 @@ contract Contract {
     return _taux;
   }
 
+  function getNumero(uint _id) public view returns (uint _numero_contrat){
+    for (uint i=0; i<contract_count; i++){
+      if (contract_users[i][0].id == _id){
+        _numero_contrat = i;
+      }
+    }
+    return _numero_contrat;
+  }
+
   function getEcheance_totale(uint numero_contrat) public view returns (uint _echeance_totale){
     _echeance_totale = contract_users[numero_contrat][0].echeance_totale;
     return _echeance_totale;
@@ -157,6 +166,15 @@ contract Contract {
           nb_prets++;
       }
       return nb_prets;
+  }
+
+  function nbemprunts(string memory user) public view returns (uint){
+      uint nb_emprunts = 0;
+      for (uint p = 0; p<contract_count; p++){
+        if (keccak256(abi.encodePacked((contract_users[p][0].emprunteur))) == keccak256(abi.encodePacked((user))))
+          nb_emprunts++;
+      }
+      return nb_emprunts;
   }
 
   function diff_date(int date1, int date2) public view returns (int) {
