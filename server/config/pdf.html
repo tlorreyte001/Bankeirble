@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Reconnaissance de dettes ou de pr&ecirc;ts entre particuliers</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <style type="text/css">
+    .petititre {
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 12px;
+    }
+
+    .grostitre {
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 14px;
+      font-weight: bold;
+      background-color: #254772;
+      color: #FFFFFF;
+    }
+
+    .pluspetittitre {
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 10px;
+    }
+
+    .couleur {
+      background-color: #FFFFa4;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 12px;
+      color: #254772;
+    }
+
+    .titre {
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 14px;
+      font-weight: bold;
+      color: #254772;
+      text-align: center;
+    }
+
+    .gras {
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 14px;
+      font-weight: bold;
+      color: #254772;
+      background-color: #FFFFa4;
+    }
+  </style>
+</head>
+
+<body>
+
+  <table width="570" border="0" align="center" cellpadding="2" cellspacing="2">
+    <tr>
+      <td>
+        <div class="titre">Reconnaissance de dettes ou de pr&ecirc;ts entre particuliers</div>
+      </td>
+    </tr>
+  </table>
+  <hr align="center" width="100" size="5" noshade>
+
+
+  <form action="" method="post" name="form1">
+    <table width="570" border="0" align="center" cellpadding="2" cellspacing="0">
+      <tr>
+        <td height="20" colspan="2" class="grostitre"> I. DATE DE L'ACTE</td>
+      </tr>
+      <tr class="couleur">
+        <td height="26" valign="baseline">Fait le : </td>
+        <td valign="top">
+          <div align="left">
+            <input name="date" type="text" id="date" value={{date}} size="55" maxlength="10">
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td height="20" colspan="2" class="grostitre">II. PARTIES A L'ACTE</td>
+      </tr>
+      <tr class="couleur">
+        <td height="22" colspan="2" valign="middle" class="style2">
+          <div class="gras"> Cr&eacute;ancier (qui pr&ecirc;te)</div>
+          <div align="center"></div>
+          <div align="center" class="couleur"></div>
+        </td>
+      </tr>
+      <tr valign="middle">
+        <td height="29" class="couleur">Nom : </td>
+        <td width="333" class="couleur"><input name="nom2" value="{{preteur_FN}}" type="text" id="nom2" size="55"
+            maxlength="55"></td>
+      </tr>
+      <tr valign="middle">
+        <td height="26" class="couleur">Pr&eacute;nom : </td>
+        <td class="couleur"><input name="prénom2" type="text" value="{{preteur_LN}}" id="prénom2" size="55"
+            maxlength="55"></td>
+      </tr>
+      <tr valign="middle">
+        <td height="26" class="couleur">Date de naissance : </td>
+        <td class="couleur"><input name="date naiss2" type="text" value={{preteur_DN}} id="date naiss2"
+            value="JJ/MM/AAAA" size="55" maxlength="10"></td>
+      </tr>
+      <tr valign="middle">
+        <td height="26" class="couleur">Lieu de de naissance : </td>
+        <td class="couleur"><input name="lieu naiss2" type="text" value="{{preteur_naissance}}" id="lieu naiss2" size="55"
+            maxlength="55"></td>
+      </tr>
+      <tr valign="middle">
+        <td height="26" class="couleur">N&deg; et nom de la rue : </td>
+        <td class="couleur"><input name="adresse2" type="text" value="{{preteur_rue}}" id="adresse2" size="55"
+            maxlength="55"> </td>
+      </tr>
+      <tr valign="middle">
+        <td height="26" class="couleur">Code postal : </td>
+        <td class="couleur"><input name="code postal2" type="text" value="{{preteur_CP}}" id="code postal2" size="55"
+            maxlength="55"></td>
+      </tr>
+      <tr valign="middle">
+        <td height="26" class="couleur">Ville : </td>
+        <td class="couleur"><input name="ville2" type="text" value="{{preteur_ville}}" id="ville2" size="55"
+            maxlength="55"></td>
+      </tr>
+      <tr valign="middle" class="couleur">
+        <td height="19" colspan="2">
+          <!--DWLayoutEmptyCell-->&nbsp;</td>
+      </tr>
+      <tr valign="middle" class="couleur">
+        <td height="19" colspan="2" class="gras">
+          D&eacute;biteur (qui emprunte)</td>
+      </tr>
+      <tr valign="middle">
+        <td height="26" class="couleur">Nom : </td>
+        <td class="couleur"><input name="nom3" value="{{debiteur_FN}}" type="text" id="nom3" size="55" maxlength="55">
+        </td>
+      </tr>
+      <tr valign="middle">
+        <td height="26" class="couleur">Pr&eacute;nom : </td>
+        <td class="couleur"><input name="pr&eacute;nom3" value="{{debiteur_LN}}" type="text" id="pr&eacute;nom3" size="55"
+            maxlength="55"></td>
+      </tr>
+      <tr valign="middle">
+        <td height="26" class="couleur">Date de naissance : </td>
+        <td class="couleur"><input name="date naiss3" type="text" value={{debiteur_DN}} id="date naiss3"
+            value="JJ/MM/AAAA" size="55" maxlength="10"></td>
+      </tr>
+      <tr valign="middle">
+        <td height="26" class="couleur">Lieu de de naissance : </td>
+        <td class="couleur"><input name="lieu naiss3" type="text" value="{{debiteur_naissance}}" id="lieu naiss3"
+            size="55" maxlength="55"></td>
+      </tr>
+      <tr valign="middle">
+        <td height="26" class="couleur">N&deg; et nom de la rue : </td>
+        <td width="333" class="couleur">
+          <input name="adresse3" type="text" value="{{debiteur_rue}}" id="adresse3" size="55" maxlength="55">
+        </td>
+      </tr>
+      <tr valign="middle">
+        <td height="26" class="couleur">Code postal : </td>
+        <td class="couleur">
+          <input name="code postal3" type="text" value="{{debiteur_CP}}" id="code postal3" size="55" maxlength="55">
+        </td>
+      </tr>
+      <tr valign="middle">
+        <td height="26" class="couleur">Ville : </td>
+        <td class="couleur"><input name="ville3" type="text" value="{{debiteur_ville}}" id="ville3" size="55"
+            maxlength="55"></td>
+      </tr>
+
+      <tr>
+        <td height="20" colspan="2" class="grostitre">III. DISPOSITIONS DE L'ACTE</td>
+      </tr>
+      <tr valign="middle">
+        <td height="26" class="couleur">Montant du pr&ecirc;t ou de la dette :</td>
+        <td class="couleur"><input name="ville3" type="text" value={{montant}} id="ville3" size="55"
+            maxlength="55"></td>
+      </tr>
+      <tr valign="middle">
+        <td height="26" class="couleur">Mensualit&eacute; :</td>
+        <td class="couleur"><input name="ville3" type="text" value={{mensualite}} id="ville3" size="55"
+            maxlength="55"></td>
+      </tr>
+      <tr valign="middle">
+        <td height="26" class="couleur">Taux d'int&eacute;r&ecirc;t :</td>
+        <td class="couleur"><input name="ville3" type="text" value={{taux}} id="ville3" size="55"
+            maxlength="55"></td>
+      </tr>
+      <tr valign="middle">
+        <td height="26" class="couleur">Date d'expiration :</td>
+        <td class="couleur"><input name="ville3" type="text" value={{expiration_date}} id="ville3" size="55"
+            maxlength="55"></td>
+      </tr>
+    </table>
+  </form>
+</body>
+
+</html>

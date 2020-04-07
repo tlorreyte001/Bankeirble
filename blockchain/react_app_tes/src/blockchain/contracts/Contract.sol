@@ -143,7 +143,13 @@ contract Contract {
   }
 
   function getMontant_transaction(uint numero_contrat, uint numero_transaction) public view returns (uint _montant_transaction){
-    _montant_transaction = contract_users[numero_contrat][numero_transaction-1].montant_restant - contract_users[numero_contrat][numero_transaction].montant_restant;
+    if (numero_transaction == 1){
+      _montant_transaction = contract_users[numero_contrat][numero_transaction-1].montant_total - contract_users[numero_contrat][numero_transaction].montant_restant;
+    }
+    else{
+      _montant_transaction = contract_users[numero_contrat][numero_transaction-1].montant_restant - contract_users[numero_contrat][numero_transaction].montant_restant;
+    }
+
     return _montant_transaction;
   }
 
@@ -240,15 +246,18 @@ contract Contract {
     return (keccak256(abi.encodePacked((a))) == keccak256(abi.encodePacked((b))));
   }
 
-  function testContractUser (string memory user, uint contract_id) public view returns (uint){
+  function testContractUser (string memory user, uint contract_id) public view returns (int _value){
     if (compareStrings(contract_users[contract_id][0].preteur, user)){
-      return 1; //contrat en tant que preteur
+      _value = 1;
+      return _value; //contrat en tant que preteur
     }
     else if (compareStrings(contract_users[contract_id][0].emprunteur, user)){
-      return 2; //contrat en tant qu'emprunter
+      _value = 2;
+      return _value; //contrat en tant qu'emprunter
     }
     else{
-      return 0; //contrat pas au user
+      _value = 0;
+      return _value; //contrat pas au user
     }
   }
 }

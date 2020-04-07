@@ -4,6 +4,9 @@ import axios from "axios";
 const headers = {
   "Content-Type": "application/json",
 };
+const requestOptions = {
+    responseType: 'blob'
+};
 const burl = "http://localhost:8800";
 
 export default {
@@ -146,17 +149,14 @@ export default {
     },
 
     contract: function(user, loanId){
-        return axios.get(
+        return axios.post(
             burl + "/loan/contract",
             {
-                params: {
                     user: user,
                     loanId: loanId
-                },
-                headers: {
-                    headers
-                }
-            }
+                
+            },
+            requestOptions
         );
     },
 

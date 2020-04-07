@@ -1,9 +1,10 @@
 import React from "react";
 
-import {Button, FormLabel, Slider, Switch} from '@material-ui/core';
-import {DateTimePicker, MuiPickersUtilsProvider} from '@material-ui/pickers';
+import { Button, FormLabel, Slider, Switch } from '@material-ui/core';
+import { DateTimePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 import frLocale from "date-fns/locale/fr";
+
 
 import {PopUpForm} from "../components/PopUpForm";
 import API from "../utils/API";
@@ -193,7 +194,7 @@ export class AddLoan extends React.Component {
                             Envoyer la demande
                         </Button>
                     </div>
-                    <PopUpForm open={this.state.openPopUp} onClose={this.handleClose} data={data} form={this.state.form}/>
+                    <PopUpForm open={this.state.openPopUp} onClose={this.handleClose} data={data} form={this.state.form} Success={this.props.Success} />
                 </div>
             </div>
         );

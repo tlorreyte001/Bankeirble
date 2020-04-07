@@ -7,6 +7,7 @@ import Backdrop from "@material-ui/core/Backdrop";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Alert from "@material-ui/lab/Alert";
 import {PopUpForm} from "./PopUpForm";
+import saveAs from "file-saver";
 
 
 
@@ -32,13 +33,16 @@ export class GlobalTable extends React.Component {
         try {
             let {data} = await API.table(localStorage.getItem("token"));
             for (let i = 0; i < data.loans.length; i++) {
+                let finalAmount = Math.round(data.loans[i].amount * (1 + 0.01 * data.loans[i].rate) * 100) / 100;
+                let finalDiff = Math.round(finalAmount - data.loans[i].amount);
                 temp.push([
                     i,
                     data.loans[i].pseudo,
                     data.loans[i].amount.toString() + " €",
                     data.loans[i].nbMonths + " mois",
                     data.loans[i].rate.toString() + " %",
-                    (data.loans[i].amount * (1 + 0.01 * data.loans[i].rate)).toString() + " €",
+                    finalAmount.toString() + " €",
+                    finalDiff.toString() + " €",
                     data.loans[i].expirationDate,
                     data.loans[i]._id
                 ]);
@@ -74,6 +78,7 @@ export class GlobalTable extends React.Component {
     closeIt = () => {
         this.setState({open: false});
     };
+    // -------------- ------------------ ---------------- //
 
     checkInfo = async () => {
         try {
@@ -88,6 +93,27 @@ export class GlobalTable extends React.Component {
             else if (error.response.status === 400 || error.response.status === 401){
                 console.log("error");
             }
+        }
+    };
+    
+    generateContract = async (event) => {
+        try {
+            await API.contract(localStorage.getItem("token"), event.target.offsetParent.id).then(
+                resp=>{
+                    var blob = new Blob([resp.data], {type: "application/pdf;charset=utf-8"});
+                    saveAs(blob, "Contrat.pdf");
+                }
+            );
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    delete = async (event) => {
+        try {
+            await API.delete(localStorage.getItem("token"), event.target.offsetParent.id);
+        } catch (error) {
+            console.error(error);
         }
     };
 
@@ -136,6 +162,14 @@ export class GlobalTable extends React.Component {
             {
                 name: "Somme dûe",
                 label: "Somme dûe",
+                options: {
+                    filter: false,
+                    sort: true,
+                }
+            },
+            {
+                name: "Gain final",
+                label: "Gain final",
                 options: {
                     filter: false,
                     sort: true,
@@ -207,8 +241,12 @@ export class GlobalTable extends React.Component {
                         <TableCell colSpan={3}>
                             <h4>Infos user :</h4>
                             <Button className={"mx-auto mt-3"} onClick={this.handleClickOpen} variant="contained"
-                                    color="secondary" type="submit" id={rowData[7]}>
+                                    color="secondary" type="submit" id={rowData[8]}>
                                 Accepter
+                            </Button>
+                            <Button className={"mx-auto mt-3"} onClick={this.delete} variant="contained"
+                                    color="secondary" type="submit" id={rowData[8]}>
+                                Supprimer
                             </Button>
                         </TableCell>
                         <TableCell/>
