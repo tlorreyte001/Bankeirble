@@ -66,7 +66,6 @@ async function login (req, res) {
 
     // On check si l'utilisateur existe en base
     const findUser = await Users.findOne({ email: user.email });
-    let infoUser = `{"lastName" : ${JSON.stringify(findUser.lastName)}, "firstName" : ${JSON.stringify(findUser.firstName)} }`; // on envoie seulement le nom et le prénom de l'utilisateur
 
     if (!findUser)
         return res.status(403).json({
@@ -78,11 +77,14 @@ async function login (req, res) {
             text: "Wrong Password"
     });
 
-    return res.status(200).json({
-        text: "Successfull Authentification",
-        token: jwt.encode(findUser, config.secret),
-        user: infoUser
-    });
+    else {
+      let infoUser = `{"lastName" : ${JSON.stringify(findUser.lastName)}, "firstName" : ${JSON.stringify(findUser.firstName)} }`; // on envoie seulement le nom et le prénom de l'utilisateur
+      return res.status(200).json({
+          text: "Successfull Authentification",
+          token: jwt.encode(findUser, config.secret),
+          user: infoUser
+      });
+    }
 }
 
 async function checkInfo (req, res) { // teste si le demandeur a déjà donné les infos nécessaires à la constitution du contrat (1ere demande ou non)
