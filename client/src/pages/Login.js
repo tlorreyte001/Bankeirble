@@ -6,6 +6,10 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 import IconButton from "@material-ui/core/IconButton";
 import {Visibility, VisibilityOff} from "@material-ui/icons";
 import Alert from "@material-ui/lab/Alert";
+import {NavbarBankeirble} from "../components/NavbarBankeirble";
+import Paper from "@material-ui/core/Paper";
+import Container from "@material-ui/core/Container";
+import {FooterB} from "../components/FooterB";
 
 export class Login extends React.Component {
 
@@ -75,23 +79,24 @@ export class Login extends React.Component {
         }
 
         return (
-            <div className="text-center mx-auto pt-5" style={{maxWidth: "35em",}}>
-                {alertPopUp}
-                <div className="FormField">
-                    <label className="FormField__Label" htmlFor="email">E-Mail</label>
-                    {input1}
-                </div>
-                <div className="FormField">
-                    <label className="FormField__Label" htmlFor="password">Mot de passe</label>
-                    {input2}
-                </div>
-                <div className="FormField">
-                    <button onClick={this.send} className="FormField__Button mr-20">Se connecter</button> <Link to="/signup" className="FormField__Link">Je n'ai pas de compte</Link>
-                </div>
-
-                <img className="big-circle" src="./img/big-eclipse.svg" alt=""/>
-                <img className="med-circle" src="./img/mid-eclipse.svg" alt=""/>
-                <img className="sm-circle" src="./img/small-eclipse.svg" alt=""/>
+            <div>
+                <NavbarBankeirble welcome={true}/>
+                <Container className={"py-5"}>
+                    <Paper className="text-center mx-auto pt-3" style={{maxWidth: "35em",}}>
+                        {alertPopUp}
+                        <div className="FormField">
+                            <label className="FormField__Label" htmlFor="email">E-Mail</label>
+                            {input1}
+                        </div>
+                        <div className="FormField">
+                            <label className="FormField__Label" htmlFor="password">Mot de passe</label>
+                            {input2}
+                        </div>
+                        <div className="FormField pb-5">
+                            <button onClick={this.send} className="FormField__Button mr-20">Se connecter</button> <Link to="/signup" className="FormField__Link">Je n'ai pas de compte</Link>
+                        </div>
+                    </Paper>
+                </Container>
             </div>
         );
     }

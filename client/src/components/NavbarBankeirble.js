@@ -21,9 +21,9 @@ export class NavbarBankeirble extends React.Component {
     }
 
     getUser(){
-        let temp = JSON.parse(localStorage.getItem("user"));
-        this.setState({lastName: temp.lastName});
-        this.setState({firstName: temp.firstName});
+        //let temp = JSON.parse(localStorage.getItem("user"));
+        //this.setState({lastName: temp.lastName});
+        //this.setState({firstName: temp.firstName});
     };
 
     handleMenu = (event) => {
@@ -44,6 +44,24 @@ export class NavbarBankeirble extends React.Component {
     };
 
     render() {
+
+        let menuContent =
+            <div>
+                <MenuItem id={"/dashboard"} onClick={this.router}>Tableau de Bord</MenuItem>
+                <MenuItem id={"/"} onClick={this.router}>Déconnexion</MenuItem>
+            </div>;
+
+        let buttons = <MediaQuery/>;
+
+
+        if (this.props.welcome){
+            menuContent =
+                <div>
+                    <MenuItem id={"/login"} onClick={this.router}>Connexion</MenuItem>
+                    <MenuItem id={"/signup"} onClick={this.router}>Inscription</MenuItem>
+                </div>;
+            buttons = null;
+        }
 
         return (
             <div style={{flexGrow: 1}}>
@@ -69,7 +87,7 @@ export class NavbarBankeirble extends React.Component {
                                 <Typography id="/home" variant="h5" color={"secondary"} >
                                     Bankeirble
                                 </Typography>
-                                <MediaQuery/>
+                                {buttons}
                             </div>
                         </div>
 
@@ -102,8 +120,7 @@ export class NavbarBankeirble extends React.Component {
                                 open={this.state.open}
                                 onClose={this.handleClose}
                             >
-                                <MenuItem id={"/home"} onClick={this.router}>Tableau de Bord</MenuItem>
-                                <MenuItem id={"/"} onClick={this.router}>Déconnexion</MenuItem>
+                                {menuContent}
                             </Menu>
                         </div>
                     </Toolbar>

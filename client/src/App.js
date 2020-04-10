@@ -52,6 +52,7 @@ class App extends Component {
               <PrivateRoute exact path="/home" component={Home} />
               <PrivateRoute exact path="/loans" component={Loans} />
               <PrivateRoute exact path="/test" component={Moc} />
+              <PrivateRoute exact path="/dashboard" component={Home} />
             </Switch>
           </ThemeProvider>
         </div>
