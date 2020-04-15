@@ -10,7 +10,8 @@ const loansSchema = mongoose.Schema(
     expirationDate: Date,
     status: Number,
     date: Date,
-    reimbursementAuto : Boolean
+    reimbursementAuto : Boolean,
+    contractPath: String
    },
 );
 

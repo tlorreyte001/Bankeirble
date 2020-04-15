@@ -33,7 +33,7 @@ class App extends Component {
     let history ={
       contracts:[]
     }
-      
+
     let count = await contract.methods.getCount().call((err, result)=>{result=result;}).then(result=>{return result;});
     console.log(count);
     for(let i = 0; i<count; i++){
