@@ -7,7 +7,7 @@ const mongoose = require("mongoose");
 const path = require('path');
 var pdf = require("pdf-creator-node");
 var fs = require('fs');
-const templatePath = path.join(__dirname, '../config/pdf.html');
+const templatePath = path.join(__dirname, '../models/pdf.html');
 const template = fs.readFileSync(templatePath, 'utf8');
 
 
@@ -22,6 +22,26 @@ async function nbRequest (req, res) { // renvoie le nb de demandes en cours : n�
      });
   }
   else {
+    return res.status(401).json({
+        text: "Access token is missing or invalid"
+    });
+  }
+}
+
+async function get_by_user (req, res) { // renvoie l'ensemble des prêts enregistrés dans la bdd effectués par un utilisateur donné
+  let user = jwt.decode(req.query.user, config.secret);
+  let findUser = await Users.findOne({_id : user._id});
+  let loans = [];
+  let prets_db = [];
+  if (findUser) {
+      loans = await Loans.find({_idBorrower : user._id, status : 0, expirationDate : { $gt : Date.now()} },
+      {_id: true, amount: true , rate: true , nbMonths: true, expirationDate: true, reimbursementAuto : true}); // demandes de prêt non expirées
+      return res.status(200).json({
+          loans: loans
+      });
+  }
+  else {
+    console.log("\nUtilisateur non reconnu !");
     return res.status(401).json({
         text: "Access token is missing or invalid"
     });
@@ -199,7 +219,7 @@ async function generate_contract (loanId) {
     //creation du pdf
     pdf.create(document, options)
       .then(async file => {
-        // sauvegarder le path du contrat généré 
+        // sauvegarder le path du contrat généré
         await Loans.findByIdAndUpdate(loanId, {"contractPath": file.filename}, {useFindAndModify : false}, function (err) {
             if (err) {
                 throw err;
@@ -259,6 +279,7 @@ async function get_contract (req, res) { // envoie le contrat en cas de litige
 
 
 exports.nbRequest = nbRequest;
+exports.get_by_user = get_by_user;
 exports.add = add;
 exports.rate = rate;
 exports.get_all_available = get_all_available;
@@ -266,63 +287,13 @@ exports.accept_loan = accept_loan;
 exports.remove_loan = remove_loan;
 exports.get_contract = get_contract;
 
-// à mettre côté client !
-
-async function calcul_taux(req, res) { // calcule le taux pour une certaine demande de prêt
-  let user = jwt.decode(req.body.user, config.secret);
-  let findUser = Users.findOne({_id : user._id});
-  if (findUser) {
-    // let nbDemandes = Loans.find({status: 0}).countDocuments(); // nb de demandes de prêts en cours : pour calcul de x et y
-    let x = 3;
-    let y = 6;
-    // let nbPretsTermines = Loans.find({_idBorrower:user._id, status: 2}).countDocuments(); // nb de prêts terminés par le demandeur
-    let dateExpiration = new Date(req.body.expiration_date);
-    let dateActuelle = new Date(Date.now());
-    let joursExpiration = Math.round( (dateExpiration.getTime() - dateActuelle.getTime() ) / (8.64*Math.pow(10,7)) );
-    let l = 0.35 * (1 - (joursExpiration / 30)) + 0.25 * (parseInt(req.body.num_months) / 12) + 0.25 * (1 - ((parseInt(user.reputation) + 50) / 100)) + 0.1 * (parseInt(user.pretEnCours) / 5) + 0.05 * parseInt(req.body.amount) / 700;
-    let taux = Math.round((((1 - l) * x + l * y)*100))/100;
-    return taux;
-    return res.status(200).json({
-        rate: taux
-    });
-  }
-  else {
-    return res.status(400).json({
-        text: "Requête invalide"
-    });
-  }
-
-}
-
-
-// Fonctions potentiellement utiles pour plus tard ...
+// Fonction potentiellement utile pour plus tard ...
 
 async function get_all (req, res) { // renvoie l'ensemble des prêts enregistrés dans la bdd
     let user = jwt.decode(req.body.user, config.secret);
     let findUser = await Users.findOne({_id : user._id});
     if (findUser) {
       const query = Loans.find({});
-      query.exec(function (err, prets) {
-          if (err) {
-              throw err;
-          }
-          return res.status(200).json({
-              loans: prets
-          });
-      });
-    }
-    else {
-      console.log("\nUtilisateur non reconnu !");
-      return res.status(400).json({
-          text: "Requête invalide"
-      });
-    }
-}
-
-async function get_by_user (req, res) { // renvoie l'ensemble des prêts enregistrés dans la bdd effectués par un utilisateur donné
-    let user = jwt.decode(req.body.user, config.secret);
-    let findUser = await Users.findOne({_id : user._id});
-    if (findUser) {
       query.exec(function (err, prets) {
           if (err) {
               throw err;
