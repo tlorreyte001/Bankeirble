@@ -19,7 +19,7 @@ export default {
     // /blockchain/transaction Ajoute une transaction à un contrat
     transaction: async function(contractId, transactionAmount, date) { // date : yyyymmdd
         let status = await contract.methods.transaction2(contractId, date).send({ from : account1}).then(contract.methods.transaction1(contractId, transactionAmount).send({ from : account1}).then(contract.methods.increaseTrans(contractId).send({ from : account1}))).then(result=>{return true;}).catch(err => {return false;});
-        return status; 
+        return status;
     },
 
     // /blockchain/loanTable Retourne la réputation et le nombre de prêt d'un tableau d'utilisateurs
@@ -38,10 +38,10 @@ export default {
     // /blockchain/addLoan Ajoute un Contrat
     addLoan: async function (lender,borrower,rate,duration,totalAmount,currentDate,id) { // date = yyyymmdd
         let status = await contract.methods.createContract3(currentDate,id).send({ from : account1}).then(contract.methods.createContract1(rate,duration,totalAmount).send({ from : account1}).then(contract.methods.createContract2(borrower,lender).send({ from : account1}).then(contract.methods.increaseContract().send({ from : account1})))).then(result=>{return true;}).catch(err => {return false;});;
-        return status; 
+        return status;
     },
 
-    // /blockchain/history Retourne les transactions passées 
+    // /blockchain/history Retourne les transactions passées
     history: async function (pseudo) {
         let history ={
             contracts:[]
@@ -90,8 +90,8 @@ export default {
                         thDate: await contract.methods.getTheoricalDate(i, transaction).call((err, result)=>{result=result;}).then(result=>{return result;})
                     });
                 }
-            } 
-        }   
+            }
+        }
         return history;
     }
 };

@@ -5,6 +5,7 @@ const jwt = require("jwt-simple");
 const config = require("../config/config");
 const mongoose = require("mongoose");
 const path = require('path');
+const crypto = require('crypto');
 var pdf = require("pdf-creator-node");
 var fs = require('fs');
 const templatePath = path.join(__dirname, '../models/pdf.html');
@@ -161,28 +162,32 @@ async function transformLoans(prets) { // renvoie tous les éléments nécessair
 async function accept_loan (req, res) { // met à jour la bdd après accord d'un prêt
     let user = jwt.decode(req.body.user, config.secret);
     let findUser = await Users.findOne({_id : user._id});
+
     if (findUser) {
-      await Loans.findByIdAndUpdate(req.body.loanId, {"status": 1, "_idLender": user._id, "date": new Date(Date.now()) }, {useFindAndModify : false}, function (err) { // màj du prêt
+      let loanId = req.body.loanId;
+      await Loans.findByIdAndUpdate(loanId, {"status": 1, "_idLender": user._id, "date": new Date(Date.now()) }, {useFindAndModify : false}, function (err) { // màj du prêt
         // il faudra aussi modifier la date de début du prêt
           if (err) {
               throw err;
           }
       });
       //on génére le contrat correspondant
-      await generate_contract(req.body.loanId).then(
+      await generate_contract(loanId).then(
         ()=>{
-          console.log('contract generated')
+          console.log('Contrat généré !');
         }
       );
-      // await Loans.findById(req.body.LoanId, {}, function (err, loan) {
-      //   Users.findByIdAndUpdate(loan._idBorrower, { $inc: { pretEnCours: 1 }}, {useFindAndModify : false}, function (err) { // màj du nb de prêt en cours pour le demandeur
-      //   if (err) {
-      //       throw err;
-      //     }
-      //   });
-      // });
+
+      // hash du contrat généré
+      let hash = crypto.createHash('sha256');
+      let filename = await Loans.find({_id: loanId}, {contractPath: true});
+      let contract = fs.readFileSync(filename[0].contractPath);
+      let hashContract = crypto.createHash('sha256').update(contract.toString()).digest('hex');
+
+      // on renvoie le hash pour le conserver sur la BC
       return res.status(200).json({
-          text: "Success"
+          text: "Success",
+          hashContract: hashContract
       });
     }
     else {
@@ -269,6 +274,9 @@ async function get_contract (req, res) { // envoie le contrat en cas de litige
     if (findUser && loan) {
       // telecharger le contrat à partir du path et le renvoyer coté client
       res.download(loan.contractPath);
+      return res.status(200).json({
+          text: "Success"
+      });
     }
     else {
       return res.status(401).json({
