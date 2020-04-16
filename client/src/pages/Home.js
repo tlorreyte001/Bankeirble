@@ -8,7 +8,6 @@ import Paper from "@material-ui/core/Paper";
 import Image from "react-bootstrap/Image";
 import {FooterB} from "../components/FooterB";
 import Alert from "@material-ui/lab/Alert";
-// import {GlobalTable} from "../components/GlobalTable";
 
 export class Home extends React.Component {
     constructor(props) {
