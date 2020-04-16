@@ -11,20 +11,20 @@ web3.eth.getAccounts().then(e => {account1=e[0]; console.log(account1)});
 
 
 export default {
-    // /blockchain/loan
+    // /blockchain/loan Récupère le nombre de prêts en cours et la réputation d'un utilisateur
     loan: function (pseudo) {
         let nbLoans = await contract.methods.nbLoans(pseudo).call((err,result)=>{return result;});
         let reputation = await contract.methods.reputation(pseudo).call((err,result)=>{return result;});
         return {nbLoans: nbLoans, reputation: reputation};
     },
 
-    // /blockchain/transaction
+    // /blockchain/transaction Ajoute une transaction à un contrat
     transaction: function(contractId, transactionAmount, date) { // date : yyyymmdd
         let status = await contract.methods.transaction2(contractId, date).send({ from : account1}).then(contract.methods.transaction1(contractId, transactionAmount).send({ from : account1}).then(contract.methods.increaseTrans(contractId).send({ from : account1}))).then(result=>{return true;}).catch(err => {return false;});
         return status; 
     },
 
-    // /blockchain/loanTable
+    // /blockchain/loanTable Retourne la réputation et le nombre de prêt d'un tableau d'utilisateurs
     loanTable: function (pseudoTable) {
         let loanTable = new Array();
         let loan = {pseudo:"", reputation: -5, nbCurrentLoans:-5}
@@ -37,13 +37,13 @@ export default {
         return loanTable;
     },
 
-    // /blockchain/addLoan
+    // /blockchain/addLoan Ajoute un Contrat
     addLoan: function (lender,borrower,rate,duration,totalAmount,currentDate,id) { // date = yyyymmdd
         let status = await contract.methods.createContract3(currentDate,id).send({ from : account1}).then(contract.methods.createContract1(rate,duration,totalAmount).send({ from : account1}).then(contract.methods.createContract2(borrower,lender).send({ from : account1}).then(contract.methods.increaseContract().send({ from : account1})))).then(result=>{return true;}).catch(err => {return false;});;
         return status; 
     },
 
-    // /blockchain/history
+    // /blockchain/history Retourne les transactions passées 
     history: function (pseudo) {
         let history ={
             contracts:[]
@@ -70,7 +70,7 @@ export default {
                         transactionId: transaction,
                         status:"lender",
                         transactionAmount: await contract.methods.getTransactionAmount(i, transaction).call((err, result)=>{result=result;}).then(result=>{return result;}),
-                        borrower: borrower,
+                        otherPseudo: borrower,
                         remainingAmount:await contract.methods.getRemainingAmount(i,transaction).call((err, result)=>{result=result;}).then(result=>{return result;}),
                         remainingDuration: await contract.methods.getRemainingDuration(i, transaction).call((err, result)=>{result=result;}).then(result=>{return result;}),
                         currentDate: await contract.methods.getCurrentDate(i, transaction).call((err, result)=>{result=result;}).then(result=>{return result;}),
@@ -85,7 +85,7 @@ export default {
                         transactionId: transaction,
                         status:"borrower",
                         transactionAmount: await contract.methods.getTransactionAmount(i, transaction).call((err, result)=>{result=result;}).then(result=>{return result;}),
-                        lender: lender,
+                        otherPseudo: lender,
                         remainingAmount:await contract.methods.getRemainingAmount(i,transaction).call((err, result)=>{result=result;}).then(result=>{return result;}),
                         remainingDuration: await contract.methods.getRemainingDuration(i, transaction).call((err, result)=>{result=result;}).then(result=>{return result;}),
                         currentDate: await contract.methods.getCurrentDate(i, transaction).call((err, result)=>{result=result;}).then(result=>{return result;}),
