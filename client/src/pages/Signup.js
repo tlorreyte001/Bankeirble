@@ -6,6 +6,8 @@ import {NavbarBankeirble} from "../components/NavbarBankeirble";
 import Container from "@material-ui/core/Container";
 import Paper from "@material-ui/core/Paper";
 import {FooterB} from "../components/FooterB";
+import Popup from "../components/PopUpConditions";
+
 
 export class Signup extends React.Component {
 
@@ -77,7 +79,8 @@ export class Signup extends React.Component {
 
                   <div className="FormField">
                     <label className="FormField__CheckboxLabel">
-                      <input required className="FormField__Checkbox" type="checkbox" /> J'accepte toutes les<a href="/" className="FormField__TermsLink">conditions d'utilisation</a>
+                      <input className="FormField__Checkbox" type="checkbox" id="hasAgreed" value={this.state.hasAgreed} onChange={this.handleChange} /> J'accepte toutes les <Popup /> 
+
                     </label>
                   </div>
                   <div className="FormField pb-5">
