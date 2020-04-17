@@ -20,7 +20,7 @@ contract Contract {
   }
 
   mapping(uint => mapping(uint => Contract_user)) public usersContracts;
-  mapping(uint => uint) public nb_transaction;
+  mapping(uint => uint) public nbTransaction;
 
   constructor() public{
     name = "Contrat Entre Particuliers";
@@ -40,7 +40,7 @@ contract Contract {
   function createContract2(string memory _borrower,string memory _lender) public{
     usersContracts[contractCount][0].borrower = _borrower;
     usersContracts[contractCount][0].lender = _lender;
-    nb_transaction[contractCount] = 0;
+    nbTransaction[contractCount] = 0;
   }
 
   function createContract3(int _currentDate,uint _id) public{
@@ -49,11 +49,11 @@ contract Contract {
   }
 
   function increaseTrans(uint _id) public{
-    nb_transaction[_id]++;
+    nbTransaction[_id]++;
   }
 
   function transaction1(uint _id,uint _sum) public{
-        uint transactionId = nb_transaction[_id];
+        uint transactionId = nbTransaction[_id];
         if (transactionId==0){
           usersContracts[_id][transactionId+1].remainingAmount = usersContracts[_id][0].totalAmount - _sum;
           usersContracts[_id][transactionId+1].remainingDuration = usersContracts[_id][0].duration - 1;
@@ -65,7 +65,7 @@ contract Contract {
   }
 
   function transaction2(uint _id,int _currentDate) public{
-        uint transactionId = nb_transaction[_id];
+        uint transactionId = nbTransaction[_id];
         usersContracts[_id][transactionId+1].currentDate = _currentDate;
         if (transactionId ==0){
           usersContracts[_id][transactionId+1].theoricalDate = usersContracts[_id][0].currentDate + 100;
@@ -81,9 +81,9 @@ contract Contract {
     return _count;
   }
 
-  function getNb_transaction(uint contratNumber) public view returns (uint _nb_transaction){
-    _nb_transaction = nb_transaction[contratNumber];
-    return _nb_transaction;
+  function getNbTransaction(uint contratNumber) public view returns (uint _nbTransaction){
+    _nbTransaction = nbTransaction[contratNumber];
+    return _nbTransaction;
   }
 
   function getRate(uint contratNumber) public view returns (uint _rate){
@@ -96,24 +96,9 @@ contract Contract {
     return _id;
   }
 
-<<<<<<< HEAD
-  function getNumero(uint _id) public view returns (uint _numero_contrat){
-    for (uint i=0; i<contract_count; i++){
-      if (contract_users[i][0].id == _id){
-        _numero_contrat = i;
-      }
-    }
-    return _numero_contrat;
-  }
-
-  function getEcheance_totale(uint numero_contrat) public view returns (uint _echeance_totale){
-    _echeance_totale = contract_users[numero_contrat][0].echeance_totale;
-    return _echeance_totale;
-=======
   function getDuration(uint contratNumber) public view returns (uint _duration){
     _duration = usersContracts[contratNumber][0].duration;
     return _duration;
->>>>>>> 1adc0c61550285d146df8646b3bfc2ef7f034680
   }
 
   function getTotalAmount(uint contratNumber) public view returns (uint _totalAmount){
@@ -174,38 +159,14 @@ contract Contract {
   }
 
   function nbLoans(string memory user) public view returns (uint){
-      uint nb_prets = 0;
+      uint loanCount = 0;
       for (uint p = 0; p<contractCount; p++){
         if (keccak256(abi.encodePacked((usersContracts[p][0].lender))) == keccak256(abi.encodePacked((user))))
-          nb_prets++;
+          loanCount++;
       }
-      return nb_prets;
+      return loanCount;
   }
 
-<<<<<<< HEAD
-  function nbemprunts(string memory user) public view returns (uint){
-      uint nb_emprunts = 0;
-      for (uint p = 0; p<contract_count; p++){
-        if (keccak256(abi.encodePacked((contract_users[p][0].emprunteur))) == keccak256(abi.encodePacked((user))))
-          nb_emprunts++;
-      }
-      return nb_emprunts;
-  }
-
-  function diff_date(int date1, int date2) public view returns (int) {
-    int annee1 = date1/10000;
-    int mois1 = (date1 - (annee1 * 10000)) / 100;
-    int jour1 = date1 - (annee1 * 10000) - (mois1 * 100);
-    int annee2 = date2/10000;
-    int mois2 = (date2 - (annee2 * 10000)) / 100;
-    int jour2 = date2 - (annee2 * 10000) - (mois2 * 100);
-    int diff_annee = annee2 - annee1;
-    int diff_mois = mois2 - mois1;
-    int diff_jour = jour2 - jour1;
-    if (diff_jour <0){
-      diff_mois--;
-      diff_jour = diff_jour + 30;
-=======
   function dateDiff (int date1, int date2) public view returns (int) {
     int year1 = date1/10000;
     int month1 = (date1 - (year1 * 10000)) / 100;
@@ -219,8 +180,7 @@ contract Contract {
     if (dayDiff <0){
       monthDiff--;
       dayDiff = dayDiff + 30;
->>>>>>> 1adc0c61550285d146df8646b3bfc2ef7f034680
-      }
+    }
     if (monthDiff <0){
       yearDiff--;
       monthDiff = monthDiff + 12;
@@ -248,7 +208,7 @@ contract Contract {
       }
       if (keccak256(abi.encodePacked((usersContracts[i][0].borrower))) == keccak256(abi.encodePacked((user)))){
         reput ++;
-        uint transactions = nb_transaction[i];
+        uint transactions = nbTransaction[i];
         for (uint j=1; j<transactions+1; j++){
           int date_r = usersContracts[i][j].currentDate;
           int date_t = usersContracts[i][j].theoricalDate;

@@ -2,6 +2,7 @@ const loans = require('./loans.js');
 
 module.exports = function (app) {
     app.get('/nbRequest', loans.nbRequest);
+    app.get('/userLoansRequest', loans.get_by_user);
     app.post('/add', loans.add);
     app.get('/rate', loans.rate);
     app.get('/table', loans.get_all_available);
