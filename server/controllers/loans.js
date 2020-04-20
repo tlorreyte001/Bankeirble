@@ -187,7 +187,7 @@ async function accept_loan (req, res) { // met à jour la bdd après accord d'un
       // on renvoie le hash pour le conserver sur la BC
       return res.status(200).json({
           text: "Success",
-          hashContract: hashContract
+          contractHash: hashContract
       });
     }
     else {

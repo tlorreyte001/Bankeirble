@@ -43,7 +43,7 @@ async function signup (req, res) {
 
     console.log(`Un nouvel utilisateur ${userData.pseudo} vient de s'inscrire !`);
     let infoUser = `{"lastName" : ${JSON.stringify(userData.lastName)}, "firstName" : ${JSON.stringify(userData.firstName)}, "pseudo" : ${JSON.stringify(userData.pseudo)} }`; // on envoie seulement le nom et le prénom de l'utilisateur
-    
+
     return res.status(200).json({
         text: "Successfull Authentification",
         token: jwt.encode(userData, config.secret),
