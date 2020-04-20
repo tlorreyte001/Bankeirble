@@ -1,10 +1,11 @@
 import React from "react";
+import API from "../utils/API";
+import APIBC from "../utils/APIBlockchain";
 
 import {Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, FormLabel} from '@material-ui/core';
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Switch from "@material-ui/core/Switch";
-import API from "../utils/API";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import DateFnsUtils from "@date-io/date-fns";
@@ -73,12 +74,11 @@ export class PopUpForm extends React.Component {
     };
 
     send = async () => {
-        if (this.props.data.amount) {
+        if (!this.props.data._id) {
             const {amount, nbMonths, rate, expirationDate, reimbursementAuto} = this.props.data;
             try {
                 const {status} = await API.add_loan(localStorage.getItem("token"), amount, nbMonths, rate, expirationDate, reimbursementAuto);
                 if (status === 200){
-                    console.log("ok");
                     this.props.Success(true);
                 }
             } catch (error) {
@@ -89,17 +89,44 @@ export class PopUpForm extends React.Component {
         }
         else {
             try {
-                let {status} = await API.accept(
+                let {status, data} = await API.accept(
                     localStorage.getItem("token"),
-                    this.props.data
+                    this.props.data._id
                 );
-            }
-            catch (error) {
-                if (error.response.status !== 200){
-                    this.setState({error: true})
+                if (status === 200){
+                    let response = await APIBC.addLoan(
+                        JSON.parse(localStorage.getItem("user")).pseudo,
+                        this.props.data.pseudo,
+                        this.props.data.rate,
+                        this.props.data.nbMonths,
+                        this.props.data.amount,
+                        this.format(new Date(this.props.data.expirationDate)),
+                        data.contractHash,
+                    );
+                    if (!response){
+                        this.props.Success(false);
+                    }
                 }
             }
+            catch (error) {
+                if (error.response){
+                    this.props.Success(false);
+                }
+            }
+
+
+
         }
+    };
+
+    format = (date) => {
+        let mm = date.getMonth() + 1; // getMonth() is zero-based
+        let dd = date.getDate();
+
+        return [date.getFullYear(),
+            (mm>9 ? '' : '0') + mm,
+            (dd>9 ? '' : '0') + dd
+        ].join('');
     };
 
     // -------------- Form Functions ---------------- //

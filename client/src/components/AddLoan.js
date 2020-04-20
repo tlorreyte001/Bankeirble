@@ -25,7 +25,9 @@ export class AddLoan extends React.Component {
             reimbursementAmount: "",
             openPopUp: false,
             nbRequest: "",
-            form: false
+            form: false,
+            reputation: 0,
+            nbLoans: 0
         };
     };
 
@@ -37,7 +39,7 @@ export class AddLoan extends React.Component {
 
     updateRate = () => {
         let data = this.state;
-        this.setState({rate: Calcul.rate(data.expirationDate, data.nbMonths, 0, 0, data.amount)});
+        this.setState({rate: Calcul.rate(data.expirationDate, data.nbMonths, data.reputation, data.nbLoans, data.amount)});
     };
 
     nbLoanRequest = async () => {
@@ -69,7 +71,8 @@ export class AddLoan extends React.Component {
 
     blockchainLoan = async () => {
         let {nbLoans, reputation} = await APIBC.loan(JSON.parse(localStorage.getItem("user")).pseudo);
-        console.log(nbLoans, reputation);
+        this.setState({nbLoans: nbLoans});
+        this.setState({reputation: reputation});
     };
 
     handleClickOpen = () => {

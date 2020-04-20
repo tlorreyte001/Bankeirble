@@ -19,10 +19,8 @@ export class Home extends React.Component {
     }
 
     handleChange = (bool) => {
-        console.log("okok");
         if (bool === true) {
             this.setState({globalSuccess: true});
-            console.log("okokok");
         }
         else{
             this.setState({globalError: true});

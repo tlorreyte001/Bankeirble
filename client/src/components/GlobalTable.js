@@ -1,5 +1,6 @@
 import React from "react";
 import API from "../utils/API";
+import APIBC from "../utils/APIBlockchain";
 
 import MUIDataTable from "mui-datatables";
 import {Button, TableCell, TableRow} from "@material-ui/core";
@@ -15,23 +16,38 @@ export class GlobalTable extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            data : [],
             rows: [],
+            pseudos: [],
+            infos: [],
             open: false,
             form: false,
             error: false,
             openPopUp: false,
-            _idSelected : ""
+            dataSelected : [],
+            loanTable : []
         };
     }
 
     componentDidMount() {
-        this.get();
+        this.handleToggle();
+        console.log(this.state.rows)
     }
 
     get = async () => {
         let temp = [];
+        let temp2 = [];
         try {
             let {data} = await API.table(localStorage.getItem("token"));
+            this.setState({data: data.loans});
+
+            for (let i = 0; i < data.loans.length; i++) {
+                temp2.push(data.loans[i].pseudo);
+            }
+            this.setState({pseudos: temp2});
+            await this.bLoanTable();
+
+            let infos = this.state.infos;
             for (let i = 0; i < data.loans.length; i++) {
                 let finalAmount = Math.round(data.loans[i].amount * (1 + 0.01 * data.loans[i].rate) * 100) / 100;
                 let finalDiff = Math.round(finalAmount - data.loans[i].amount);
@@ -44,10 +60,12 @@ export class GlobalTable extends React.Component {
                     finalAmount.toString() + " €",
                     finalDiff.toString() + " €",
                     data.loans[i].expirationDate,
+                    infos[i],
                     data.loans[i]._id
                 ]);
             }
             this.setState({rows: temp});
+
         } catch (error) {
             //if (error.response.status === 400){
             //    this.setState({error: true});
@@ -59,7 +77,7 @@ export class GlobalTable extends React.Component {
 
     handleClickOpen = (event) => {
         this.checkInfo();
-        this.setState({_idSelected: event.target.offsetParent.id});
+        this.setState({dataSelected: this.state.data[event.target.offsetParent.id]});
         this.setState({openPopUp: true});
     };
 
@@ -116,6 +134,15 @@ export class GlobalTable extends React.Component {
             console.error(error);
         }
     };
+
+    // -------------- BlockChain Functions ---------------- //
+    bLoanTable = async () => {
+        let temp = await APIBC.loanTable(this.state.pseudos);
+        this.setState({infos: temp});
+        console.log(this.state.pseudos);
+        console.log(temp);
+    };
+    // -------------- -------------------- ---------------- //
 
     render() {
         const columns = [
@@ -184,6 +211,15 @@ export class GlobalTable extends React.Component {
                 }
             },
             {
+                name: "infos",
+                label: "infos",
+                options: {
+                    filter: false,
+                    sort: true,
+                    display: false
+                }
+            },
+            {
                 name: "_id",
                 label: "_id",
                 options: {
@@ -239,14 +275,13 @@ export class GlobalTable extends React.Component {
                     <TableRow>
                         <TableCell/>
                         <TableCell colSpan={3}>
-                            <h4>Infos user :</h4>
+                            <h4>{rowData[1]} :</h4>
+                            <p>Réputation : {rowData[8].reputation}</p>
+                            <p>Nombres de Prêts en cours : {rowData[8].nbCurrentLoans}</p>
+                            <p>Informations issues de la BlockChain</p>
                             <Button className={"mx-auto mt-3"} onClick={this.handleClickOpen} variant="contained"
-                                    color="secondary" type="submit" id={rowData[8]}>
+                                    color="secondary" type="submit" id={rowData[0]} >
                                 Accepter
-                            </Button>
-                            <Button className={"mx-auto mt-3"} onClick={this.delete} variant="contained"
-                                    color="secondary" type="submit" id={rowData[8]}>
-                                Supprimer
                             </Button>
                         </TableCell>
                         <TableCell/>
@@ -275,7 +310,7 @@ export class GlobalTable extends React.Component {
                     <CircularProgress color="inherit" />
                 </Backdrop>
                 {error}
-                <PopUpForm open={this.state.openPopUp} onClose={this.handleClose} data={this.state._idSelected} form={this.state.form}/>
+                <PopUpForm open={this.state.openPopUp} onClose={this.handleClose} data={this.state.dataSelected} form={this.state.form} Success={this.props.Success}/>
                 <MUIDataTable
                     title={"Marché des prêts"}
                     data={this.state.rows}
