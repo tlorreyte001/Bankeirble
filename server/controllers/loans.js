@@ -274,9 +274,6 @@ async function get_contract (req, res) { // envoie le contrat en cas de litige
     if (findUser && loan) {
       // telecharger le contrat à partir du path et le renvoyer coté client
       res.download(loan.contractPath);
-      return res.status(200).json({
-          text: "Success"
-      });
     }
     else {
       return res.status(401).json({
