@@ -30,7 +30,7 @@ export class Login extends React.Component {
             const { status, data } = await API.login(email, password);
             if (status === 200) {
                 localStorage.setItem("token", data.token);
-                localStorage.setItem("user", JSON.stringify(data.user));
+                localStorage.setItem("user", data.user);
                 window.location = "/home";
             }
         } catch (error) {

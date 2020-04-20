@@ -33,7 +33,6 @@ export class AddLoan extends React.Component {
         this.nbLoanRequest();
         this.blockchainLoan();
         this.updateRate();
-        console.log(localStorage.getItem("user"));
     }
 
     updateRate = () => {
@@ -68,8 +67,9 @@ export class AddLoan extends React.Component {
         }
     };
 
-    blockchainLoan = () => {
-        //APIBC.loan();
+    blockchainLoan = async () => {
+        let {nbLoans, reputation} = await APIBC.loan(JSON.parse(localStorage.getItem("user")).pseudo);
+        console.log(nbLoans, reputation);
     };
 
     handleClickOpen = () => {
