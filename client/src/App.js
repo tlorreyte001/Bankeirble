@@ -10,7 +10,7 @@ import {Welcome} from './pages/Welcome.js';
 import { createMuiTheme, ThemeProvider  } from '@material-ui/core/styles';
 import {Loans} from "./pages/Loans";
 import {Moc} from "./pages/Moc";
-
+import {Dashboard} from "./pages/Dashboard";
 
 class App extends Component {
   render() {
@@ -52,7 +52,8 @@ class App extends Component {
               <PrivateRoute exact path="/home" component={Home} />
               <PrivateRoute exact path="/loans" component={Loans} />
               <PrivateRoute exact path="/test" component={Moc} />
-              <PrivateRoute exact path="/dashboard" component={Home} />
+              <PrivateRoute exact path="/dashboard" component={Dashboard} />
+            
             </Switch>
           </ThemeProvider>
         </div>

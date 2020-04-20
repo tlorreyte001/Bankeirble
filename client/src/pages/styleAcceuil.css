@@ -290,6 +290,16 @@ header{
     position: relative;
     top: 1.5px;
   }
+
+  .condUtilisation{ /*Button PopUp Conditions*/
+    color: #3f3f3f;
+    text-decoration: none;
+    display: inline-block;
+    border-bottom: 1.5px solid #d36362;
+    padding-bottom: 5px;
+    font-weight: bold;
+
+}
   .FormField__TermsLink {
     color: #3f3f3f;
     border-bottom: 1px solid #d36362;
@@ -298,6 +308,233 @@ header{
     padding-bottom: 2px;
     margin-left: 5px;
   }
+
+  /******* Dashboard ********/
+  
+  /*Side Bar*/
+  .sideBar {
+    background: #3f3f3f;
+    width: 270px;
+    height: 1500px;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+  }
+
+  .sideBar > nav {
+    padding-top: 100px;
+  }
+
+  
+  .sideBar > nav > a {
+    display: block;
+    color: #ffffff;
+    text-decoration: none;
+    padding: 15px 30px;
+    font-weight: 300;
+    transition: all 0.3s ease-in-out;
+  }
+  .sideBar > nav > a > img{
+    color: #e0881d;
+    font-size: 1.4rem;
+    margin-right: 0.8rem;
+    display: inline-block;
+    width:30px;
+    position: relative;
+    top: 0.9px;
+  }
+  .sideBar > nav > a:hover {
+      background: #d36362;
+  }
+  .sideBar > nav > a.active{
+    
+    border-left: 5px solid #e0881d;
+    padding: 15px 30px 15px 25px;
+  }
+
+
+    /*Content Area*/
+    .content-area > div > h1{
+        background: linear-gradient(to right,#e0881d,#d36362);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        position: absolute;
+        left:330px;
+        top:10px;
+    }
+    .card-1{
+        position: absolute;
+        width: 320px;
+        height: 154px;
+        left: 330px;
+        top: 150px;
+    }
+
+    .Base-1{
+        position: absolute;
+        width: 320px;
+        height: 151px;
+        left: 0px;
+        top: 0px;
+
+        background: #f3f0f0;
+        border-radius: 10px;
+
+        box-shadow: 2px 2px .5px rgb(192, 191, 191);
+
+    }
+
+    .Base-1:hover{
+        box-shadow: 6px 6px 2.5px rgb(192, 191, 191);
+
+    }
+
+    .Base-1 > p{
+        position: absolute;
+        width: 200px;
+        height: 25px;
+        left: 35%;
+        top: 50%;
+
+        font-size: 14px;
+        line-height: 25px;
+        letter-spacing: 0.01em;
+
+        color: #616E7F;
+
+    }
+   
+    .imgcard-1  {
+        position: absolute;
+        left: 12.5%;
+        right: 12.5%;
+        top: 25%;
+        bottom: 12.5%;
+        width: 40px;
+        height: 40px;        
+    }
+    .card-2{
+        position: absolute;
+        width: 320px;
+        height: 154px;
+        left: 670px;
+        top: 150px;
+        margin-left: 10px;
+
+    }
+
+    .card-3{
+        position: absolute;
+        width: 320px;
+        height: 154px;
+        left: 1010px;
+        top: 150px;
+        margin-left: 20px;
+
+    }
+    .card-4{
+        position: absolute;
+        width: 320px;
+        height: 154px;
+        left: 1350px;
+        top: 150px;
+        margin-left: 30px;
+    }
+    .card-5{
+        position: absolute;
+        width: 320px;
+        height: 154px;
+        left: 1350px;
+        top: 360px;
+        margin-left: 30px;
+    }
+
+    /*charts*/
+    .chart-line{
+        position: absolute;
+        width: 830px;
+        height: 600px;
+        left: 330px;
+        top: 360px;
+    }
+
+    .Base-chart-line{
+        position: absolute;
+        width: 970px;
+        height: 170px;
+        left: 0px;
+        top: 0px;
+
+        background: #f3f0f0;
+        border-radius: 10px;
+        box-shadow: 2px 2px .5px rgb(192, 191, 191);
+
+    }
+
+    .Base-chart-line:hover{
+        box-shadow: 6px 6px 2.5px rgb(192, 191, 191);
+
+    }
+
+    .chart-doughnut{
+        position: absolute;
+        width: 395px;
+        height: 300px;
+        left: 330px;
+        top: 585px;
+    }
+
+    .Base-chart-doughnut{
+        position: absolute;
+        width: 395px;
+        height: 500px;
+        left: 0px;
+        top: 0px;
+
+        background: #f3f0f0;
+        border-radius: 10px;
+
+        box-shadow: 2px 2px .5px rgb(192, 191, 191);
+
+    }
+
+    .Base-chart-doughnut:hover{
+        box-shadow: 6px 6px 2.5px rgb(192, 191, 191);
+
+    }
+    .Base-chart-doughnut > p{
+        position: absolute;
+        width: 200px;
+        height: 24px;
+        left: 30px;
+        top: 25px;
+
+        
+        font-size: 14px;
+        line-height: 24px;
+
+        /* identical to box height, or 171% */
+        letter-spacing: 0.01em;
+
+        color: #000000; 
+}
+    .diver{
+        position: absolute;
+        width: 395px;
+        height: 0px;
+        top: 60px;
+
+        border: 1px solid #d36362;
+    }
+
+
+    .chartDoughnutCourbe{
+        position: absolute;
+        top:90px;
+        left:50px;
+    }
+   
+  /*Animations*/
   @keyframes spin {
   from {transform:rotate(0deg);}
   to {transform:rotate(360deg);}
