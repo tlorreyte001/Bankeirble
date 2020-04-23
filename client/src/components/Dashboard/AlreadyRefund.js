@@ -3,7 +3,7 @@ import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
-import PersonOutlineOutlinedIcon from '@material-ui/icons/PersonOutlineOutlined';
+import APIBC from "../../utils/APIBlockchain";
 
 export class AlreadyRefund extends React.Component {
     constructor(props) {
@@ -14,8 +14,24 @@ export class AlreadyRefund extends React.Component {
     };
 
     componentDidMount() {
-        // setState nb
+        this.blockchainCall();
     };
+
+    blockchainCall = async () => {
+        const {contracts} = await APIBC.loan(JSON.parse(localStorage.getItem("user")).pseudo);
+        let refund = 0;
+        let sum = 0;
+        if (contracts){
+            for(let i = 0; i < contracts.length(); i++){
+                refund = refund + contracts[i].transactions[contracts[i].transactions.length() - 1].remainingAmount;
+                sum = sum + contracts[i].totalAmount;
+            }
+            this.setState({nb: (1-(refund/sum))*100});
+        }
+        else {
+            this.setState({nb: "-"});
+        }
+    }
 
     render() {
         const card = {
@@ -30,8 +46,8 @@ export class AlreadyRefund extends React.Component {
         };
 
         const image = {
-            width: 128,
-            height: 128,
+            width: 32,
+            height: 32,
         };
 
         const gradient = {
@@ -40,15 +56,15 @@ export class AlreadyRefund extends React.Component {
             WebkitTextFillColor: "transparent",};
 
         return (
-            <Card>
+            <Card style={{backgroundColor: "#f3f4f5",}}>
                 <CardContent>
                     <Grid container spacing={3} style={card}>
                         <Grid item xs={4}>
-                            <PersonOutlineOutlinedIcon style={img}/>
+                            <img style={image} src="img/check.png" alt={"user"}/>
                         </Grid>
                         <Grid item xs={8}>
                             <Typography variant="h5" gutterBottom style={gradient}>
-                                {this.state.nb}
+                                {this.state.nb} %
                             </Typography>
                             <Typography color="textSecondary" gutterBottom>
                                 Déjà remboursé
