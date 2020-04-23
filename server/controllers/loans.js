@@ -164,32 +164,33 @@ async function accept_loan (req, res) { // met à jour la bdd après accord d'un
     let findUser = await Users.findOne({_id : user._id});
 
     if (findUser) {
-      let loanId = req.body.loanId;
-      await Loans.findByIdAndUpdate(loanId, {"status": 1, "_idLender": user._id, "date": new Date(Date.now()) }, {useFindAndModify : false}, function (err) { // màj du prêt
+      await Loans.findByIdAndUpdate(req.body.loanId, {"status": 1, "_idLender": user._id, "date": new Date(Date.now()) }, {useFindAndModify : false}, function (err) { // màj du prêt
         // il faudra aussi modifier la date de début du prêt
           if (err) {
               throw err;
           }
       });
       //on génére le contrat correspondant
-      await generate_contract(loanId).then(
-        ()=>{
-          console.log('Contrat généré !');
-        }
-      );
+      let filename = await generate_contract(req.body.loanId);
+      await Loans.findByIdAndUpdate(req.body.loanId, {"contractPath": filename}, {useFindAndModify : false}, function (err) {
+          if (err) {
+              throw err;
+          }
+        });
 
       // hash du contrat généré
       let hash = crypto.createHash('sha256');
-      let filename = await Loans.find({_id: loanId}, {contractPath: true});
-      let contract = fs.readFileSync(filename[0].contractPath);
+      while (!fs.existsSync(filename)) {};
+      let contract = fs.readFileSync(filename);
       let hashContract = crypto.createHash('sha256').update(contract.toString()).digest('hex');
 
       // on renvoie le hash pour le conserver sur la BC
       return res.status(200).json({
-          text: "Success",
-          contractHash: hashContract
+        text: "Success",
+        contractHash: hashContract
       });
     }
+
     else {
       return res.status(401).json({
           text: "Access token is missing or invalid"
@@ -200,9 +201,11 @@ async function accept_loan (req, res) { // met à jour la bdd après accord d'un
 async function generate_contract (loanId) {
   let loan = await Loans.findOne({_id : loanId}); // recuperation du pret a partir de l'id
   let today = `${(new Date().getDate()<10)?`0${new Date().getDate()}`:new Date().getDate()}/${(new Date().getMonth()+1<10)?`0${new Date().getMonth()+1}`:new Date().getMonth()+1}/${new Date().getFullYear()}`
+
   if (loan) {
     let lender = await Users.findOne({_id : loan._idLender}); // preteur
     let borrower = await Users.findOne({_id : loan._idBorrower}); //demandeur
+    let filename = `./files/${makeUniqueId(9)}.pdf`
     // options reltives au pdf
     var options = {
       format: "A3",
@@ -219,21 +222,18 @@ async function generate_contract (loanId) {
         debiteur_naissance: borrower.birthPlace,debiteur_rue: borrower.address.street,debiteur_CP: borrower.address.postcode, debiteur_ville: borrower.address.city,
         montant:loan.amount,mensualite:loan.nbMonths,taux:loan.rate,expiration_date:`${(new Date(loan.expirationDate).getDate()<10)?`0${new Date(loan.expirationDate).getDate()}`:new Date(loan.expirationDate).getDate()}/${(new Date(loan.expirationDate).getMonth()+1<10)?`0${new Date(loan.expirationDate).getMonth()+1}`:new Date(loan.expirationDate).getMonth()+1}/${new Date(loan.expirationDate).getFullYear()}`
       },
-      path: `./files/${makeUniqueId(9)}.pdf`
+      path: filename
     };
+
     //creation du pdf
     pdf.create(document, options)
       .then(async file => {
-        // sauvegarder le path du contrat généré
-        await Loans.findByIdAndUpdate(loanId, {"contractPath": file.filename}, {useFindAndModify : false}, function (err) {
-            if (err) {
-                throw err;
-            }
-        });
+        console.log(`Contrat ${filename} généré !`);
       })
       .catch(error => {
         console.error(error)
       });
+  return filename;
   }
   else {
     return null;
