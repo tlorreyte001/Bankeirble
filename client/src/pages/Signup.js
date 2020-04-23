@@ -5,7 +5,6 @@ import Alert from '@material-ui/lab/Alert';
 import {NavbarBankeirble} from "../components/NavbarBankeirble";
 import Container from "@material-ui/core/Container";
 import Paper from "@material-ui/core/Paper";
-import {FooterB} from "../components/FooterB";
 import Popup from "../components/PopUpConditions";
 
 

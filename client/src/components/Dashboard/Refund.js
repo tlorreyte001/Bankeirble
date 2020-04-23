@@ -13,9 +13,9 @@ export class Refund extends React.Component {
         };
     };
 
-    componentWillMount(): void {
+    componentDidMount() {
         // setState nb
-    }
+    };
 
     render() {
         const card = {
