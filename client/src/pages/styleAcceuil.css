@@ -335,7 +335,6 @@ header{
     transition: all 0.3s ease-in-out;
   }
   .sideBar > nav > a > img{
-    color: #e0881d;
     font-size: 1.4rem;
     margin-right: 0.8rem;
     display: inline-block;
@@ -449,8 +448,17 @@ header{
         margin-left: 30px;
     }
 
+    .card-6{
+        position: absolute;
+        width: 320px;
+        height: 154px;
+        left: 1350px;
+        top: 544px;
+        margin-left: 30px;
+    }
+
     /*charts*/
-    .chart-line{
+    .chart-bar{
         position: absolute;
         width: 830px;
         height: 600px;
@@ -458,10 +466,16 @@ header{
         top: 360px;
     }
 
-    .Base-chart-line{
+    .chartBar > h2{
+       color : rgb(54, 147, 160);
+
+        margin-left:20px;
+    }
+
+    .Base-chart-bar{
         position: absolute;
-        width: 970px;
-        height: 170px;
+        width: 1000px;
+        height: 400px;
         left: 0px;
         top: 0px;
 
@@ -471,7 +485,7 @@ header{
 
     }
 
-    .Base-chart-line:hover{
+    .Base-chart-bar:hover{
         box-shadow: 6px 6px 2.5px rgb(192, 191, 191);
 
     }
@@ -481,7 +495,7 @@ header{
         width: 395px;
         height: 300px;
         left: 330px;
-        top: 585px;
+        top: 830px;
     }
 
     .Base-chart-doughnut{

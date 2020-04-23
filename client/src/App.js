@@ -11,6 +11,7 @@ import { createMuiTheme, ThemeProvider  } from '@material-ui/core/styles';
 import {Loans} from "./pages/Loans";
 import {Moc} from "./pages/Moc";
 import {Dashboard} from "./pages/Dashboard";
+import MiniDrawer from './components/test';
 
 class App extends Component {
   render() {
@@ -50,6 +51,7 @@ class App extends Component {
               <Route exact path="/login" component={Login} />
               <Route exact path="/signup" component={Signup} />
               <PrivateRoute exact path="/home" component={Home} />
+              <Route exact path="/drawer" component={MiniDrawer} />
               <PrivateRoute exact path="/loans" component={Loans} />
               <PrivateRoute exact path="/test" component={Moc} />
               <PrivateRoute exact path="/dashboard" component={Dashboard} />

@@ -1,5 +1,5 @@
 import React from 'react';
-import {ChartLine} from './ChartLine';
+import {ChartBar} from './ChartBar';
 import {Chart} from "./Chart";
 import {NbActiveLoans} from "./Dashboard/NbActiveLoans";
 import {LoanAmount} from "./Dashboard/LoanAmount";
@@ -53,13 +53,21 @@ class ContentArea extends React.Component {
                   <p>Prochain remboursement</p>
                 </div>
                 </div>
+
+                <div class={"card-6"}>
+                  <div class={"Base-1"}>
+                  <img class="imgcard-1" src="./img/star.png" alt="logo" />
+                  <p>Réputation</p>
+                </div>
+                </div>
+
             </div>
 
 
             <div className={"Charts"}>
-                <div className={"chart-line"}>
-                    <div className={"Base-chart-line"}>
-                     <ChartLine />
+                <div className={"chart-bar"}>
+                    <div className={"Base-chart-bar"}>
+                     <ChartBar />
                     </div>
                 </div>
 
