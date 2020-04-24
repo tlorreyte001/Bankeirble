@@ -1,6 +1,4 @@
 import React,{Component} from 'react';
-import { NavLink} from 'react-router-dom';
-import {Link} from 'react-scroll';
 
 
 import './styleAcceuil.css';

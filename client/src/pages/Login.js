@@ -9,7 +9,6 @@ import Alert from "@material-ui/lab/Alert";
 import {NavbarBankeirble} from "../components/NavbarBankeirble";
 import Paper from "@material-ui/core/Paper";
 import Container from "@material-ui/core/Container";
-import {FooterB} from "../components/FooterB";
 
 export class Login extends React.Component {
 

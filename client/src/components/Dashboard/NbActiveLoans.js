@@ -3,7 +3,7 @@ import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
-import PersonOutlineOutlinedIcon from '@material-ui/icons/PersonOutlineOutlined';
+import APIBC from '../../utils/APIBlockchain';
 
 export class NbActiveLoans extends React.Component {
     constructor(props) {
@@ -13,8 +13,13 @@ export class NbActiveLoans extends React.Component {
         };
     };
 
-    componentWillMount(): void {
-        // setState nb
+    componentDidMount() {
+        this.blockchainCall();
+    };
+
+    blockchainCall = async () => {
+        const {nbLoans} = await APIBC.loan(JSON.parse(localStorage.getItem("user")).pseudo);
+        this.setState({nb: nbLoans});
     }
 
     render() {
@@ -30,8 +35,8 @@ export class NbActiveLoans extends React.Component {
         };
 
         const image = {
-            width: 128,
-            height: 128,
+            width: 64,
+            height: 64,
         };
 
         const gradient = {
@@ -40,11 +45,11 @@ export class NbActiveLoans extends React.Component {
             WebkitTextFillColor: "transparent",};
 
         return (
-            <Card>
+            <Card style={{backgroundColor: "#f3f4f5",}}>
                 <CardContent>
                     <Grid container spacing={3} style={card}>
                         <Grid item xs={4}>
-                            <PersonOutlineOutlinedIcon style={img}/>
+                            <img style={image} src="img/user-1.png" alt={"user"}/>
                         </Grid>
                         <Grid item xs={8}>
                             <Typography variant="h5" gutterBottom style={gradient}>

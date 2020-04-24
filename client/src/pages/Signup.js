@@ -5,7 +5,6 @@ import Alert from '@material-ui/lab/Alert';
 import {NavbarBankeirble} from "../components/NavbarBankeirble";
 import Container from "@material-ui/core/Container";
 import Paper from "@material-ui/core/Paper";
-import {FooterB} from "../components/FooterB";
 import Popup from "../components/PopUpConditions";
 
 
@@ -29,7 +28,7 @@ export class Signup extends React.Component {
       const { data, status } =  await API.signup(email, password, lastName, firstName);
         if (status === 200) {
             localStorage.setItem("token", data.token);
-            localStorage.setItem("user", JSON.stringify(data.user));
+            localStorage.setItem("user", data.user);
             window.location = "/home";
         }
     } catch (error) {
