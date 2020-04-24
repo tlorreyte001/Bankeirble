@@ -46,6 +46,7 @@ contract Contract {
   function createContract3(int _currentDate,uint _id) public{
     usersContracts[contractCount][0].currentDate = _currentDate;
     usersContracts[contractCount][0].id = _id;
+    usersContracts[contractCount][0].status = true;
   }
 
   function increaseTrans(uint _id) public{
@@ -55,12 +56,32 @@ contract Contract {
   function transaction1(uint _id,uint _sum) public{
         uint transactionId = nbTransaction[_id];
         if (transactionId==0){
-          usersContracts[_id][transactionId+1].remainingAmount = usersContracts[_id][0].totalAmount - _sum;
-          usersContracts[_id][transactionId+1].remainingDuration = usersContracts[_id][0].duration - 1;
+          uint remainingAmount = usersContracts[_id][0].totalAmount - _sum;
+          if (remainingAmount == 0){
+            usersContracts[_id][transactionId+1].remainingAmount = remainingAmount;
+            usersContracts[_id][transactionId+1].remainingDuration = usersContracts[_id][0].duration - 1;
+            usersContracts[_id][transactionId+1].status = false;
+          }
+          else{
+            usersContracts[_id][transactionId+1].remainingAmount = remainingAmount;
+            usersContracts[_id][transactionId+1].remainingDuration = usersContracts[_id][0].duration - 1;
+            usersContracts[_id][transactionId+1].status = true;
+          }
+          
         }
         else{
-        usersContracts[_id][transactionId+1].remainingAmount = usersContracts[_id][transactionId].remainingAmount - _sum;
-        usersContracts[_id][transactionId+1].remainingDuration = usersContracts[_id][transactionId].remainingDuration - 1;
+          uint remainingAmount = usersContracts[_id][transactionId].remainingAmount - _sum;
+          if (remainingAmount == 0){
+            usersContracts[_id][transactionId+1].remainingAmount = remainingAmount;
+            usersContracts[_id][transactionId+1].remainingDuration = usersContracts[_id][transactionId].remainingDuration - 1;
+            usersContracts[_id][transactionId+1].status = false;
+          }
+          else{
+            usersContracts[_id][transactionId+1].remainingAmount = remainingAmount;
+            usersContracts[_id][transactionId+1].remainingDuration = usersContracts[_id][transactionId].remainingDuration - 1;
+            usersContracts[_id][transactionId+1].status = true;
+          }
+        
         }
   }
 
@@ -134,6 +155,10 @@ contract Contract {
   function getRemainingAmount(uint contratNumber, uint transactionId) public view returns (uint _remainingAmount){
     _remainingAmount = usersContracts[contratNumber][transactionId].remainingAmount;
     return _remainingAmount;
+  }
+  function getStatus(uint contratNumber, uint transactionId) public view returns (bool _status){
+    _status = usersContracts[contratNumber][transactionId].status;
+    return _status;
   }
 
   function getTransactionAmount(uint contratNumber, uint transactionId) public view returns (uint _transactionAmount){
