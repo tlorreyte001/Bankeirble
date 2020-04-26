@@ -95,7 +95,7 @@ export class PopUpForm extends React.Component {
                 );
                 if(status === 200) {
                     try {
-                        let response = await APIBC.addLoan(
+                        APIBC.addLoan(
                             JSON.parse(localStorage.getItem("user")).pseudo,
                             this.props.data.pseudo,
                             this.props.data.rate * 100,
@@ -103,13 +103,16 @@ export class PopUpForm extends React.Component {
                             this.props.data.amount * 100,
                             parseInt(this.format(new Date(this.props.data.expirationDate))),
                             data.contractHash.toString()
-                        );
-                        console.log(response);
-                        if (!response) {
-                            this.props.Success(false);
-                        } else {
-                            this.props.Success(true);
-                        }
+                        ).catch((e) => {
+                            console.log(e);
+                        }).then((status) => {
+                            console.log(status);
+                            if (status) {
+                                this.props.Success(false);
+                            } else {
+                                this.props.Success(true);
+                            }
+                        })
                     } catch (e) {
                         this.props.Success(false);
                         console.log(e);
