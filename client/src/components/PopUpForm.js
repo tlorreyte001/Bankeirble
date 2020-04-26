@@ -93,7 +93,7 @@ export class PopUpForm extends React.Component {
                     localStorage.getItem("token"),
                     this.props.data._id
                 );
-                if (status === 200){
+                if(status === 200) {
                     try {
                         let response = await APIBC.addLoan(
                             JSON.parse(localStorage.getItem("user")).pseudo,
@@ -105,28 +105,26 @@ export class PopUpForm extends React.Component {
                             data.contractHash.toString()
                         );
                         console.log(response);
-                        if (!response){
+                        if (!response) {
                             this.props.Success(false);
-                        }
-                        else {
+                        } else {
                             this.props.Success(true);
                         }
-                    }
-                    catch(e){
+                    } catch (e) {
                         this.props.Success(false);
                         console.log(e);
                     }
                 }
-            }
-            catch (error) {
-                if (error.response){
+            } catch (error) {
+                if (error.response) {
                     this.props.Success(false);
                 }
             }
-
-
-
         }
+
+
+
+
     };
 
     format = (date) => {
