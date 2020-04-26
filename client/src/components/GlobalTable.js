@@ -31,7 +31,6 @@ export class GlobalTable extends React.Component {
 
     componentDidMount() {
         this.handleToggle();
-        console.log(this.state.rows)
     }
 
     get = async () => {
