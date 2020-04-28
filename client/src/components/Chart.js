@@ -82,26 +82,26 @@ export class Chart extends React.Component{
     }
 
     componentDidMount = async() => {
-        try{
-            // let {response} = await APIBC.history(JSON.parse(localStorage.getItem("user")).pseudo);
-            const {nbLoans, reputation} = await APIBC.loan(JSON.parse(localStorage.getItem("user")).pseudo);
-            console.log(nbLoans, reputation);
-
-            // const {response} = await APIBC.history(JSON.parse(localStorage.getItem("user")).pseudo);
-            // console.log(response);
-
-
-            // let fakeRates = {rate: [65, 59, 80, 81, 56],
-            //      date:['Janvier', 'Février', 'Mars', 'Avril', 'Mai']
-            //     };
-
-            // // let data = await response.json();
-            // this.setState(state => (state.chartData.datasets[0].data = fakeRates.rate, state));
-            // this.setState(state => (state.chartData.labels = fakeRates.date, state));
-            // console.log(this.state);
-        } catch(e){
-            console.log(e)
-        }
+        // try{
+        //     // let {response} = await APIBC.history(JSON.parse(localStorage.getItem("user")).pseudo);
+        //     const {nbLoans, reputation} = await APIBC.loan(JSON.parse(localStorage.getItem("user")).pseudo);
+        //     console.log(nbLoans, reputation);
+        //
+        //     // const {response} = await APIBC.history(JSON.parse(localStorage.getItem("user")).pseudo);
+        //     // console.log(response);
+        //
+        //
+        //     // let fakeRates = {rate: [65, 59, 80, 81, 56],
+        //     //      date:['Janvier', 'Février', 'Mars', 'Avril', 'Mai']
+        //     //     };
+        //
+        //     // // let data = await response.json();
+        //     // this.setState(state => (state.chartData.datasets[0].data = fakeRates.rate, state));
+        //     // this.setState(state => (state.chartData.labels = fakeRates.date, state));
+        //     // console.log(this.state);
+        // } catch(e){
+        //     console.log(e)
+        // }
     }
     render(){
         return(

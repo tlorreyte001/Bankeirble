@@ -23,16 +23,10 @@ export class NbActiveLoans extends React.Component {
     };
 
     blockchainCall = async () => {
-        try{
-        const {nbLoans} = await APIBC.loan(JSON.parse(localStorage.getItem("user")).pseudo);
+        console.log(JSON.parse(localStorage.getItem("user")).pseudo);
+        let {nbLoans} = await APIBC.loan(JSON.parse(localStorage.getItem("user")).pseudo);
         this.setState({nb: nbLoans});
-        }
-        catch(e){
-            console.log(e)
-        }
     }
-
-    
 
     render() {
         const card = {

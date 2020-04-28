@@ -14,17 +14,12 @@ export class ProchainRemboursement extends React.Component {
     };
 
     componentDidMount() {
-        this.blockchainCall();
+        // this.blockchainCall();
     };
 
     blockchainCall = async () => {
-        try{
         const {Time} = await APIBC.loan(JSON.parse(localStorage.getItem("user")).pseudo);
         this.setState({time: Time});
-        }
-        catch(e){
-            console.log(e)
-        }
     }
 
     render() {

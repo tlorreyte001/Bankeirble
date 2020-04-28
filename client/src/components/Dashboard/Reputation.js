@@ -18,13 +18,8 @@ export class Reputation extends React.Component {
     };
 
     blockchainCall = async () => {
-        try{
         const {reputation} = await APIBC.loan(JSON.parse(localStorage.getItem("user")).pseudo);
         this.setState({rep: reputation});
-        }
-        catch(e){
-            console.log(e)
-        }
     }
 
     render() {
