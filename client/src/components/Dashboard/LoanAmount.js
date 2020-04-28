@@ -58,7 +58,7 @@ export class LoanAmount extends React.Component {
                         <Grid item xs={4}>
                             <img style={image} src="img/coins.png" alt={"user"}/>
                         </Grid>
-                        <Grid item xs={8}>
+                        <Grid item xs={8} sm={4}>
                             <Typography variant="h5" gutterBottom style={gradient}>
                                 {this.state.nb} €
                             </Typography>

@@ -5,7 +5,12 @@ import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import APIBC from '../../utils/APIBlockchain';
 
+
+
+
 export class NbActiveLoans extends React.Component {
+
+    
     constructor(props) {
         super(props);
         this.state = {
@@ -18,13 +23,23 @@ export class NbActiveLoans extends React.Component {
     };
 
     blockchainCall = async () => {
+        try{
         const {nbLoans} = await APIBC.loan(JSON.parse(localStorage.getItem("user")).pseudo);
         this.setState({nb: nbLoans});
+        }
+        catch(e){
+            console.log(e)
+        }
     }
+
+    
 
     render() {
         const card = {
             margin: 'auto',
+            root: {
+                flexGrow: 1,
+                }
         };
 
         const img = {
@@ -44,14 +59,20 @@ export class NbActiveLoans extends React.Component {
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",};
 
+      
+            
+     
+
+
         return (
+           
             <Card style={{backgroundColor: "#f3f4f5",}}>
                 <CardContent>
                     <Grid container spacing={3} style={card}>
                         <Grid item xs={4}>
                             <img style={image} src="img/user-1.png" alt={"user"}/>
                         </Grid>
-                        <Grid item xs={8}>
+                        <Grid item xs={8} sm={4}>
                             <Typography variant="h5" gutterBottom style={gradient}>
                                 {this.state.nb}
                             </Typography>
@@ -62,6 +83,7 @@ export class NbActiveLoans extends React.Component {
                     </Grid>
                 </CardContent>
             </Card>
+            
         );
     }
 }

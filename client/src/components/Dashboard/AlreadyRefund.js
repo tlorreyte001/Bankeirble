@@ -36,6 +36,9 @@ export class AlreadyRefund extends React.Component {
     render() {
         const card = {
             margin: 'auto',
+            root: {
+                flexGrow: 1,
+                }
         };
 
         const img = {
@@ -62,7 +65,7 @@ export class AlreadyRefund extends React.Component {
                         <Grid item xs={4}>
                             <img style={image} src="img/check.png" alt={"user"}/>
                         </Grid>
-                        <Grid item xs={8}>
+                        <Grid item xs={8} sm={4}>
                             <Typography variant="h5" gutterBottom style={gradient}>
                                 {this.state.nb} %
                             </Typography>

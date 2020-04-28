@@ -12,6 +12,7 @@ import {Loans} from "./pages/Loans";
 import {Moc} from "./pages/Moc";
 import {Dashboard} from "./pages/Dashboard";
 import MiniDrawer from './components/test';
+import HistoryTable from "./components/HistoryTable";
 
 class App extends Component {
   render() {
@@ -52,6 +53,7 @@ class App extends Component {
               <Route exact path="/signup" component={Signup} />
               <PrivateRoute exact path="/home" component={Home} />
               <Route exact path="/drawer" component={MiniDrawer} />
+              <Route exact path="/historyTable" component={HistoryTable} />
               <PrivateRoute exact path="/loans" component={Loans} />
               <PrivateRoute exact path="/test" component={Moc} />
               <PrivateRoute exact path="/dashboard" component={Dashboard} />

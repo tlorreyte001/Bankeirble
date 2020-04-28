@@ -15,14 +15,14 @@ button{
     /*font-family: 'Poppins', sans-serif;*/
 
 }
-header{
+/* header{
     display: flex;
     width: 90%;
     margin: auto;
     height: 10vh;
     align-items: center;
+} */
 
-}
 .logo-container,.account-icon,.sectionsBar{
     display: flex;
     
@@ -314,8 +314,8 @@ header{
   /*Side Bar*/
   .sideBar {
     background: #3f3f3f;
-    width: 270px;
-    height: 1500px;
+    width: 240px;
+    height: auto;
     position: absolute;
     top: 0;
     bottom: 0;
@@ -361,13 +361,7 @@ header{
         left:330px;
         top:10px;
     }
-    .card-1{
-        position: absolute;
-        width: 320px;
-        height: 154px;
-        left: 330px;
-        top: 150px;
-    }
+  
 
     .Base-1{
         position: absolute;
@@ -376,7 +370,7 @@ header{
         left: 0px;
         top: 0px;
 
-        background: #f3f0f0;
+        background: #f3f4f5;
         border-radius: 10px;
 
         box-shadow: 2px 2px .5px rgb(192, 191, 191);
@@ -412,58 +406,66 @@ header{
         width: 40px;
         height: 40px;        
     }
-    .card-2{
-        position: absolute;
+    .card-1{
+        /* position: relative; */
         width: 320px;
-        height: 154px;
-        left: 670px;
-        top: 150px;
-        margin-left: 10px;
+        /* height: 154px; */
+        /* left: 30px; */
+        /* top: 30px; */
+    }
+    .card-2{
+        /* position: relative;         */
+        width: 320px;
+        /* height: 154px; */
+        /* left: 370px;
+        top: -123px; */
+        /* margin-left: 10px; */
 
     }
 
     .card-3{
-        position: absolute;
+        /* position: relative;         */
+
         width: 320px;
-        height: 154px;
-        left: 1010px;
-        top: 150px;
-        margin-left: 20px;
+        /* height: 154px; */
+        /* left: 710px;
+        top: -276px;
+        margin-left: 20px; */
 
     }
     .card-4{
-        position: absolute;
+        /* position: relative;                 */
         width: 320px;
-        height: 154px;
-        left: 1350px;
-        top: 150px;
-        margin-left: 30px;
+        /* height: 154px; */
+        /* left: 1050px;
+        top: -430px;
+        margin-left: 30px; */
     }
     .card-5{
-        position: absolute;
+        position: relative;                
         width: 320px;
         height: 154px;
-        left: 1350px;
-        top: 360px;
+        left: 1050px;
+        top: -400px;
         margin-left: 30px;
     }
 
     .card-6{
-        position: absolute;
+        position: relative;            
         width: 320px;
         height: 154px;
-        left: 1350px;
-        top: 544px;
+        left: 1050px;
+        top: -350px;
         margin-left: 30px;
     }
 
     /*charts*/
     .chart-bar{
-        position: absolute;
+        position: relative;                
         width: 830px;
         height: 600px;
-        left: 330px;
-        top: 360px;
+        left: 30px;
+        top: -708px;
     }
 
     .chartBar > h2{
@@ -475,11 +477,11 @@ header{
     .Base-chart-bar{
         position: absolute;
         width: 1000px;
-        height: 400px;
+        height: 300px;
         left: 0px;
         top: 0px;
 
-        background: #f3f0f0;
+        background: #f3f4f5;
         border-radius: 10px;
         box-shadow: 2px 2px .5px rgb(192, 191, 191);
 
@@ -491,11 +493,11 @@ header{
     }
 
     .chart-doughnut{
-        position: absolute;
+        position: relative;        
         width: 395px;
         height: 300px;
-        left: 330px;
-        top: 830px;
+        left: 30px;
+        top: -845px;
     }
 
     .Base-chart-doughnut{
@@ -505,7 +507,7 @@ header{
         left: 0px;
         top: 0px;
 
-        background: #f3f0f0;
+        background: #f3f4f5;
         border-radius: 10px;
 
         box-shadow: 2px 2px .5px rgb(192, 191, 191);
@@ -546,6 +548,14 @@ header{
         position: absolute;
         top:90px;
         left:50px;
+    }
+
+    .history-table{
+        position: relative;        
+        width: 395px;
+        height: 300px;
+        left: 400px;
+        top: -845px;
     }
    
   /*Animations*/
