@@ -71,8 +71,8 @@ export class AddLoan extends React.Component {
 
     blockchainLoan = async () => {
         let {nbLoans, reputation} = await APIBC.loan(JSON.parse(localStorage.getItem("user")).pseudo);
-        this.setState({nbLoans: nbLoans});
-        this.setState({reputation: reputation});
+        this.setState({nbLoans: parseInt(nbLoans)});
+        this.setState({reputation: parseInt(reputation)});
     };
 
     handleClickOpen = () => {
