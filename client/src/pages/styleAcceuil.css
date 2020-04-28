@@ -518,29 +518,21 @@ button{
         box-shadow: 6px 6px 2.5px rgb(192, 191, 191);
 
     }
-    .Base-chart-doughnut > p{
-        position: absolute;
-        width: 200px;
-        height: 24px;
-        left: 30px;
-        top: 25px;
-
+    .doughnutTitle{
+       
         
-        font-size: 14px;
+        font-size: 24px;
         line-height: 24px;
 
         /* identical to box height, or 171% */
         letter-spacing: 0.01em;
 
-        color: #000000; 
+        color: #d36362; 
 }
     .diver{
-        position: absolute;
-        width: 395px;
-        height: 0px;
-        top: 60px;
+       
 
-        border: 1px solid #d36362;
+        border: 1px solid #616E7F;
     }
 
 

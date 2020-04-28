@@ -1,75 +1,10 @@
 import React from 'react';
-import {Bar} from 'react-chartjs-2';
 import {Line} from 'react-chartjs-2';
 
 import API from "../utils/API";
 
 
 export class ChartBar extends React.Component{
-
-//     state = {
-//         chartData : {
-//             labels: [],
-//             datasets: [
-//               {
-//                 label: 'Mes taux',
-//                 backgroundColor: 'rgba(255,99,132,0.2)',
-//                 borderColor: 'rgba(255,99,132,1)',
-//                 borderWidth: 1,
-//                 hoverBackgroundColor: 'rgba(255,99,132,0.4)',
-//                 hoverBorderColor: 'rgba(255,99,132,1)',
-//                 data: []
-//               }
-//             ]
-//           }
-//         };
-//     async componentDidMount() {
-//         let dates = [];
-//         let rates = [];
-//         try{
-//             let response = await API.rate(localStorage.getItem("token"));
-//             // console.log('Response',response);
-
-//             for (let res of response.data.rates) {
-//                 dates.push(res.date);
-//                 rates.push(res.rate);
-//             }         
-
-//             // let fakeRates = {rate: [65, 59, 80, 81, 56, 55, 40, 30, 50, 60, 70, 40],
-//             //      date:['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet','Août', 'Septembre', 'Octobre', 'Novembre','Decembre']
-//             //     };
-//             // let data = await response.json();
-//             // this.setState(state => (state.chartData.datasets[0].data = fakeRates.rate, state));
-//             // this.setState(state => (state.chartData.labels = fakeRates.date, state));
-
-//             this.setState(state => (state.chartData.datasets[0].data = rates, state));
-//             this.setState(state => (state.chartData.labels = dates, state));
-//             // console.log(this.state);
-
-//             // , chartData.labels: fakeRates.date});
-//         } catch(e){
-//             console.log(e)
-//         }
-//     }
-
-// //   displayName: 'BarExample',
-
-//     render(){
-//         return(
-//             <div className={"chartBar"}>
-//             <h2>Courbe de taux</h2>
-//         <Bar
-//           data={this.state.chartData}
-//           width={100}
-//           height={250}
-//           options={{
-//             maintainAspectRatio: false
-//           }}
-//         />
-//             </div>
-//         );
-// }
-// }
 
 
    state={
@@ -105,7 +40,7 @@ export class ChartBar extends React.Component{
       let rates = [];
       try{
           let response = await API.rate(localStorage.getItem("token"));
-          console.log('Response',response);
+        //   console.log('Response',response);
 
           for (let res of response.data.rates) {
               dates.push(res.date);
@@ -121,7 +56,7 @@ export class ChartBar extends React.Component{
 
           this.setState(state => (state.chartData.datasets[0].data = rates, state));
           this.setState(state => (state.chartData.labels = dates, state));
-          console.log(this.state);
+        //   console.log(this.state);
 
           // , chartData.labels: fakeRates.date});
       } catch(e){
@@ -137,7 +72,7 @@ export class ChartBar extends React.Component{
  <Line         
                 data={this.state.chartData}
                 width={800}
-                height={300}
+                height={400}
                 options={{maintainAspectRatio:false}}
                 >
             </Line>

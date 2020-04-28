@@ -1,6 +1,9 @@
 import React from 'react';
+
 import {ChartBar} from './ChartBar';
 import {Chart} from "./Chart";
+import HistoryTable from "./HistoryTable";
+
 import {NbActiveLoans} from "./Dashboard/NbActiveLoans";
 import {LoanAmount} from "./Dashboard/LoanAmount";
 import {Refund} from "./Dashboard/Refund";
@@ -62,12 +65,12 @@ class ContentArea extends React.Component {
                 
                  
                 <Grid container item xs={12} spacing={3}>           
-                    <Grid item xs={12} sm={9}>
+                    <Grid item xs={12} sm={8}>
                     <Paper className={useStyles.paper}> <ChartBar /></Paper>
                     </Grid>
 
-                    <Grid item xs={3} sm={3}>
-                    <Paper className={useStyles.paper}>  <p> Mes prêts en cours</p>
+                    <Grid item xs={3} sm={4}>
+                    <Paper className={useStyles.paper}>  <p className={"doughnutTitle"}> Mes prêts en cours</p>
                     <div className={"diver"} />
                     <div>
                      <Chart />
@@ -75,8 +78,11 @@ class ContentArea extends React.Component {
                     
                     </Paper>
                     </Grid>
+                </Grid>
 
-                    {/* <Grid direction="column" container spacing={3} item xs={6} sm={3} justify="flex-start">
+
+                <Grid container item xs={12} spacing={3}>   
+                    <Grid direction="column" container item xs={3} spacing={3}>
 
                         <Grid item>
                         <Paper className={useStyles.paper}><ProchainRemboursement /></Paper>
@@ -86,10 +92,31 @@ class ContentArea extends React.Component {
                         <Paper className={useStyles.paper}>  <Reputation /></Paper>
                         </Grid>
 
+                    </Grid > 
 
-                    </Grid>  */}
+                    <Grid item xs={12} sm={9}  >
+                        <Paper className={useStyles.paper}><HistoryTable /></Paper>
+                    </Grid>
+                        
                 </Grid>
-                <Grid direction="column" container spacing={3} item xs={6} sm={3} justify="flex-start">
+
+                {/* <Grid container item xs={12} spacing={3}>           
+
+                    <Grid item xs={6} sm={3}>
+                    <Paper className={useStyles.paper}><ProchainRemboursement /></Paper>
+                    </Grid>
+
+                    <Grid item xs={6} sm={3}>
+                    <Paper className={useStyles.paper}> <Reputation /></Paper>
+                    </Grid>
+
+                    <Grid item xs={12} sm={6}>
+                    <Paper className={useStyles.paper}><HistoryTable /></Paper>
+                    </Grid>
+
+                </Grid>  */}
+
+                {/* <Grid direction="row" container spacing={3} item xs={6} sm={3} justify="flex-start">
 
                     <Grid item>
                     <Paper className={useStyles.paper}><ProchainRemboursement /></Paper>
@@ -100,7 +127,7 @@ class ContentArea extends React.Component {
                     </Grid>
 
 
-                </Grid> 
+                </Grid>  */}
 
             </Grid>
             </div>
