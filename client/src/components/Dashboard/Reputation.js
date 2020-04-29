@@ -5,16 +5,11 @@ import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import APIBC from '../../utils/APIBlockchain';
 
-
-
-
-export class NbActiveLoans extends React.Component {
-
-    
+export class Reputation extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            nb: 0,
+            rep: 0,
         };
     };
 
@@ -23,17 +18,13 @@ export class NbActiveLoans extends React.Component {
     };
 
     blockchainCall = async () => {
-        console.log(JSON.parse(localStorage.getItem("user")).pseudo);
-        let {nbLoans} = await APIBC.loan(JSON.parse(localStorage.getItem("user")).pseudo);
-        this.setState({nb: nbLoans});
+        const {reputation} = await APIBC.loan(JSON.parse(localStorage.getItem("user")).pseudo);
+        this.setState({rep: reputation});
     }
 
     render() {
         const card = {
             margin: 'auto',
-            root: {
-                flexGrow: 1,
-                }
         };
 
         const img = {
@@ -53,31 +44,24 @@ export class NbActiveLoans extends React.Component {
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",};
 
-      
-            
-     
-
-
         return (
-           
             <Card style={{backgroundColor: "#f3f4f5",}}>
                 <CardContent>
                     <Grid container spacing={3} style={card}>
                         <Grid item xs={4}>
-                            <img style={image} src="img/user-1.png" alt={"user"}/>
+                            <img style={image} src="img/star.png" alt={"star"}/>
                         </Grid>
-                        <Grid item xs={8} sm={4}>
+                        <Grid item xs={8}>
                             <Typography variant="h5" gutterBottom style={gradient}>
-                                {this.state.nb}
+                                {this.state.rep}
                             </Typography>
                             <Typography color="textSecondary" gutterBottom>
-                                Mes prêts en cours
+                            Réputation 
                             </Typography>
                         </Grid>
                     </Grid>
                 </CardContent>
             </Card>
-            
         );
     }
 }

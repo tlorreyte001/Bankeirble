@@ -18,11 +18,11 @@ export class Refund extends React.Component {
     };
 
     blockchainCall = async () => {
-        const {contracts} = await APIBC.loan(JSON.parse(localStorage.getItem("user")).pseudo);
+        const {contracts} = await APIBC.history(JSON.parse(localStorage.getItem("user")).pseudo);
         let sum = 0;
         if (contracts){
-            for(let i = 0; i < contracts.length(); i++){
-                sum = sum + contracts[i].transactions[contracts[i].transactions.length() - 1].remainingAmount;
+            for(let i = 0; i < contracts.length; i++){
+                sum = sum + parseInt(contracts[i].transactions[contracts[i].transactions.length - 1].remainingAmount)/100;
             }
             this.setState({nb: sum});
         }
@@ -31,6 +31,9 @@ export class Refund extends React.Component {
     render() {
         const card = {
             margin: 'auto',
+            root: {
+                flexGrow: 1,
+            }
         };
 
         const img = {
@@ -57,7 +60,7 @@ export class Refund extends React.Component {
                         <Grid item xs={4}>
                             <img style={image} src="img/credit-card.png" alt={"user"}/>
                         </Grid>
-                        <Grid item xs={8}>
+                        <Grid item xs={8} sm={4}>
                             <Typography variant="h5" gutterBottom style={gradient}>
                                 {this.state.nb} €
                             </Typography>

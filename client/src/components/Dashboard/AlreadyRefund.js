@@ -23,10 +23,10 @@ export class AlreadyRefund extends React.Component {
         let sum = 0;
         if (contracts){
             for(let i = 0; i < contracts.length(); i++){
-                refund = refund + contracts[i].transactions[contracts[i].transactions.length() - 1].remainingAmount;
-                sum = sum + contracts[i].totalAmount;
+                refund = refund + parseInt(contracts[i].transactions[contracts[i].transactions.length() - 1].remainingAmount)/100;
+                sum = sum + parseInt(contracts[i].totalAmount)/100;
             }
-            this.setState({nb: (1-(refund/sum))*100});
+            this.setState({nb: (1-(Math.round(refund/sum*100)/100))*100});
         }
         else {
             this.setState({nb: "-"});
@@ -36,6 +36,9 @@ export class AlreadyRefund extends React.Component {
     render() {
         const card = {
             margin: 'auto',
+            root: {
+                flexGrow: 1,
+                }
         };
 
         const img = {
@@ -62,7 +65,7 @@ export class AlreadyRefund extends React.Component {
                         <Grid item xs={4}>
                             <img style={image} src="img/check.png" alt={"user"}/>
                         </Grid>
-                        <Grid item xs={8}>
+                        <Grid item xs={8} sm={4}>
                             <Typography variant="h5" gutterBottom style={gradient}>
                                 {this.state.nb} %
                             </Typography>

@@ -24,14 +24,20 @@ export class GlobalTable extends React.Component {
             form: false,
             error: false,
             openPopUp: false,
-            dataSelected : [],
+            dataSelected : {
+                _id : "",
+                amount: 0,
+                nbMonths: 0,
+                rate: "",
+                expirationDate: new Date(),
+                pseudo: ""
+            },
             loanTable : []
         };
     }
 
     componentDidMount() {
         this.handleToggle();
-        console.log(this.state.rows)
     }
 
     get = async () => {
@@ -77,8 +83,13 @@ export class GlobalTable extends React.Component {
 
     handleClickOpen = (event) => {
         this.checkInfo();
-        this.setState({dataSelected: this.state.data[event.target.offsetParent.id]});
-        this.setState({openPopUp: true});
+        let data = this.state.data[event.target.offsetParent.id];
+        this.setState(
+            {dataSelected: data},
+            () => {
+                this.setState({openPopUp: true});
+                console.log(this.state.dataSelected);
+            });
     };
 
     handleClose = () => {
