@@ -51,26 +51,27 @@ export class GlobalTable extends React.Component {
                 temp2.push(data.loans[i].pseudo);
             }
             this.setState({pseudos: temp2});
-            await this.bLoanTable();
-
-            let infos = this.state.infos;
-            for (let i = 0; i < data.loans.length; i++) {
-                let finalAmount = Math.round(data.loans[i].amount * (1 + 0.01 * data.loans[i].rate) * 100) / 100;
-                let finalDiff = Math.round(finalAmount - data.loans[i].amount);
-                temp.push([
-                    i,
-                    data.loans[i].pseudo,
-                    data.loans[i].amount.toString() + " €",
-                    data.loans[i].nbMonths + " mois",
-                    data.loans[i].rate.toString() + " %",
-                    finalAmount.toString() + " €",
-                    finalDiff.toString() + " €",
-                    data.loans[i].expirationDate,
-                    infos[i],
-                    data.loans[i]._id
-                ]);
-            }
-            this.setState({rows: temp});
+            this.bLoanTable().then(() => {
+                let infos = this.state.infos;
+                for (let i = 0; i < data.loans.length; i++) {
+                    let finalAmount = Math.round(data.loans[i].amount * (1 + 0.01 * data.loans[i].rate) * 100) / 100;
+                    let finalDiff = Math.round(finalAmount - data.loans[i].amount);
+                    temp.push([
+                        i,
+                        data.loans[i].pseudo,
+                        data.loans[i].amount.toString() + " €",
+                        data.loans[i].nbMonths + " mois",
+                        data.loans[i].rate.toString() + " %",
+                        finalAmount.toString() + " €",
+                        finalDiff.toString() + " €",
+                        data.loans[i].expirationDate,
+                        infos[i],
+                        data.loans[i]._id
+                    ]);
+                }
+                this.setState({rows: temp});
+                console.log(this.state.rows);
+            });
 
         } catch (error) {
             //if (error.response.status === 400){
@@ -149,9 +150,8 @@ export class GlobalTable extends React.Component {
     // -------------- BlockChain Functions ---------------- //
     bLoanTable = async () => {
         let temp = await APIBC.loanTable(this.state.pseudos);
-        this.setState({infos: temp});
-        console.log(this.state.pseudos);
         console.log(temp);
+        await this.setState({infos: temp});
     };
     // -------------- -------------------- ---------------- //
 

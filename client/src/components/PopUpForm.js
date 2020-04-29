@@ -94,11 +94,13 @@ export class PopUpForm extends React.Component {
                     this.props.data._id
                 );
                 if(status === 200) {
+                    console.log(data.contractHash);
+                    console.log(data.contractHash.toString());
                     try {
                         APIBC.addLoan(
                             JSON.parse(localStorage.getItem("user")).pseudo,
                             this.props.data.pseudo,
-                            this.props.data.rate * 100,
+                            Math.round(this.props.data.rate * 100),
                             this.props.data.nbMonths,
                             this.props.data.amount * 100,
                             parseInt(this.format(new Date(this.props.data.expirationDate))),
