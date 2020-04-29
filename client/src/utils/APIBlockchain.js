@@ -16,6 +16,11 @@ export default {
         return {nbLoans: nbLoans, reputation: reputation};
     },
 
+    nbLoans: async function(pseudo){
+        let nbLoans = contract.methods.nbLoans(pseudo).call((err,result)=>{return result;});
+        return nbLoans;
+    },
+
     // /blockchain/transaction Ajoute une transaction à un contrat
     transaction: async function(contractId, transactionAmount, date) { // date : yyyymmdd
         let status = await contract.methods.transaction2(contractId, date).send({ from : account1}).then(contract.methods.transaction1(contractId, transactionAmount).send({ from : account1}).then(contract.methods.increaseTrans(contractId).send({ from : account1}))).then(result=>{return true;}).catch(err => {return false;});
@@ -142,7 +147,6 @@ export default {
                 if (result == 1){
                     let borrower = await contract.methods.getBorrower(i).call((err,result)=>{result=result;}).then(result=>{return result;});
                     for (let transaction = 0; transaction<nbTransaction; transaction++){
-                        console.log("transaction"+transaction);
                         history.contracts[j].transactions.push({
                             transactionId: transaction,
                             status:"lender",
