@@ -16,6 +16,11 @@ export default {
         return {nbLoans: nbLoans, reputation: reputation};
     },
 
+    nbLoans: async function(pseudo){
+        let nbLoans = contract.methods.nbLoans(pseudo).call((err,result)=>{return result;});
+        return nbLoans;
+    },
+
     // /blockchain/transaction Ajoute une transaction à un contrat
     transaction: async function(contractId, transactionAmount, date) { // date : yyyymmdd
         let status = await contract.methods.transaction2(contractId, date).send({ from : account1}).then(contract.methods.transaction1(contractId, transactionAmount).send({ from : account1}).then(contract.methods.increaseTrans(contractId).send({ from : account1}))).then(result=>{return true;}).catch(err => {return false;});
@@ -73,7 +78,7 @@ export default {
                             remainingAmount = prevision.contracts[j].totalAmount;
                         }
                         let nbRemainingTransaction = parseInt(remainingAmount,10)/installment;
-                        for (let transaction = 1; transaction<nbRemainingTransaction+1; transaction++){
+                        for (let transaction = 0; transaction<nbRemainingTransaction; transaction++){
                             prevision.contracts[j].transactions.push({
                                 status:"lender",
                                 transactionAmount: installment,
@@ -98,7 +103,7 @@ export default {
                             remainingAmount = prevision.contracts[j].totalAmount;
                         }
                         let nbRemainingTransaction = parseInt(remainingAmount,10)/installment;
-                        for (let transaction = 1; transaction<nbRemainingTransaction+1; transaction++){
+                        for (let transaction = 0; transaction<nbRemainingTransaction; transaction++){
                             prevision.contracts[j].transactions.push({
                                 status:"borrower",
                                 transactionAmount: installment,
@@ -138,11 +143,10 @@ export default {
                     transactions: []
                 });
                 let nbTransaction = await contract.methods.getNbTransaction(i).call((err,result)=>{result=result;}).then(result=>{return result;});
-                nbTransaction = parseInt(nbTransaction,10)+1;
+                nbTransaction = parseInt(nbTransaction,10);
                 if (result == 1){
                     let borrower = await contract.methods.getBorrower(i).call((err,result)=>{result=result;}).then(result=>{return result;});
-                    for (let transaction = 1; transaction<nbTransaction+1; transaction++){
-                        console.log("transaction"+transaction);
+                    for (let transaction = 0; transaction<nbTransaction; transaction++){
                         history.contracts[j].transactions.push({
                             transactionId: transaction,
                             status:"lender",
@@ -158,7 +162,7 @@ export default {
                 }
                 else if(result == 2){
                     let lender = await contract.methods.getLender(i).call((err,result)=>{result=result;}).then(result=>{return result;});
-                    for (let transaction = 1; transaction<nbTransaction+1; transaction++){
+                    for (let transaction = 0; transaction<nbTransaction; transaction++){
                         history.contracts[j].transactions.push({
                             transactionId: transaction,
                             status:"borrower",
