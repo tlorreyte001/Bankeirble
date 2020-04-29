@@ -205,7 +205,7 @@ async function generate_contract (loanId) {
   if (loan) {
     let lender = await Users.findOne({_id : loan._idLender}); // preteur
     let borrower = await Users.findOne({_id : loan._idBorrower}); //demandeur
-    let filename = `./files/${makeUniqueId(9)}.pdf`
+    let filename = `./files/${loanId.toString()}.pdf`
     // options reltives au pdf
     var options = {
       format: "A3",
@@ -240,15 +240,15 @@ async function generate_contract (loanId) {
   }
 }
 
-function makeUniqueId(length) {
-  var result           = '';
-  var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  var charactersLength = characters.length;
-  for ( var i = 0; i < length; i++ ) {
-     result += characters.charAt(Math.floor(Math.random() * charactersLength));
-  }
-  return result;
-}
+// function makeUniqueId(length) {
+//   var result           = '';
+//   var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+//   var charactersLength = characters.length;
+//   for ( var i = 0; i < length; i++ ) {
+//      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+//   }
+//   return result;
+// }
 
 async function remove_loan(req, res) { // supprime une demande de prêt lorsque la requête est effectuée par le demandeur (bien sûr !)
 
