@@ -6,7 +6,7 @@ const cors = require('cors');
 const app = express();
 
 //Connexion à la base de données
-mongoose.connect("mongodb://86.234.213.17:27017/db", { useNewUrlParser: true,  useUnifiedTopology: true } );
+mongoose.connect("mongodb://myUserAdmin:Bankeirble@86.234.213.17:27017/admin", { useNewUrlParser: true,  useUnifiedTopology: true } );
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {

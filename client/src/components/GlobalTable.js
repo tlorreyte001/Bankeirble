@@ -150,8 +150,17 @@ export class GlobalTable extends React.Component {
     // -------------- BlockChain Functions ---------------- //
     bLoanTable = async () => {
         let temp = await APIBC.loanTable(this.state.pseudos);
-        console.log(temp);
-        await this.setState({infos: temp});
+        let temp2 = [];
+        let result = []
+        for (let i = 0; i < this.state.pseudos.length; i++){
+            temp2.push(await APIBC.refundCaracts(this.state.pseudos[i]));
+            result[i] = {
+                ...temp[i],
+                ...temp2[i],
+            };
+        }
+        console.log(result);
+        await this.setState({infos: result});
     };
     // -------------- -------------------- ---------------- //
 
