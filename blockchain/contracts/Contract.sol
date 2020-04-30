@@ -67,7 +67,7 @@ contract Contract {
             usersContracts[contractNumber][transactionId+1].remainingDuration = usersContracts[contractNumber][0].duration - 1;
             usersContracts[contractNumber][transactionId+1].status = true;
           }
-          
+
         }
         else{
           uint remainingAmount = usersContracts[contractNumber][transactionId].remainingAmount - _sum;
@@ -81,7 +81,7 @@ contract Contract {
             usersContracts[contractNumber][transactionId+1].remainingDuration = usersContracts[contractNumber][transactionId].remainingDuration - 1;
             usersContracts[contractNumber][transactionId+1].status = true;
           }
-        
+
         }
   }
 
@@ -251,6 +251,51 @@ contract Contract {
     }
     return reput;
   }
+
+  function getRefundRate (string memory user) public view returns (uint percentage){
+    uint nb = 0;
+    uint refunds = 0;
+    uint percentage = 100;
+    for (uint i=0; i<contractCount; i++){
+      if (compareStrings(user,usersContracts[i][0].borrower)){
+        for (uint j=1; j<nbTransaction[i]+1;j++){
+          nb++;
+          if (dateDiff(usersContracts[i][j].theoricalDate,usersContracts[i][j].currentDate)<=0){
+            refunds++;
+          }
+        }
+      }
+    }
+    if (nb>0){
+      percentage = refunds*100 / nb;
+    }
+    return  percentage;
+  }
+
+  function getDelayAverage (string memory user) public view returns (int average){
+    int nb = 0;
+    int totalDelay = 0;
+    int average =0;
+    for (uint i=0; i<contractCount; i++){
+      if (compareStrings(user,usersContracts[i][0].borrower)){
+        for (uint j=1; j<nbTransaction[i]+1;j++){
+          if (dateDiff(usersContracts[i][j].theoricalDate,usersContracts[i][j].currentDate)>0){
+            int diff = dateDiff(usersContracts[i][j].theoricalDate,usersContracts[i][j].currentDate);
+            nb++;
+            int year = diff / 10000;
+            int month = (diff - (year * 10000)) / 100;
+            int day = diff - (year * 10000) - (month * 100);
+            totalDelay = totalDelay + year*365 + month*30 + day;
+          }
+        }
+      }
+    }
+    if (nb>0){
+      average = totalDelay / nb;
+    }
+    return average;
+  }
+
   function compareStrings (string memory a, string memory b) public view returns (bool) {
     return (keccak256(abi.encodePacked((a))) == keccak256(abi.encodePacked((b))));
   }
