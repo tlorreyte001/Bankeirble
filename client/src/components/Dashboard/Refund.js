@@ -22,7 +22,10 @@ export class Refund extends React.Component {
         let sum = 0;
         if (contracts){
             for(let i = 0; i < contracts.length; i++){
-                sum = sum + parseInt(contracts[i].transactions[contracts[i].transactions.length - 1].remainingAmount)/100;
+                if(contracts[i].transactions.length === 0)
+                    sum = sum + parseInt(contracts[i].totalAmount)/100;
+                else
+                    sum = sum + parseInt(contracts[i].transactions[contracts[i].transactions.length - 1].remainingAmount)/100;
             }
             this.setState({nb: sum});
         }

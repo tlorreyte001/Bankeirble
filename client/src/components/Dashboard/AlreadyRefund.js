@@ -18,13 +18,16 @@ export class AlreadyRefund extends React.Component {
     };
 
     blockchainCall = async () => {
-        const {contracts} = await APIBC.loan(JSON.parse(localStorage.getItem("user")).pseudo);
+        const {contracts} = await APIBC.history(JSON.parse(localStorage.getItem("user")).pseudo);
         let refund = 0;
         let sum = 0;
         if (contracts){
-            for(let i = 0; i < contracts.length(); i++){
-                refund = refund + parseInt(contracts[i].transactions[contracts[i].transactions.length() - 1].remainingAmount)/100;
+            for(let i = 0; i < contracts.length; i++){
                 sum = sum + parseInt(contracts[i].totalAmount)/100;
+                if(contracts[i].transactions.length === 0)
+                    refund = refund + parseInt(contracts[i].totalAmount)/100;
+                else
+                    refund = refund + parseInt(contracts[i].transactions[contracts[i].transactions.length - 1].remainingAmount)/100;
             }
             this.setState({nb: (1-(Math.round(refund/sum*100)/100))*100});
         }

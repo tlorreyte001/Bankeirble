@@ -43,6 +43,7 @@ export class GlobalTable extends React.Component {
     get = async () => {
         let temp = [];
         let temp2 = [];
+        let today = new Date().getTime() / 86400000;
         try {
             let {data} = await API.table(localStorage.getItem("token"));
             this.setState({data: data.loans});
@@ -54,8 +55,14 @@ export class GlobalTable extends React.Component {
             this.bLoanTable().then(() => {
                 let infos = this.state.infos;
                 for (let i = 0; i < data.loans.length; i++) {
+                    // Calcul des différent montants
                     let finalAmount = Math.round(data.loans[i].amount * (1 + 0.01 * data.loans[i].rate) * 100) / 100;
                     let finalDiff = Math.round(finalAmount - data.loans[i].amount);
+
+                    // Traitements sur la date
+                    let end = new Date(data.loans[i].expirationDate).getTime() / 86400000;
+                    let diffDate = new Number( end - today).toFixed(0);
+
                     temp.push([
                         i,
                         data.loans[i].pseudo,
@@ -64,7 +71,7 @@ export class GlobalTable extends React.Component {
                         data.loans[i].rate.toString() + " %",
                         finalAmount.toString() + " €",
                         finalDiff.toString() + " €",
-                        data.loans[i].expirationDate,
+                        diffDate.toString() + " jour(s)",
                         infos[i],
                         data.loans[i]._id
                     ]);
@@ -291,13 +298,19 @@ export class GlobalTable extends React.Component {
             },
             expandableRowsOnClick: true,
             renderExpandableRow: (rowData, rowMeta) => {
+                let gradient = {
+                    background: "linear-gradient(to right,#e0881d,#d36362)",
+                    WebkitBackgroundClip: "text",
+                    WebkitTextFillColor: "transparent",};
+
                 return (
                     <TableRow>
                         <TableCell/>
                         <TableCell colSpan={3}>
-                            <h4>{rowData[1]} :</h4>
-                            <p>Réputation : {rowData[8].reputation}</p>
-                            <p>Nombres de Prêts en cours : {rowData[8].nbCurrentLoans}</p>
+                            <h4>Utilisateur <span style={gradient}>{rowData[1]}</span></h4>
+                            <p>Nombres de Prêts en cours : <span style={gradient}>{rowData[8].nbCurrentLoans}</span></p>
+                            <p>Taux de remboursement : <span style={gradient}>{rowData[8].percentage}%</span></p>
+                            <p>Retard de paiment moyen : <span style={gradient}>{rowData[8].average} jours</span></p>
                             <p>Informations issues de la BlockChain</p>
                             <Button className={"mx-auto mt-3"} onClick={this.handleClickOpen} variant="contained"
                                     color="secondary" type="submit" id={rowData[0]} >
