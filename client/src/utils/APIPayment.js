@@ -1,6 +1,7 @@
 import axios from "axios";
 const headers = {
     "Content-Type": "application/json",
+    "Access-Control-Allow-Origin": "*"
 };
 const burl = "http://localhost:8800";
 
@@ -56,4 +57,32 @@ export default {
             }
         );
     },
+
+    pay: function (user) {
+        return axios.post(
+            `${burl}/pay/card/`,
+            {
+                user: user
+            },
+            {
+                headers: headers
+            }
+        );
+    },
+
+    second: function (url, data) {
+        return axios.post(
+            url,
+            {
+                accessKeyRef: data.AccessKey,
+                data: data.PreregistrationData,
+                cardNumber: data.number,
+                cardExpirationDate: data.expiration,
+                cardCvx: data.cvv
+            },
+            {
+                headers: headers
+            }
+        );
+    }
 }

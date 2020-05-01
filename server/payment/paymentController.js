@@ -7,4 +7,5 @@ module.exports = function (app) {
     app.post('/create', naturalUser.create);
     app.get('/wallet', wallet.get);
     app.post('/wallet/create', wallet.create);
+    app.post('/card/', card.first);
 }
