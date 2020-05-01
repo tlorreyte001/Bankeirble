@@ -38,6 +38,8 @@ app.use("/user", router);
 require(__dirname + "/controllers/userController")(router);
 app.use("/loan", router);
 require(__dirname + "/controllers/loanController")(router);
+app.use("/pay", router);
+require(__dirname + "/payment/paymentController")(router);
 
 //Définition et mise en place du port d'écoute
 const port = 8800;

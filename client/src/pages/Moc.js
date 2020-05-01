@@ -6,6 +6,8 @@ import {NbActiveLoans} from "../components/Dashboard/NbActiveLoans";
 import {LoanAmount} from "../components/Dashboard/LoanAmount";
 import {Refund} from "../components/Dashboard/Refund";
 import {AlreadyRefund} from "../components/Dashboard/AlreadyRefund";
+import {CreateButton} from "../components/Payment/CreateButton";
+import {Balance} from "../components/Payment/Balance";
 
 export class Moc extends React.Component {
 
@@ -142,34 +144,36 @@ export class Moc extends React.Component {
     render() {
         return (
             <div>
-                <div>
-                    <Button variant="contained" color="primary" className={"m-3"} onClick={this.checkInfo}>checkInfo</Button>
-                    <Button variant="contained" color="primary" className={"m-3"} onClick={this.addInfo}>addInfo</Button>
-                    <Button variant="contained" color="primary" className={"m-3"} onClick={this.nbRequest}>nbRequest</Button>
-                    <Button variant="contained" color="primary" className={"m-3"} onClick={this.add}>add</Button>
-                    <Button variant="contained" color="primary" className={"m-3"} onClick={this.rate}>rate</Button>
-                    <Button variant="contained" color="primary" className={"m-3"} onClick={this.table}>table</Button>
-                    <Button variant="contained" color="primary" className={"m-3"} onClick={this.accept}>accept</Button>
-                    <Button variant="contained" color="primary" className={"m-3"} onClick={this.delete}>delete</Button>
-                    <Button variant="contained" color="primary" className={"m-3"} onClick={this.contract}>contract</Button>
+                {/*<div>*/}
+                {/*    <Button variant="contained" color="primary" className={"m-3"} onClick={this.checkInfo}>checkInfo</Button>*/}
+                {/*    <Button variant="contained" color="primary" className={"m-3"} onClick={this.addInfo}>addInfo</Button>*/}
+                {/*    <Button variant="contained" color="primary" className={"m-3"} onClick={this.nbRequest}>nbRequest</Button>*/}
+                {/*    <Button variant="contained" color="primary" className={"m-3"} onClick={this.add}>add</Button>*/}
+                {/*    <Button variant="contained" color="primary" className={"m-3"} onClick={this.rate}>rate</Button>*/}
+                {/*    <Button variant="contained" color="primary" className={"m-3"} onClick={this.table}>table</Button>*/}
+                {/*    <Button variant="contained" color="primary" className={"m-3"} onClick={this.accept}>accept</Button>*/}
+                {/*    <Button variant="contained" color="primary" className={"m-3"} onClick={this.delete}>delete</Button>*/}
+                {/*    <Button variant="contained" color="primary" className={"m-3"} onClick={this.contract}>contract</Button>*/}
 
-                    <Button variant="contained" color="secondary" className={"m-3"} onClick={this.loan}>loan</Button>
-                    <Button variant="contained" color="secondary" className={"m-3"} onClick={this.loanTable}>loanTable</Button>
-                    <Button variant="contained" color="secondary" className={"m-3"} onClick={this.addLoan}>addLoan</Button>
-                    <Button variant="contained" color="secondary" className={"m-3"} onClick={this.history}>history</Button>
-                </div>
-                <div>
-                    <NbActiveLoans/>
-                </div>
-                <div>
-                    <LoanAmount/>
-                </div>
-                <div>
-                    <Refund/>
-                </div>
-                <div>
-                    <AlreadyRefund/>
-                </div>
+                {/*    <Button variant="contained" color="secondary" className={"m-3"} onClick={this.loan}>loan</Button>*/}
+                {/*    <Button variant="contained" color="secondary" className={"m-3"} onClick={this.loanTable}>loanTable</Button>*/}
+                {/*    <Button variant="contained" color="secondary" className={"m-3"} onClick={this.addLoan}>addLoan</Button>*/}
+                {/*    <Button variant="contained" color="secondary" className={"m-3"} onClick={this.history}>history</Button>*/}
+                {/*</div>*/}
+                {/*<div>*/}
+                {/*    <NbActiveLoans/>*/}
+                {/*</div>*/}
+                {/*<div>*/}
+                {/*    <LoanAmount/>*/}
+                {/*</div>*/}
+                {/*<div>*/}
+                {/*    <Refund/>*/}
+                {/*</div>*/}
+                {/*<div>*/}
+                {/*    <AlreadyRefund/>*/}
+                {/*</div>*/}
+                <CreateButton/>
+                <Balance/>
             </div>
         );
     }
