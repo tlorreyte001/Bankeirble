@@ -40,25 +40,15 @@ export class ChartBar extends React.Component{
       let rates = [];
       try{
           let response = await API.rate(localStorage.getItem("token"));
-        //   console.log('Response',response);
 
           for (let res of response.data.rates) {
               dates.push(res.date);
               rates.push(res.rate);
           }         
 
-          // let fakeRates = {rate: [65, 59, 80, 81, 56, 55, 40, 30, 50, 60, 70, 40],
-          //      date:['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet','Août', 'Septembre', 'Octobre', 'Novembre','Decembre']
-          //     };
-          // let data = await response.json();
-          // this.setState(state => (state.chartData.datasets[0].data = fakeRates.rate, state));
-          // this.setState(state => (state.chartData.labels = fakeRates.date, state));
-
           this.setState(state => (state.chartData.datasets[0].data = rates, state));
           this.setState(state => (state.chartData.labels = dates, state));
-        //   console.log(this.state);
-
-          // , chartData.labels: fakeRates.date});
+        
       } catch(e){
           console.log(e)
       }
