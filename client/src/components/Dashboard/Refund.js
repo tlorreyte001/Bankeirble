@@ -19,6 +19,7 @@ export class Refund extends React.Component {
 
     blockchainCall = async () => {
         const {contracts} = await APIBC.history(JSON.parse(localStorage.getItem("user")).pseudo);
+        console.log('Refund', contracts);
         let sum = 0;
         if (contracts){
             for(let i = 0; i < contracts.length; i++){

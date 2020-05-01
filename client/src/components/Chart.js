@@ -5,13 +5,9 @@ export class Chart extends React.Component{
     state={
         chartData:{ 
             labels:[
-                'Pour X                   32€',
-                'Pour Y                   32€',
-                'Pour Z                   24€',
-                'Pour T                   12€'
             ],
             datasets: [{
-                data: [32, 32, 24,12],
+                data: [],
                 // data: [],
 
                 backgroundColor: [
@@ -38,10 +34,35 @@ export class Chart extends React.Component{
     };
 
     blockchainCall = async () => {
-            // let {response} = await APIBC.history(JSON.parse(localStorage.getItem("user")).pseudo);
-            const {nbLoans, reputation} = await APIBC.loan(JSON.parse(localStorage.getItem("user")).pseudo);
-            console.log('Response');
+        let pseudo = [];
+        let amount = [];
+        // let {response} = await APIBC.history(JSON.parse(localStorage.getItem("user")).pseudo);
+        const {contracts} = await APIBC.history(JSON.parse(localStorage.getItem("user")).pseudo);
+        console.log('Response',contracts);
+        
 
+        for (let contract of contracts) {
+
+            let obj = {
+            preteur:'',
+            montant:'',
+            };
+
+
+            obj.preteur = contract.lender .toString() + " :" + contract.totalAmount/100 + "€";
+            obj.montant = contract.totalAmount/100 ;
+
+
+            pseudo.push(obj.preteur);
+            amount.push(obj.montant);
+            
+        } 
+        console.log(pseudo,amount);
+
+
+        this.setState(state => (state.chartData.datasets[0].data = amount, state));
+        this.setState(state => (state.chartData.labels = pseudo, state));
+        
             // const {response} = await APIBC.history(JSON.parse(localStorage.getItem("user")).pseudo);
             // console.log(response);
 

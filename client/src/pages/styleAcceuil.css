@@ -523,6 +523,8 @@ button{
         
         font-size: 24px;
         line-height: 24px;
+        position: relative;
+        text-align: center;
 
         /* identical to box height, or 171% */
         letter-spacing: 0.01em;
