@@ -21,6 +21,7 @@ contract Contract {
 
   mapping(uint => mapping(uint => Contract_user)) public usersContracts;
   mapping(uint => uint) public nbTransaction;
+  mapping(uint => string) public hash;
 
   constructor() public{
     name = "Contrat Entre Particuliers";
@@ -31,6 +32,26 @@ contract Contract {
     contractCount++;
   }
 
+  function getContractNumber(string memory _id) public view returns (uint number){
+    for (uint i=0; i<contractCount; i++){
+      if (compareStrings(usersContracts[i][0].id,_id)){
+        number = i;
+        break;
+      }
+    }
+    return number;
+  }
+
+  function setHash(string memory _id, string memory _hash) public{
+    uint _number = getContractNumber(_id);
+    hash[_number] = _hash;
+  }
+
+  function getHash(string memory _id) public view returns (string memory _hash){
+    uint _number = getContractNumber(_id);
+    _hash = hash[_number];
+    return _hash;
+  }
   function createContract1(uint _rate,uint _duration,uint _totalAmount) public{
     usersContracts[contractCount][0].rate = _rate;
     usersContracts[contractCount][0].duration = _duration;
