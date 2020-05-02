@@ -149,14 +149,17 @@ export default {
     },
 
     contract: function(user, loanId){
-        return axios.post(
+        return axios.get(
             burl + "/loan/contract",
             {
-                    user: user,
-                    loanId: loanId
-                
-            },
-            requestOptions
+                params: {
+                  user: user,
+                  loanId: loanId
+                },
+                headers: {
+                    headers
+                }
+            }
         );
     },
 
