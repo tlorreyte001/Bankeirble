@@ -26,7 +26,7 @@ export default {
 
     // /blockchain/setHash Met le hash du contrat avec l'id donné à jour
     setHash: async function (id,hash) {
-        let hashUpdated = await contract.methods.setHash(id,hash).send({ from : account1});
+        let hashed = await contract.methods.setHash(id,hash).send({ from : account1});
     },
 
     // /blockchain/getHash Renvoie le hash du contrat avec l'id donné en paramètres
