@@ -267,9 +267,9 @@ async function remove_loan(req, res) { // supprime une demande de prêt lorsque 
 }
 
 async function get_contract (req, res) { // envoie le contrat en cas de litige
-    let user = jwt.decode(req.body.user, config.secret);
+    let user = jwt.decode(req.query.user, config.secret);
     let findUser = await Users.findOne({_id : user._id});
-    let loanId = req.body.loanId;
+    let loanId = req.query.loanId;
     let loan = await Loans.findOne({_id : loanId}); // recuperation du pret a partir de l'id
     if (findUser && loan) {
       // telecharger le contrat à partir du path et le renvoyer coté client

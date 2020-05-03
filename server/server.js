@@ -1,9 +1,11 @@
 //Définition des modules
-const express = require("express");
-const mongoose = require("mongoose");
-const bodyParser = require('body-parser');
-const cors = require('cors');
-const app = express();
+const express = require("express"),
+  mongoose = require("mongoose"),
+  bodyParser = require('body-parser'),
+  cors = require('cors'),
+  app = express(),
+  fs = require('fs'),
+  https = require('https');
 
 //Connexion à la base de données
 mongoose.connect("mongodb://myUserAdmin:Bankeirble@86.234.213.17:27017/admin", { useNewUrlParser: true,  useUnifiedTopology: true } );
@@ -24,14 +26,6 @@ const urlencodedParser = bodyParser.urlencoded({
 app.use(urlencodedParser);
 app.use(bodyParser.json());
 
-// const Users = require("./schema/schemaUsers");
-// app.get('/test', function (req, res, next){
-//     const user = new Users({
-//         mailPerso: "toto"
-//     });
-//     user.save();
-// });
-
 //Définition des routeurs
 const router = express.Router();
 app.use("/user", router);
@@ -41,7 +35,15 @@ require(__dirname + "/controllers/loanController")(router);
 app.use("/pay", router);
 require(__dirname + "/payment/paymentController")(router);
 
-//Définition et mise en place du port d'écoute
+// Définition et mise en place du port d'écoute
 const port = 8800;
+
+// TLS
+// const server = https.createServer({
+//   key: fs.readFileSync('./certificates/key.pem'),
+//   cert: fs.readFileSync('./certificates/cert.pem')
+// }, app);
+// server.listen(port);
+
 app.listen(port);
 console.log("Listening on port", port);

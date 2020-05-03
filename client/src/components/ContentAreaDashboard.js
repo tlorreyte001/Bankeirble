@@ -71,7 +71,6 @@ class ContentArea extends React.Component {
 
                     <Grid item xs={3} sm={4}>
                     <Paper className={useStyles.paper}>  <p className={"doughnutTitle"}> Mes prêts en cours</p>
-                    <div className={"diver"} />
                     <div>
                      <Chart />
                      </div>
