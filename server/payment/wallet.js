@@ -22,7 +22,16 @@ async function create (req, res){
                 'Authorization': 'bearer ' + access_token
             }
         })
-            .then(function (response) {
+            .then(async function (response) {
+                await Users.findByIdAndUpdate(user._id, {
+                        "mangoWalletId" : response.data.Id
+                    },
+                    {useFindAndModify : false},
+                    function (err) { // màj des infos de l'utilisateur
+                        if (err) {
+                            throw err;
+                        }
+                    });
                 return res.status(200).json({
                     text: "Succès",
                     Balance: response.data.Balance
@@ -47,7 +56,7 @@ async function get (req, res){
             .then(function (response) {
                 return res.status(200).json({
                     text: "Succès",
-                    Balance: response.data[0].Balance
+                    Balance: response.data[0]
                 });
             })
             .catch(function (reason){

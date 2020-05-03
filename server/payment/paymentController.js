@@ -8,4 +8,7 @@ module.exports = function (app) {
     app.get('/wallet', wallet.get);
     app.post('/wallet/create', wallet.create);
     app.post('/card/', card.first);
+    app.post('/card/registration', card.registration);
+    app.post('/card/get', card.get);
+    app.post('/card/justPay', card.justPay);
 }

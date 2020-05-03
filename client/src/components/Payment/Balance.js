@@ -23,7 +23,8 @@ export class Balance extends React.Component {
         )
             .then((data) => {
                 if (data.data.text === "Succès"){
-                    this.setState({balance: data.data.Balance.Amount});
+                    console.log(data.data);
+                    this.setState({balance: data.data.Balance.Balance.Amount});
                 }
             })
             .catch((reason) => {

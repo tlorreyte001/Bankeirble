@@ -175,7 +175,7 @@ export class Moc extends React.Component {
                 <div>
                     <CreateButton/>
                     <Balance/>
-                    <PaymentButton/>
+                    <PaymentButton amount={20} user={"admiratio"}/>
                 </div>
                 {/*<div>*/}
                 {/*    <LoanAmount/>*/}
