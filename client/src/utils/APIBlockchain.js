@@ -60,16 +60,74 @@ export default {
         return status;
     },
 
+    // 
+    litigation: async function (pseudo){
+        let litigation = {
+            contracts:[]
+        }
+        let count = await contract.methods.getCount().call((err, result)=>{result=result;}).then(result=>{return result;});
+        for (let i = 0; i<count; i++){
+            let result = await contract.methods.testContractUser(pseudo, i).call((err, result)=>{result=result;}).then(result=>{return result;});
+            if (result!=0){
+                let borrower = await contract.methods.getBorrower(i).call((err,result)=>{result=result;}).then(result=>{return result;});
+                let lender = await contract.methods.getLender(i).call((err,result)=>{result=result;}).then(result=>{return result;});
+                let nbTransaction = await contract.methods.getNbTransaction(i).call((err,result)=>{result=result;}).then(result=>{return result;});
+                nbTransaction = parseInt(nbTransaction,10);
+                let blockchainDate = await contract.methods.getTheoricalDate(i, nbTransaction).call((err, result)=>{result=result;}).then(result=>{return result;});
+                let jsDate = "00/00/0000";
+                for (let l=0; l<4; l++){
+                    jsDate [l+6]=blockchainDate[l];
+                }
+                for (let l=4; l<6; l++){
+                    jsDate [l-4]=blockchainDate[l];
+                }
+                for (let l=6; l<8; l++){
+                    jsDate [l-3]=blockchainDate[l];
+                }
+                let today = new Date();
+                let dd = String(today.getDate()).padStart(2, '0');
+                let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+                let yyyy = today.getFullYear();
+                today = mm + '/' + dd + '/' + yyyy;
+                let todaysDate = new Date(today);
+                let thDate = new Date(jsDate);
+                let dateTimeDiff = todaysDate.getTime()-thDate.getTime();
+                let dateDayDiff = dateTimeDiff / (1000 * 3600 * 24);
+                if (dateDayDiff<0){
+                    if (dateDayDiff<-60){
+                        litigation.contract.push({
+                            contractId: await contract.methods.getId(i).call((err, result)=>{result=result;}).then(result=>{return result;}),
+                            borrower: borrower,
+                            lender: lender,
+                            delay: true,
+                            litigation: true
+                        });
+                    }
+                    else{
+                        litigation.contract.push({
+                            contractId: await contract.methods.getId(i).call((err, result)=>{result=result;}).then(result=>{return result;}),
+                            borrower: borrower,
+                            lender: lender,
+                            delay: true,
+                            litigation: false
+                        });
+                    }
+                }
+            }
+        }
+        return litigation;
+    },
+
+    // Récupération des transactions futures
     prevision: async function(pseudo){
         let prevision ={
-        contracts:[]
+            contracts:[]
         }
         let j=0;
         let count = await contract.methods.getCount().call((err, result)=>{result=result;}).then(result=>{return result;});
         for(let i = 0; i<count; i++){
             let result = await contract.methods.testContractUser(pseudo, i).call((err, result)=>{result=result;}).then(result=>{return result;});
             if (result!=0){
-                await contract.methods.getTotalAmount(i).call((err, result)=>{result=result;}).then(result=>{console.log(result);})
                 prevision.contracts.push({
                     contractId : await contract.methods.getId(i).call((err, result)=>{result=result;}).then(result=>{return result;}),
                     rate: await contract.methods.getRate(i).call((err, result)=>{result=result;}).then(result=>{return result;}),
@@ -77,6 +135,7 @@ export default {
                     duration: await contract.methods.getDuration(i).call((err, result)=>{result=result;}).then(result=>{return result;}),
                     lender: await contract.methods.getLender(i).call((err, result)=>{result=result;}).then(result=>{return result;}),
                     borrower: await contract.methods.getBorrower(i).call((err, result)=>{result=result;}).then(result=>{return result;}),
+                    //startingDate: await contract.methodes.getCurrentDate(i,0).call((err,result)=>{result=result;}).then(result=>{return result}),
                     transactions: []
                 });
 
@@ -155,13 +214,14 @@ export default {
                     duration: await contract.methods.getDuration(i).call((err, result)=>{result=result;}).then(result=>{return result;}),
                     lender: await contract.methods.getLender(i).call((err, result)=>{result=result;}).then(result=>{return result;}),
                     borrower: await contract.methods.getBorrower(i).call((err, result)=>{result=result;}).then(result=>{return result;}),
+                    //startingDate: await contract.methodes.getCurrentDate(i,0).call((err,result)=>{result=result;}).then(result=>{return result}),
                     transactions: []
                 });
                 let nbTransaction = await contract.methods.getNbTransaction(i).call((err,result)=>{result=result;}).then(result=>{return result;});
-                nbTransaction = parseInt(nbTransaction,10);
+                nbTransaction = parseInt(nbTransaction,10)+1;
                 if (result == 1){
                     let borrower = await contract.methods.getBorrower(i).call((err,result)=>{result=result;}).then(result=>{return result;});
-                    for (let transaction = 0; transaction<nbTransaction; transaction++){
+                    for (let transaction = 1; transaction<nbTransaction; transaction++){
                         history.contracts[j].transactions.push({
                             transactionId: transaction,
                             status:"lender",
@@ -177,7 +237,7 @@ export default {
                 }
                 else if(result == 2){
                     let lender = await contract.methods.getLender(i).call((err,result)=>{result=result;}).then(result=>{return result;});
-                    for (let transaction = 0; transaction<nbTransaction; transaction++){
+                    for (let transaction = 1; transaction<nbTransaction; transaction++){
                         history.contracts[j].transactions.push({
                             transactionId: transaction,
                             status:"borrower",
