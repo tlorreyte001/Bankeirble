@@ -3,6 +3,8 @@ const passwordHash = require("password-hash");
 const jwt = require("jwt-simple");
 const config = require("../config/config");
 const fs = require('fs');
+const axios = require('axios');
+
 const filename = "pseudo";
 
 function find_pseudo(num) {
@@ -43,6 +45,7 @@ async function signup (req, res) {
 
     console.log(`Un nouvel utilisateur ${userData.pseudo} vient de s'inscrire !`);
     let infoUser = `{"lastName" : ${JSON.stringify(userData.lastName)}, "firstName" : ${JSON.stringify(userData.firstName)}, "pseudo" : ${JSON.stringify(userData.pseudo)} }`; // on envoie seulement le nom et le prénom de l'utilisateur
+
 
     return res.status(200).json({
         text: "Successfull Authentification",

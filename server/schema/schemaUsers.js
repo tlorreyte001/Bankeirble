@@ -17,7 +17,9 @@ const userSchema = mongoose.Schema(
     },
     email: String,
     pseudo: String,
-    password: String
+    password: String,
+    mangoId: String,
+    mangoWalletId: String
     },
 );
 

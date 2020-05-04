@@ -6,6 +6,9 @@ import {NbActiveLoans} from "../components/Dashboard/NbActiveLoans";
 import {LoanAmount} from "../components/Dashboard/LoanAmount";
 import {Refund} from "../components/Dashboard/Refund";
 import {AlreadyRefund} from "../components/Dashboard/AlreadyRefund";
+import {CreateButton} from "../components/Payment/CreateButton";
+import {Balance} from "../components/Payment/Balance";
+import {PaymentButton} from "../components/Payment/PaymentButton";
 
 export class Moc extends React.Component {
 
@@ -136,7 +139,17 @@ export class Moc extends React.Component {
     };
 
     history = () => {
-        APIBC.history();
+        APIBC.history(JSON.parse(localStorage.getItem("user")).pseudo)
+            .then((contracts)=>{
+                console.log(contracts);
+            })
+    };
+
+    prevision = () => {
+        APIBC.prevision(JSON.parse(localStorage.getItem("user")).pseudo)
+            .then((contracts)=>{
+                console.log(contracts);
+            })
     };
 
     render() {
@@ -157,19 +170,23 @@ export class Moc extends React.Component {
                     <Button variant="contained" color="secondary" className={"m-3"} onClick={this.loanTable}>loanTable</Button>
                     <Button variant="contained" color="secondary" className={"m-3"} onClick={this.addLoan}>addLoan</Button>
                     <Button variant="contained" color="secondary" className={"m-3"} onClick={this.history}>history</Button>
+                    <Button variant="contained" color="secondary" className={"m-3"} onClick={this.prevision}>Prévisions</Button>
                 </div>
                 <div>
-                    <NbActiveLoans/>
+                    <CreateButton/>
+                    <Balance/>
+                    <PaymentButton amount={20} user={"admiratio"}/>
                 </div>
-                <div>
-                    <LoanAmount/>
-                </div>
-                <div>
-                    <Refund/>
-                </div>
-                <div>
-                    <AlreadyRefund/>
-                </div>
+                {/*<div>*/}
+                {/*    <LoanAmount/>*/}
+                {/*</div>*/}
+                {/*<div>*/}
+                {/*    <Refund/>*/}
+                {/*</div>*/}
+                {/*<div>*/}
+                {/*    <AlreadyRefund/>*/}
+                {/*</div>*/}
+
             </div>
         );
     }

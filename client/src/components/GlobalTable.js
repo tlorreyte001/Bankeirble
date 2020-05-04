@@ -137,7 +137,7 @@ export class GlobalTable extends React.Component {
         try {
             await API.contract(localStorage.getItem("token"), event.target.offsetParent.id).then(
                 resp=>{
-                    var blob = new Blob([resp.data], {type: "application/pdf;charset=utf-8"});
+                    let blob = new Blob([resp.data], {type: "application/pdf;charset=utf-8"});
                     saveAs(blob, "Contrat.pdf");
                 }
             );
