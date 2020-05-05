@@ -55,12 +55,12 @@ export default {
     },
 
     // /blockchain/addLoan Ajoute un Contrat
-    addLoan: async function (lender,borrower,rate,duration,totalAmount,currentDate,id) { // date = yyyymmdd
-        let status = await contract.methods.createContract3(currentDate,id).send({ from : account1}).then(contract.methods.createContract1(rate,duration,totalAmount).send({ from : account1}).then(contract.methods.createContract2(borrower,lender).send({ from : account1}).then(contract.methods.increaseContract().send({ from : account1})))).then(result=>{return true;}).catch(err => {return false;});;
+    addLoan: async function (lender,borrower,rate,duration,totalAmount,currentDate,id,hash) { // date = yyyymmdd
+        let status = await contract.methods.createContract3(currentDate,id).send({ from : account1}).then(contract.methods.createContract1(rate,duration,totalAmount).send({ from : account1}).then(contract.methods.createContract2(borrower,lender).send({ from : account1}).then(contract.methods.increaseContract().send({ from : account1})))).then(contract.methods.setHash(id,hash).send({ from : account1})).then(result=>{return true;}).catch(err => {return false;});;
         return status;
     },
 
-    // 
+    //
     litigation: async function (pseudo){
         let litigation = {
             contracts:[]
