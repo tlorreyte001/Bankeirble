@@ -152,6 +152,13 @@ export class Moc extends React.Component {
             })
     };
 
+    litigation = () => {
+        APIBC.litigation(JSON.parse(localStorage.getItem("user")).pseudo)
+        .then((contracts)=>{
+            console.log(contracts);
+        })
+    }
+
     render() {
         return (
             <div>
@@ -171,6 +178,7 @@ export class Moc extends React.Component {
                     <Button variant="contained" color="secondary" className={"m-3"} onClick={this.addLoan}>addLoan</Button>
                     <Button variant="contained" color="secondary" className={"m-3"} onClick={this.history}>history</Button>
                     <Button variant="contained" color="secondary" className={"m-3"} onClick={this.prevision}>Prévisions</Button>
+                    <Button variant="contained" color="secondary" className={"m-3"} onClick={this.litigation}>Litige</Button>
                 </div>
                 <div>
                     <CreateButton/>

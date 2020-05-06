@@ -103,7 +103,7 @@ export class PopUpForm extends React.Component {
                             Math.round(this.props.data.rate * 100),
                             this.props.data.nbMonths,
                             this.props.data.amount * 100,
-                            parseInt(this.format(new Date(this.props.data.expirationDate))),
+                            parseInt(this.format(new Date())),
                             this.props.data._id.toString(),
                             data.contractHash.toString()
                         ).catch((e) => {
