@@ -29,30 +29,6 @@ export class PaymentButton extends React.Component {
         this.getCards();
     };
 
-    // blockchainCall = async () => {
-    //     const {contracts} = await APIBC.history(JSON.parse(localStorage.getItem("user")).pseudo);
-    //     if (contracts){
-    //         console.log(contracts);
-    //         this.setState({contracts: contracts});
-    //     }
-    //     this.toRefund();
-    // }
-
-    // toRefund = () => {
-    //     let toPay = [];
-    //     let contracts = this.state.contracts;
-    //     for (let i = 0; i < contracts.length; i++){
-    //         if (contracts[i].transactions.length === 0){
-    //             toPay.push({
-    //                     contractId : contracts[i].contractId,
-    //                     amount : Math.round(((parseInt(contracts[i].totalAmount)/100 * (1 + parseInt(contracts[i].rate) / 10000)) / parseInt(contracts[i].duration))*100)/100
-    //                 });
-    //         }
-    //     }
-    //     console.log(toPay);
-    //     this.setState({toPay : toPay});
-    // }
-
     pay = () => {
         APIP.pay(
             localStorage.getItem("token")

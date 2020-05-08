@@ -14,7 +14,7 @@ export class Balance extends React.Component {
     };
 
     componentDidMount() {
-        this.get();
+        this.check().then(() => {this.get()});
     };
 
     get = async () => {
@@ -25,6 +25,40 @@ export class Balance extends React.Component {
                 if (data.data.text === "Succès"){
                     console.log(data.data);
                     this.setState({balance: data.data.Balance.Balance.Amount});
+                }
+            })
+            .catch((reason) => {
+                console.log(reason);
+            })
+    }
+
+    check = async () => {
+        APIP.check(
+            localStorage.getItem("token")
+        )
+            .then(async (data) => {
+                if (data.data.text === "Echec"){
+                    await this.create();
+                }
+            })
+            .catch((reason) => {
+            })
+    }
+
+    create = async () => {
+        APIP.create(
+            localStorage.getItem("token")
+        )
+            .then((data) => {
+                console.log(data)
+                if (data.data.text === "Succès"){
+                    localStorage.setItem("mangoId", data.data.mangoId);
+                    APIP.create_wallet(
+                        localStorage.getItem("token")
+                    )
+                        .catch((reason) => {
+                            console.log(reason);
+                        })
                 }
             })
             .catch((reason) => {
