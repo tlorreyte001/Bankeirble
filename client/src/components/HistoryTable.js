@@ -10,6 +10,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 import { createChainedFunction } from '@material-ui/core';
+import { frFR } from '@material-ui/core/locale'
 
 import APIBC from '../utils/APIBlockchain';
 import API from '../utils/API';
@@ -21,6 +22,8 @@ export class HistoryTable extends React.Component{
     setPage: 0,
     rowsPerPage: 10,
     setRowsPerPage: 10,
+
+    rows:[],
 
     Data:[{
       preteur:'',
@@ -69,6 +72,8 @@ export class HistoryTable extends React.Component{
     }
     }
 
+    
+
   render(){
     const columns = [
 
@@ -108,12 +113,17 @@ export class HistoryTable extends React.Component{
     }
 
     function createRows(Data){
-      const rows =[];
+      const tempRows =[];
       for (let dataPerRow of Data) {
-        rows.push( createData(dataPerRow.preteur, dataPerRow.duration, 'En cours', dataPerRow.taux, dataPerRow.montant));
+        tempRows.push( createData(dataPerRow.preteur, dataPerRow.duration, 'En cours', dataPerRow.taux, dataPerRow.montant));
       }
-      return rows;
+      return tempRows;
     }
+
+    // const pushRows = (event) => {
+    //   let tempRows = createRows(this.state.Data);
+    //   this.setState(state => (state.rows = tempRows, state));
+    // }
 
     const useStyles = makeStyles({
       root: {
@@ -132,6 +142,10 @@ export class HistoryTable extends React.Component{
         this.state.setRowsPerPage(+event.target.value);
         this.state.setPage(0);
       };
+
+      const handleClickRow = (event) => {
+        
+      }
 
       return (
         <Paper className={useStyles.root}>
@@ -152,8 +166,9 @@ export class HistoryTable extends React.Component{
               </TableHead>
               <TableBody>
                 {createRows(this.state.Data).slice(this.state.page * this.state.rowsPerPage, this.state.page * this.state.rowsPerPage + this.state.rowsPerPage).map((row) => {
+                
                   return (
-                    <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
+                    <TableRow hover role="checkbox" tabIndex={-1} key={row.code} onClick={handleClickRow}>
                       {columns.map((column) => {
                         const value = row[column.id];
                         return (
@@ -177,6 +192,7 @@ export class HistoryTable extends React.Component{
             onChangePage={handleChangePage}
             onChangeRowsPerPage={handleChangeRowsPerPage}
           />
+
         </Paper>
       );
     }
