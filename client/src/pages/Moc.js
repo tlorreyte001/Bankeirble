@@ -181,7 +181,6 @@ export class Moc extends React.Component {
                     <Button variant="contained" color="secondary" className={"m-3"} onClick={this.litigation}>Litige</Button>
                 </div>
                 <div>
-                    <CreateButton/>
                     <Balance/>
                     <PaymentButton amount={20} user={"admiratio"}/>
                 </div>

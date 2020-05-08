@@ -36,12 +36,11 @@ export class Balance extends React.Component {
         APIP.check(
             localStorage.getItem("token")
         )
-            .then(async (data) => {
-                if (data.data.text === "Echec"){
-                    await this.create();
-                }
+            .then((data) => {
+
             })
-            .catch((reason) => {
+            .catch( async (reason) => {
+                await this.create();
             })
     }
 

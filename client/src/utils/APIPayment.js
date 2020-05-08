@@ -5,10 +5,6 @@ const headers = {
     "Content-Type": "application/json",
     "Access-Control-Allow-Origin": "*"
 };
-const cardHeader = {
-    'Content-Type': 'application/x-www-form-urlencoded',
-    'Access-Control-Allow-Origin': '*'
-};
 const burl = "http://localhost:8800";
 
 export default {

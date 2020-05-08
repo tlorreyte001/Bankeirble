@@ -21,11 +21,11 @@ export class PaymentButton extends React.Component {
             cvv: '',
             data: '',
             cards: [],
+            name: ''
         };
     };
 
     componentDidMount() {
-        // this.blockchainCall();
         this.getCards();
     };
 
@@ -102,10 +102,25 @@ export class PaymentButton extends React.Component {
         APIP.justPay(
             localStorage.getItem("token"), data
         )
-            .then((response) => {
-                console.log(response)
+            .then(async (response) => {
+                if (data.data.text === "Succès") {
+                    APIBC.transaction(this.props.contractId, this.props.amount, parseInt(this.format(new Date())))
+                        .then((r)=>{
+                            this.handleClose();
+                        })
+                }
             })
     }
+
+    format = (date) => {
+        let mm = date.getMonth() + 1; // getMonth() is zero-based
+        let dd = date.getDate();
+
+        return [date.getFullYear(),
+            (mm>9 ? '' : '0') + mm,
+            (dd>9 ? '' : '0') + dd
+        ].join('');
+    };
 
     // -------- Pop Up Functions --------- //
     handleClickOpen = () => {
@@ -131,42 +146,59 @@ export class PaymentButton extends React.Component {
         if (this.state.cards.length === 0) {
             form =
                 <div>
-                    <TextField
-                        autoFocus
-                        margin="dense"
-                        id="number"
-                        value={this.state.number}
-                        onChange={this.handleFormChange}
-                        label="N°"
-                        type="text"
-                        fullWidth
-                        required
-                        className={"pb-3"}
-                    />
-                    <TextField
-                        autoFocus
-                        margin="dense"
-                        id="expiration"
-                        value={this.state.expiration}
-                        onChange={this.handleFormChange}
-                        label="MMAA"
-                        type="text"
-                        fullWidth
-                        required
-                        className={"pb-3"}
-                    />
-                    <TextField
-                        autoFocus
-                        margin="dense"
-                        id="cvv"
-                        value={this.state.cvv}
-                        onChange={this.handleFormChange}
-                        label="CVV"
-                        type="text"
-                        fullWidth
-                        required
-                        className={"pb-3"}
-                    />
+                <DialogTitle id="form-dialog-title">Aucune carte n'est liée à ce compte.</DialogTitle>
+                <DialogContent>
+                    <div>
+                        <TextField
+                            autoFocus
+                            margin="dense"
+                            id="number"
+                            value={this.state.number}
+                            onChange={this.handleFormChange}
+                            label="N°"
+                            type="text"
+                            fullWidth
+                            required
+                            className={"pb-3"}
+                        />
+                        <TextField
+                            autoFocus
+                            margin="dense"
+                            id="expiration"
+                            value={this.state.expiration}
+                            onChange={this.handleFormChange}
+                            label="MMAA"
+                            type="text"
+                            fullWidth
+                            required
+                            className={"pb-3"}
+                        />
+                        <TextField
+                            autoFocus
+                            margin="dense"
+                            id="name"
+                            value={this.state.name}
+                            onChange={this.handleFormChange}
+                            label="Titulaire"
+                            type="text"
+                            fullWidth
+                            required
+                            className={"pb-3"}
+                        />
+                        <TextField
+                            autoFocus
+                            margin="dense"
+                            id="cvv"
+                            value={this.state.cvv}
+                            onChange={this.handleFormChange}
+                            label="CVV"
+                            type="text"
+                            fullWidth
+                            required
+                            className={"pb-3"}
+                        />
+                    </div>
+                </DialogContent>
                 </div>;
             action = this.second;
         }
@@ -175,17 +207,16 @@ export class PaymentButton extends React.Component {
         return(
             <div>
                 <Button disabled={this.state.disabled} variant="contained" color="primary" className={"m-3"} onClick={this.pay}>Payer</Button>
-                <Dialog open={this.state.openPopUp} onClose={this.state.openPopUp} aria-labelledby="form-dialog-title">
-                    <DialogTitle id="form-dialog-title">Informations de Paiement</DialogTitle>
-                    <DialogContent>
-                        {form}
-                    </DialogContent>
-                    <DialogTitle id="form-dialog-title">Utiliser une carte déjà existente</DialogTitle>
+                <Dialog open={this.state.openPopUp} onClose={this.handleClose} aria-labelledby="form-dialog-title">
+                    <DialogTitle id="form-dialog-title">Récapitulatif de Paiement</DialogTitle>
                     <DialogContent>
                         <div>
-
+                            <p>Envoie de {this.props.amount}€ à {this.props.user}</p>
+                            <p>Ce paiement est sécurisé et sera inscrit dans la blockchain.</p>
+                            <p>TOTAL : {this.props.amount}€ TTC</p>
                         </div>
                     </DialogContent>
+                    {form}
                     <DialogActions>
                         <Button onClick={this.handleClose} color="primary">
                             Annuler
