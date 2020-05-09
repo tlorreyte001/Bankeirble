@@ -15,6 +15,7 @@ import {ProchainRemboursement} from "./Dashboard/ProchainRemboursement";
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
+import {Litige} from "./Dashboard/Litige";
 // import {StickyHeadTable} from "./Historytable";
 
 
@@ -39,6 +40,7 @@ class ContentArea extends React.Component {
             </div>
 
             <div className={useStyles.root}>
+            <Litige/>
             <Grid container spacing={3}>
 
                 

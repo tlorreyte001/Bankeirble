@@ -17,13 +17,18 @@ export class NavbarBankeirble extends React.Component {
     };
 
     componentWillMount() {
-        this.getUser();
+        if(this.props.welcome){
+            //this.getUser()
+        }
+        else {
+            this.getUser();
+        }
     }
 
     getUser(){
-        //let temp = JSON.parse(localStorage.getItem("user"));
-        //this.setState({lastName: temp.lastName});
-        //this.setState({firstName: temp.firstName});
+        let temp = JSON.parse(localStorage.getItem("user"));
+        this.setState({lastName: temp.lastName});
+        this.setState({firstName: temp.firstName});
     };
 
     handleMenu = (event) => {
@@ -100,11 +105,11 @@ export class NavbarBankeirble extends React.Component {
                                 onClick={this.handleMenu}
                                 color="inherit"
                             >
+                                <Typography variant={"subtitle1"}>{this.state.firstName} {this.state.lastName}</Typography>
                                 <Badge badgeContent={this.state.notifications} color="secondary">
                                     <Image className={"text-right imgaccount"} alt="" src={"/img/user-1.png"}/>
                                 </Badge>
                             </IconButton>
-                            {this.state.firstName} {this.state.lastName}
                             <Menu
                                 id="menu-appbar"
                                 anchorEl={this.state.Anchor}
