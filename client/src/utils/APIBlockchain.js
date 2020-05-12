@@ -37,7 +37,14 @@ export default {
 
     // /blockchain/transaction Ajoute une transaction à un contrat
     transaction: async function(contractId, transactionAmount, date) { // date : yyyymmdd
-        let status = await contract.methods.transaction2(contractId, date).send({ from : account1}).then(contract.methods.transaction1(contractId, transactionAmount).send({ from : account1}).then(contract.methods.increaseTrans(contractId).send({ from : account1}))).then(result=>{return true;}).catch(err => {return false;});
+        let number = await contract.methods.getContractNumber(contractId).call((err,result)=>{return result;});
+        let count = await contract.methods.contractCount().call((err,result)=>{return result;});
+        if (number>count){
+          let status = 0;
+        }
+        else{
+          let status = await contract.methods.transaction2(number, date).send({ from : account1}).then(contract.methods.transaction1(number, transactionAmount).send({ from : account1}).then(contract.methods.increaseTrans(number).send({ from : account1}))).then(result=>{return true;}).catch(err => {return false;});
+        }
         return status;
     },
 
@@ -64,7 +71,7 @@ export default {
     litigation: async function (pseudo){
         String.prototype.replaceAt=function(index, replacement) {
             return this.substr(0, index) + replacement+ this.substr(index + replacement.length);
-        } 
+        }
 
         let litigation = {
             contracts:[]
@@ -204,6 +211,43 @@ export default {
             }
         }
         return prevision;
+    },
+
+    visualise: async function(){
+      let visu ={
+          contracts:[]
+      }
+      let j=0;
+
+      let count = await contract.methods.getCount().call((err, result)=>{console.log("erreur BC : " + err); return result;})
+      for(let i = 0; i<count; i++){
+              visu.contracts.push({
+                  contractId : await contract.methods.getId(i).call((err, result)=>{console.log("erreur BC : " + err); return result;}),
+                  rate: await contract.methods.getRate(i).call((err, result)=>{console.log("erreur BC : " + err); return result;}),
+                  totalAmount: await contract.methods.getTotalAmount(i).call((err, result)=>{console.log("erreur BC : " + err); return result;}),
+                  duration: await contract.methods.getDuration(i).call((err, result)=>{console.log("erreur BC : " + err); return result;}),
+                  lender: await contract.methods.getLender(i).call((err, result)=>{console.log("erreur BC : " + err); return result;}),
+                  borrower: await contract.methods.getBorrower(i).call((err, result)=>{console.log("erreur BC : " + err); return result;}),
+                  startingDate: await contract.methods.getCurrentDate(i,0).call((err,result)=>{console.log("erreur BC : " + err); return result;}).then(result=>{return result}),
+                  transactions: []
+              });
+              let nbTransaction = await contract.methods.getNbTransaction(i).call((err,result)=>{console.log("erreur BC : " + err); return result;})
+              nbTransaction = parseInt(nbTransaction,10)+1;
+                  let borrower = await contract.methods.getBorrower(i).call((err,result)=>{console.log("erreur BC : " + err); return result;})
+                  for (let transaction = 1; transaction<nbTransaction; transaction++){
+                      visu.contracts[j].transactions.push({
+                          transactionId: transaction,
+                          transactionAmount: await contract.methods.getTransactionAmount(i, transaction).call((err, result)=>{console.log("erreur BC : " + err); return result;}),
+                          remainingAmount:await contract.methods.getRemainingAmount(i,transaction).call((err, result)=>{console.log("erreur BC : " + err); return result;}),
+                          remainingDuration: await contract.methods.getRemainingDuration(i, transaction).call((err, result)=>{console.log("erreur BC : " + err); return result;}),
+                          currentDate: await contract.methods.getCurrentDate(i, transaction).call((err, result)=>{console.log("erreur BC : " + err); return result;}),
+                          thDate: await contract.methods.getTheoricalDate(i, transaction).call((err, result)=>{console.log("erreur BC : " + err); return result;}),
+                          available: await contract.methods.getStatus(i, transaction).call((err, result)=>{console.log("erreur BC : " + err); return result;})
+                      });
+                  }
+              j++;
+          }
+      return visu;
     },
 
     // /blockchain/history Retourne les transactions passées
