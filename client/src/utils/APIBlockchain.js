@@ -38,13 +38,7 @@ export default {
     // /blockchain/transaction Ajoute une transaction à un contrat
     transaction: async function(contractId, transactionAmount, date) { // date : yyyymmdd
         let number = await contract.methods.getContractNumber(contractId).call((err,result)=>{return result;});
-        let count = await contract.methods.contractCount().call((err,result)=>{return result;});
-        if (number>count){
-          let status = 0;
-        }
-        else{
-          let status = await contract.methods.transaction2(number, date).send({ from : account1}).then(contract.methods.transaction1(number, transactionAmount).send({ from : account1}).then(contract.methods.increaseTrans(number).send({ from : account1}))).then(result=>{return true;}).catch(err => {return false;});
-        }
+        let status = await contract.methods.transaction2(number, date).send({ from : account1}).then(contract.methods.transaction1(number, transactionAmount).send({ from : account1}).then(contract.methods.increaseTrans(number).send({ from : account1}))).then(result=>{return true;}).catch(err => {return false;});
         return status;
     },
 
