@@ -175,7 +175,7 @@ render(){
                             </div>
                         </Grid>
                         <Grid item xs={6} spacing={3}>
-                            <img src="./img/logo-2.png" alt="cover-2" className={"ml-5 cover-2"}/>
+                            <img src="./img/logo-2.png" alt="cover-2" className={"Cover-2"}/>
                         </Grid>
                     </Grid>
                 </Container>

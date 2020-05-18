@@ -12,15 +12,15 @@ web3.eth.getAccounts().then(e => {account1=e[0]; console.log(account1)});
 export default {
     // /blockchain/loan Récupère le nombre de prêts en cours et la réputation d'un utilisateur
     loan: async function (pseudo) {
-        let nbLoans = await contract.methods.nbLoans(pseudo).call((err,result)=>{console.log("erreur BC : " + err); return result;});
-        let reputation = await contract.methods.reputation(pseudo).call((err,result)=>{console.log("erreur BC : " + err); return result;});
+        let nbLoans = await contract.methods.nbLoans(pseudo).call((err,result)=>{  return result;});
+        let reputation = await contract.methods.reputation(pseudo).call((err,result)=>{  return result;});
         return {nbLoans: nbLoans, reputation: reputation};
     },
 
     // /blockchain/refundCaracts Récupère le taux de remboursement et le nombre moyen de jours de retards d'un utilisateur
     refundCaracts: async function (pseudo) {
-        let percentageRefund = await contract.methods.getRefundRate(pseudo).call((err,result)=>{console.log("erreur BC : " + err); return result;});
-        let averageDelay = await contract.methods.getDelayAverage(pseudo).call((err,result)=>{console.log("erreur BC : " + err); return result;});
+        let percentageRefund = await contract.methods.getRefundRate(pseudo).call((err,result)=>{  return result;});
+        let averageDelay = await contract.methods.getDelayAverage(pseudo).call((err,result)=>{  return result;});
         return {percentage: percentageRefund, average: averageDelay};
     },
 
@@ -31,7 +31,7 @@ export default {
 
     // /blockchain/getHash Renvoie le hash du contrat avec l'id donné en paramètres
     getHash: async function (id) {
-        let hash = await contract.methods.getHash(id).call((err,result)=>{console.log("erreur BC : " + err); return result;});
+        let hash = await contract.methods.getHash(id).call((err,result)=>{  return result;});
         return hash;
     },
 
@@ -47,8 +47,8 @@ export default {
         let loanTable = [];
          for (let j=0; j<pseudoTable.length; j++){
              loanTable.push({
-             reputation : await contract.methods.reputation(pseudoTable[j]).call((err,result)=>{console.log("erreur BC : " + err); return result;}),
-             nbCurrentLoans : await contract.methods.nbLoans(pseudoTable[j]).call((err,result)=>{console.log("erreur BC : " + err); return result;}),
+             reputation : await contract.methods.reputation(pseudoTable[j]).call((err,result)=>{  return result;}),
+             nbCurrentLoans : await contract.methods.nbLoans(pseudoTable[j]).call((err,result)=>{  return result;}),
              pseudo : pseudoTable[j]
          })
        }
@@ -70,20 +70,20 @@ export default {
         let litigation = {
             contracts:[]
         }
-        let count = await contract.methods.getCount().call((err, result)=>{console.log("erreur BC : " + err); return result;})
+        let count = await contract.methods.getCount().call((err, result)=>{  return result;})
         for (let i = 0; i<count; i++){
-            let result = await contract.methods.testContractUser(pseudo, i).call((err, result)=>{console.log("erreur BC : " + err); return result;})
+            let result = await contract.methods.testContractUser(pseudo, i).call((err, result)=>{  return result;})
             if (result!=0){
-                let borrower = await contract.methods.getBorrower(i).call((err,result)=>{console.log("erreur BC : " + err); return result;})
-                let lender = await contract.methods.getLender(i).call((err,result)=>{console.log("erreur BC : " + err); return result;})
-                let nbTransaction = await contract.methods.getNbTransaction(i).call((err,result)=>{console.log("erreur BC : " + err); return result;})
+                let borrower = await contract.methods.getBorrower(i).call((err,result)=>{  return result;})
+                let lender = await contract.methods.getLender(i).call((err,result)=>{  return result;})
+                let nbTransaction = await contract.methods.getNbTransaction(i).call((err,result)=>{  return result;})
                 nbTransaction = parseInt(nbTransaction,10);
                 let blockchainDate;
                 if (nbTransaction==0){
-                    blockchainDate = await contract.methods.getCurrentDate(i,0).call((err,result)=>{console.log("erreur BC : " + err); return result;}).then(result=>{return result})
+                    blockchainDate = await contract.methods.getCurrentDate(i,0).call((err,result)=>{  return result;}).then(result=>{return result})
                 }
                 else{
-                    blockchainDate = await contract.methods.getTheoricalDate(i, nbTransaction).call((err, result)=>{console.log("erreur BC : " + err); return result;})
+                    blockchainDate = await contract.methods.getTheoricalDate(i, nbTransaction).call((err, result)=>{  return result;})
                 }
                 let jsDate = blockchainDate.slice(4,6)+"/"+ blockchainDate.slice(6,8)+"/"+ blockchainDate.slice(0,4);
                 let today = new Date();
@@ -98,7 +98,7 @@ export default {
                 if (dateDayDiff<0){
                     if (dateDayDiff<-60){
                         litigation.contracts.push({
-                            contractId: await contract.methods.getId(i).call((err, result)=>{console.log("erreur BC : " + err); return result;}),
+                            contractId: await contract.methods.getId(i).call((err, result)=>{  return result;}),
                             borrower: borrower,
                             lender: lender,
                             delay: true,
@@ -107,7 +107,7 @@ export default {
                     }
                     else{
                         litigation.contracts.push({
-                            contractId: await contract.methods.getId(i).call((err, result)=>{console.log("erreur BC : " + err); return result;}),
+                            contractId: await contract.methods.getId(i).call((err, result)=>{  return result;}),
                             borrower: borrower,
                             lender: lender,
                             delay: true,
@@ -117,7 +117,7 @@ export default {
                 }
                 else if (dateDayDiff === 0){
                     litigation.contracts.push({
-                        contractId: await contract.methods.getId(i).call((err, result)=>{console.log("erreur BC : " + err); return result;}),
+                        contractId: await contract.methods.getId(i).call((err, result)=>{  return result;}),
                         borrower: borrower,
                         lender: lender,
                         delay: false,
@@ -135,29 +135,29 @@ export default {
             contracts:[]
         }
         let j=0;
-        let count = await contract.methods.getCount().call((err, result)=>{console.log("erreur BC : " + err); return result;})
+        let count = await contract.methods.getCount().call((err, result)=>{  return result;})
         for(let i = 0; i<count; i++){
-            let result = await contract.methods.testContractUser(pseudo, i).call((err, result)=>{console.log("erreur BC : " + err); return result;})
+            let result = await contract.methods.testContractUser(pseudo, i).call((err, result)=>{  return result;})
             if (result!=0){
                 prevision.contracts.push({
-                    contractId : await contract.methods.getId(i).call((err, result)=>{console.log("erreur BC : " + err); return result;}),
-                    rate: await contract.methods.getRate(i).call((err, result)=>{console.log("erreur BC : " + err); return result;}),
-                    totalAmount: await contract.methods.getTotalAmount(i).call((err, result)=>{console.log("erreur BC : " + err); return result;}),
-                    duration: await contract.methods.getDuration(i).call((err, result)=>{console.log("erreur BC : " + err); return result;}),
-                    lender: await contract.methods.getLender(i).call((err, result)=>{console.log("erreur BC : " + err); return result;}),
-                    borrower: await contract.methods.getBorrower(i).call((err, result)=>{console.log("erreur BC : " + err); return result;}),
-                    startingDate: await contract.methods.getCurrentDate(i,0).call((err,result)=>{console.log("erreur BC : " + err); return result;}).then(result=>{return result}),
+                    contractId : await contract.methods.getId(i).call((err, result)=>{  return result;}),
+                    rate: await contract.methods.getRate(i).call((err, result)=>{  return result;}),
+                    totalAmount: await contract.methods.getTotalAmount(i).call((err, result)=>{  return result;}),
+                    duration: await contract.methods.getDuration(i).call((err, result)=>{  return result;}),
+                    lender: await contract.methods.getLender(i).call((err, result)=>{  return result;}),
+                    borrower: await contract.methods.getBorrower(i).call((err, result)=>{  return result;}),
+                    startingDate: await contract.methods.getCurrentDate(i,0).call((err,result)=>{  return result;}).then(result=>{return result}),
                     transactions: []
                 });
 
-                let nbTransaction = await contract.methods.getNbTransaction(i).call((err,result)=>{console.log("erreur BC : " + err); return result;})
+                let nbTransaction = await contract.methods.getNbTransaction(i).call((err,result)=>{  return result;})
                 nbTransaction = parseInt(nbTransaction,10);
                 if (result == 1){
-                    let borrower = await contract.methods.getBorrower(i).call((err,result)=>{console.log("erreur BC : " + err); return result;})
-                    let status = await contract.methods.getStatus(i, nbTransaction).call((err, result)=>{console.log("erreur BC : " + err); return result;});
+                    let borrower = await contract.methods.getBorrower(i).call((err,result)=>{  return result;})
+                    let status = await contract.methods.getStatus(i, nbTransaction).call((err, result)=>{  return result;});
                     if (status){
                         let installment = parseInt(prevision.contracts[j].totalAmount,10)/parseInt(prevision.contracts[j].duration,10);
-                        let remainingAmount = await contract.methods.getRemainingAmount(i,nbTransaction).call((err, result)=>{console.log("erreur BC : " + err); return result;})
+                        let remainingAmount = await contract.methods.getRemainingAmount(i,nbTransaction).call((err, result)=>{  return result;})
                         if (remainingAmount==0){
                             remainingAmount = prevision.contracts[j].totalAmount;
                         }
@@ -178,11 +178,11 @@ export default {
 
                 }
                 else if(result == 2){
-                    let lender = await contract.methods.getLender(i).call((err,result)=>{console.log("erreur BC : " + err); return result;})
-                    let status = await contract.methods.getStatus(i, nbTransaction).call((err, result)=>{console.log("erreur BC : " + err); return result;});
+                    let lender = await contract.methods.getLender(i).call((err,result)=>{  return result;})
+                    let status = await contract.methods.getStatus(i, nbTransaction).call((err, result)=>{  return result;});
                     if (status){
                         let installment = parseInt(prevision.contracts[j].totalAmount,10)/parseInt(prevision.contracts[j].duration,10);
-                        let remainingAmount = await contract.methods.getRemainingAmount(i,nbTransaction).call((err, result)=>{console.log("erreur BC : " + err); return result;})
+                        let remainingAmount = await contract.methods.getRemainingAmount(i,nbTransaction).call((err, result)=>{  return result;})
                         if (remainingAmount==0){
                             remainingAmount = prevision.contracts[j].totalAmount;
                         }
@@ -251,51 +251,51 @@ export default {
         }
         let j=0;
 
-        let count = await contract.methods.getCount().call((err, result)=>{console.log("erreur BC : " + err); return result;})
+        let count = await contract.methods.getCount().call((err, result)=>{  return result;})
         for(let i = 0; i<count; i++){
-            let result = await contract.methods.testContractUser(pseudo, i).call((err, result)=>{console.log("erreur BC : " + err); return result;})
+            let result = await contract.methods.testContractUser(pseudo, i).call((err, result)=>{  return result;})
             if (result!=0){
                 history.contracts.push({
-                    contractId : await contract.methods.getId(i).call((err, result)=>{console.log("erreur BC : " + err); return result;}),
-                    rate: await contract.methods.getRate(i).call((err, result)=>{console.log("erreur BC : " + err); return result;}),
-                    totalAmount: await contract.methods.getTotalAmount(i).call((err, result)=>{console.log("erreur BC : " + err); return result;}),
-                    duration: await contract.methods.getDuration(i).call((err, result)=>{console.log("erreur BC : " + err); return result;}),
-                    lender: await contract.methods.getLender(i).call((err, result)=>{console.log("erreur BC : " + err); return result;}),
-                    borrower: await contract.methods.getBorrower(i).call((err, result)=>{console.log("erreur BC : " + err); return result;}),
-                    startingDate: await contract.methods.getCurrentDate(i,0).call((err,result)=>{console.log("erreur BC : " + err); return result;}).then(result=>{return result}),
+                    contractId : await contract.methods.getId(i).call((err, result)=>{  return result;}),
+                    rate: await contract.methods.getRate(i).call((err, result)=>{  return result;}),
+                    totalAmount: await contract.methods.getTotalAmount(i).call((err, result)=>{  return result;}),
+                    duration: await contract.methods.getDuration(i).call((err, result)=>{  return result;}),
+                    lender: await contract.methods.getLender(i).call((err, result)=>{  return result;}),
+                    borrower: await contract.methods.getBorrower(i).call((err, result)=>{  return result;}),
+                    startingDate: await contract.methods.getCurrentDate(i,0).call((err,result)=>{  return result;}).then(result=>{return result}),
                     transactions: []
                 });
-                let nbTransaction = await contract.methods.getNbTransaction(i).call((err,result)=>{console.log("erreur BC : " + err); return result;})
+                let nbTransaction = await contract.methods.getNbTransaction(i).call((err,result)=>{  return result;})
                 nbTransaction = parseInt(nbTransaction,10)+1;
                 if (result == 1){
-                    let borrower = await contract.methods.getBorrower(i).call((err,result)=>{console.log("erreur BC : " + err); return result;})
+                    let borrower = await contract.methods.getBorrower(i).call((err,result)=>{  return result;})
                     for (let transaction = 1; transaction<nbTransaction; transaction++){
                         history.contracts[j].transactions.push({
                             transactionId: transaction,
                             status:"lender",
-                            transactionAmount: await contract.methods.getTransactionAmount(i, transaction).call((err, result)=>{console.log("erreur BC : " + err); return result;}),
+                            transactionAmount: await contract.methods.getTransactionAmount(i, transaction).call((err, result)=>{  return result;}),
                             otherPseudo: borrower,
-                            remainingAmount:await contract.methods.getRemainingAmount(i,transaction).call((err, result)=>{console.log("erreur BC : " + err); return result;}),
-                            remainingDuration: await contract.methods.getRemainingDuration(i, transaction).call((err, result)=>{console.log("erreur BC : " + err); return result;}),
-                            currentDate: await contract.methods.getCurrentDate(i, transaction).call((err, result)=>{console.log("erreur BC : " + err); return result;}),
-                            thDate: await contract.methods.getTheoricalDate(i, transaction).call((err, result)=>{console.log("erreur BC : " + err); return result;}),
-                            available: await contract.methods.getStatus(i, transaction).call((err, result)=>{console.log("erreur BC : " + err); return result;})
+                            remainingAmount:await contract.methods.getRemainingAmount(i,transaction).call((err, result)=>{  return result;}),
+                            remainingDuration: await contract.methods.getRemainingDuration(i, transaction).call((err, result)=>{  return result;}),
+                            currentDate: await contract.methods.getCurrentDate(i, transaction).call((err, result)=>{  return result;}),
+                            thDate: await contract.methods.getTheoricalDate(i, transaction).call((err, result)=>{  return result;}),
+                            available: await contract.methods.getStatus(i, transaction).call((err, result)=>{  return result;})
                         });
                     }
                 }
                 else if(result == 2){
-                    let lender = await contract.methods.getLender(i).call((err,result)=>{console.log("erreur BC : " + err); return result;})
+                    let lender = await contract.methods.getLender(i).call((err,result)=>{  return result;})
                     for (let transaction = 1; transaction<nbTransaction; transaction++){
                         history.contracts[j].transactions.push({
                             transactionId: transaction,
                             status:"borrower",
-                            transactionAmount: await contract.methods.getTransactionAmount(i, transaction).call((err, result)=>{console.log("erreur BC : " + err); return result;}),
+                            transactionAmount: await contract.methods.getTransactionAmount(i, transaction).call((err, result)=>{  return result;}),
                             otherPseudo: lender,
-                            remainingAmount:await contract.methods.getRemainingAmount(i,transaction).call((err, result)=>{console.log("erreur BC : " + err); return result;}),
-                            remainingDuration: await contract.methods.getRemainingDuration(i, transaction).call((err, result)=>{console.log("erreur BC : " + err); return result;}),
-                            currentDate: await contract.methods.getCurrentDate(i, transaction).call((err, result)=>{console.log("erreur BC : " + err); return result;}),
-                            thDate: await contract.methods.getTheoricalDate(i, transaction).call((err, result)=>{console.log("erreur BC : " + err); return result;}),
-                            available: await contract.methods.getStatus(i, transaction).call((err, result)=>{console.log("erreur BC : " + err); return result;})
+                            remainingAmount:await contract.methods.getRemainingAmount(i,transaction).call((err, result)=>{  return result;}),
+                            remainingDuration: await contract.methods.getRemainingDuration(i, transaction).call((err, result)=>{  return result;}),
+                            currentDate: await contract.methods.getCurrentDate(i, transaction).call((err, result)=>{  return result;}),
+                            thDate: await contract.methods.getTheoricalDate(i, transaction).call((err, result)=>{  return result;}),
+                            available: await contract.methods.getStatus(i, transaction).call((err, result)=>{  return result;})
                         });
                     }
                 }

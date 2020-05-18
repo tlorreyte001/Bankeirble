@@ -184,6 +184,11 @@ button{
     border: none;
     margin: 30px 0px 0px 30px;
 }
+
+.Cover-2{
+    animation: spin  infinite 80s linear ;
+
+}
 .cover-1,.cover-2,.cover-3{
     flex: 1;
 }

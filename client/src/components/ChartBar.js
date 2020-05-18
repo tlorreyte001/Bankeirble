@@ -35,6 +35,8 @@ export class ChartBar extends React.Component{
                         
         }
     }
+
+
     async componentDidMount() {
       let dates = [];
       let rates = [];
@@ -42,8 +44,9 @@ export class ChartBar extends React.Component{
           let response = await API.rate(localStorage.getItem("token"));
 
           for (let res of response.data.rates) {
-              dates.push(res.date);
-              rates.push(res.rate);
+            var currentDate = new Date(res.date);
+            dates.push(currentDate.toLocaleDateString('fr-FR'));
+            rates.push(res.rate);
           }         
 
           this.setState(state => (state.chartData.datasets[0].data = rates, state));
@@ -52,9 +55,10 @@ export class ChartBar extends React.Component{
       } catch(e){
           console.log(e)
       }
-  }
+    }
 
 
+    
   render() {
     return (
       
