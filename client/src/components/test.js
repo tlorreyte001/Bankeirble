@@ -135,8 +135,8 @@ export default function MiniDrawer() {
         <section className={"sideBar"}>
          <nav>
              <a href='home'><img src="./img/home.png" alt="logo" />Home</a>
+             <a href='loans'><img src="./img/cubes.png" alt="logo" />Marché</a>
              <a href='dashboard' class="active"><img src="./img/table.png" alt="logo" />Dashboard</a>
-             <a href='#'><img src="./img/cubes.png" alt="logo" />Blockchain</a>
          </nav>
        
       </section>

@@ -18,6 +18,7 @@ export class HistoryTable extends React.Component{
   state={
     rows:[],
     data:[{
+        status:'',
         preteur:'',
         emprunteur:'',
         dateDebut:'',
@@ -34,14 +35,7 @@ export class HistoryTable extends React.Component{
     open: false,
     form: false,
     error: false,
-    openPopUp: false,
-    // dataSelected : {
-    //     preteur:'',
-    //     duration:'',
-    //     taux:'',
-    //     etat:'',
-    //     montant:'',
-    // },   
+    openPopUp: false, 
     
   }
 
@@ -54,8 +48,11 @@ export class HistoryTable extends React.Component{
   getData = async () => {
 
     const tempData = [];
+    let pseudo = JSON.parse(localStorage.getItem("user")).pseudo;
+    console.log('Psudo', pseudo);
     try{
       const {contracts} = await APIBC.history(JSON.parse(localStorage.getItem("user")).pseudo);
+      console.log('History' , contracts);
 
       for (let contract of contracts) {
 
@@ -69,6 +66,7 @@ export class HistoryTable extends React.Component{
         startDate = day + '/' + month + '/' + year ;
 
         let obj = {
+          status:'',
           preteur:'',
           emprunteur:'',
           dateDebut:'',
@@ -102,6 +100,15 @@ export class HistoryTable extends React.Component{
           obj.etat = 'terminé';          
         }
 
+        if(obj.preteur == pseudo){
+          obj.status = 'preteur';
+        } else {
+          obj.status = 'emprunteur';
+
+        }
+
+        console.log('Status', obj.status);
+
         tempData.push(obj);
         
       } 
@@ -119,20 +126,20 @@ export class HistoryTable extends React.Component{
 
       try{
           const {contracts} = await APIBC.prevision(JSON.parse(localStorage.getItem("user")).pseudo);
-          console.log('Prevision', contracts);
 
       for (let contract of contracts) {
         let obj = {
           futureTransactions:'',
+
         }
 
         obj.futureTransactions = contract.transactions ;
-        console.log('OBG FutureTransactions',obj.futureTransactions);
 
         tempData.push(obj.futureTransactions);
 
       }
-      this.setState(state => (state.data.futureTransactions = tempData, state));
+      this.setState(state => (state.data.futureTransactions = tempData.futureTransactions, state));
+
 
 
 
@@ -156,6 +163,14 @@ render(){
  
 
   const columns = [
+  {
+    name: "status",
+    label: "Type",
+    options: {
+    filter: true,
+    sort: true,
+    }
+  },
   {
   name: "preteur",
   label: "Preteur",
@@ -185,7 +200,7 @@ render(){
   label: "Durée",
   options: {
   filter: true,
-  sort: false,
+  sort: true,
   }
   },
   
@@ -195,7 +210,7 @@ render(){
   label: "Montant",
   options: {
   filter: true,
-  sort: false,
+  sort: true,
   }
   },
   {
@@ -203,7 +218,7 @@ render(){
     label: "Taux",
     options: {
     filter: true,
-    sort: false,
+    sort: true,
     }
   },
 
@@ -212,7 +227,7 @@ render(){
     label: "Par mois",
     options: {
     filter: true,
-    sort: false,
+    sort: true,
     }
   },
 
@@ -221,7 +236,7 @@ render(){
     label: "Etat",
     options: {
     filter: true,
-    sort: false,
+    sort: true,
     }
   },
 
@@ -275,15 +290,17 @@ render(){
           WebkitBackgroundClip: "text",
           WebkitTextFillColor: "transparent",};
 
-          return (
+          if (rowData[0] == 'empunteur') {
+            return (
               <TableRow>
                   <TableCell/>
                   <TableCell colSpan={3}>
-                      <h4>Utilisateur <span style={gradient}>{rowData[1]}</span></h4>
-                      <p>Montant Totale:<span style={gradient}>{rowData[4]}</span> </p>
-                      <p>Taux de remboursement:<span style={gradient}>{rowData[5]}</span> </p>
-                      <p>Remboursement par mois:<span style={gradient}>{rowData[6]}</span> </p>                    
-                      <p>faire une transaction <PaymentButton /> </p>
+                      <h4>Utilisateur <span style={gradient}>{rowData[2]}</span></h4>
+                      <p>Montant Totale:<span style={gradient}>{rowData[5]}</span> </p>
+                      <p>Taux de remboursement:<span style={gradient}>{rowData[6]}</span> </p>
+                      <p>Remboursement par mois:<span style={gradient}>{rowData[7]}</span> </p>                    
+                      <p>faire une transaction </p> 
+                      <PaymentButton />
                       
                       
                   </TableCell>
@@ -293,6 +310,28 @@ render(){
                   <TableCell/>
               </TableRow>
           );
+            
+          } else {
+            return (
+              <TableRow>
+                  <TableCell/>
+                  <TableCell colSpan={3}>
+                      <h4>Utilisateur <span style={gradient}>{rowData[1]}</span></h4>
+                      <p>Montant Totale:<span style={gradient}>{rowData[4]}</span> </p>
+                      <p>Taux de remboursement:<span style={gradient}>{rowData[5]}</span> </p>
+                      <p>Remboursement par mois:<span style={gradient}>{rowData[6]}</span> </p>                    
+                      
+                  </TableCell>
+                  <TableCell/>
+                  <TableCell/>
+                  <TableCell/>
+                  <TableCell/>
+              </TableRow>
+          );
+            
+          }
+
+         
       }
 };
 return(

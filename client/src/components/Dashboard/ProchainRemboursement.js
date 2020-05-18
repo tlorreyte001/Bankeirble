@@ -26,11 +26,9 @@ export class ProchainRemboursement extends React.Component {
         var mm = Number(todayDate.getMonth()+1); 
         var yyyy = Number(todayDate.getFullYear());
 
-        console.log('Today Date' + dd);
   
         try{
             const {contracts} = await APIBC.prevision(JSON.parse(localStorage.getItem("user")).pseudo);
-            console.log('Prevision', contracts);
 
 
             var nextContract = {};
@@ -40,21 +38,17 @@ export class ProchainRemboursement extends React.Component {
                 var tempDate = contract.startingDate .toString();
                 var month = Number(tempDate.substring(4, 6));
                 var day = Number(tempDate.substring(6, 8));
-                console.log('Contract Date' + day);
 
 
                 if (day > dd || (day == dd && month != mm)){
                     nextContract = contract;
-                    console.log('day > dd', nextContract);
                     break;
                 }
             }
-            console.log('Next contract', nextContract);
 
             if (Object.keys(nextContract).length === 0 && nextContract.constructor === Object){
 
                 nextContract = contracts[0];
-                console.log('day < dd', nextContract);
             }
             
             var tempNextDate = nextContract.startingDate .toString();
@@ -64,6 +58,8 @@ export class ProchainRemboursement extends React.Component {
 
             if (day < 10){
                 day = '0' + day.toString();
+            }else if (day == 29 || day == 30 || day == 31 ){
+                day = 28 .toString();
             }
 
             if (month < 9){
@@ -89,10 +85,6 @@ export class ProchainRemboursement extends React.Component {
   
     }
 
-    blockchainCall = async () => {
-        const {Time} = await APIBC.loan(JSON.parse(localStorage.getItem("user")).pseudo);
-        this.setState({time: Time});
-    }
 
     render() {
         const card = {
