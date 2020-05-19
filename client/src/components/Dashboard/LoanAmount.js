@@ -52,7 +52,7 @@ export class LoanAmount extends React.Component {
             WebkitTextFillColor: "transparent",};
 
         return (
-            <Card style={{backgroundColor: "#f3f4f5",}}>
+            <Card style={{backgroundColor: "#ffffff",}}>
                 <CardContent>
                     <Grid container spacing={3} style={card}>
                         <Grid item xs={4}>
