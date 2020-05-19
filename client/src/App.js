@@ -10,6 +10,7 @@ import {Welcome} from './pages/Welcome.js';
 import { createMuiTheme, ThemeProvider  } from '@material-ui/core/styles';
 import {Loans} from "./pages/Loans";
 import {Moc} from "./pages/Moc";
+import {BlockChain} from "./pages/Blockchain"
 import {Dashboard} from "./pages/Dashboard";
 import MiniDrawer from './components/test';
 import HistoryTable from "./components/HistoryTable";
@@ -59,6 +60,7 @@ class App extends Component {
               <Route exact path="/testhistoryTable" component={TestHistoryTable} />
               <PrivateRoute exact path="/loans" component={Loans} />
               <PrivateRoute exact path="/test" component={Moc} />
+              <PrivateRoute exact path="/blockchain" component={BlockChain} />
               {/* <PrivateRoute exact path="/dashboard" component={Dashboard} /> */}
             
             </Switch>
