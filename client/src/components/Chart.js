@@ -4,6 +4,7 @@ import APIBC from '../utils/APIBlockchain';
 export class Chart extends React.Component{
     state={
         chartData:{ 
+            status:0,
             labels:[
             ],
             datasets: [{
@@ -61,19 +62,33 @@ export class Chart extends React.Component{
 
         this.setState(state => (state.chartData.datasets[0].data = amount, state));
         this.setState(state => (state.chartData.labels = pseudo, state));
+        this.setState(state => (state.chartData.status = 1, state));
+
     }
 
     render(){
-        return(
-            <div>
-            <Doughnut          
-                data={this.state.chartData}
-                height={'361px'}
-                width={'300px'}
-                options={{maintainAspectRatio:false}}
-                >
-            </Doughnut>
-            </div>
-        );
+        if (this.state.chartData.status == 1) {
+
+            return(
+                <div>
+                <Doughnut          
+                    data={this.state.chartData}
+                    height={'361px'}
+                    width={'300px'}
+                    options={{maintainAspectRatio:false}}
+                    >
+                </Doughnut>
+                </div>
+            );
+            
+        } else {
+            return(
+                <div height={'361px'} width={'300px'}>
+                    {/* <p>Désolé, pas de prêt disponible</p> */}
+                </div>
+            );
+            
+        }
+       
     }
 }

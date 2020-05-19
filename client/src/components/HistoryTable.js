@@ -51,7 +51,7 @@ export class HistoryTable extends React.Component{
     let pseudo = JSON.parse(localStorage.getItem("user")).pseudo;
     console.log('Psudo', pseudo);
     try{
-      const {contracts} = await APIBC.history(JSON.parse(localStorage.getItem("user")).pseudo);
+      const {contracts} = await APIBC.history(pseudo);
       console.log('History' , contracts);
 
       for (let contract of contracts) {
@@ -148,16 +148,7 @@ export class HistoryTable extends React.Component{
       }
 
   }
-  handleClickOpen = (event) => {
-    this.checkInfo();
-    let data = this.state.data[event.target.offsetParent.id];
-    this.setState(
-        {dataSelected: data},
-        () => {
-            this.setState({openPopUp: true});
-        });
-};
-
+  
 
 render(){
  
@@ -172,46 +163,46 @@ render(){
     }
   },
   {
-  name: "preteur",
-  label: "Preteur",
-  options: {
-  filter: true,
-  sort: true,
-  }
+    name: "preteur",
+    label: "Preteur",
+    options: {
+    filter: true,
+    sort: true,
+    }
   },
   {
-  name: "emprunteur",
-  label: "Emprunteur",
-  options: {
-  filter: true,
-  sort: true,
-  }
+    name: "emprunteur",
+    label: "Emprunteur",
+    options: {
+    filter: true,
+    sort: true,
+    }
   },
   {
-  name: "dateDebut",
-  label: 'Date de début',
-  options: {
-      filter: true,
-      sort: true,
-  }
+    name: "dateDebut",
+    label: 'Date de début',
+    options: {
+    filter: true,
+    sort: true,
+    }
   },
   {
-  name: "duree",
-  label: "Durée",
-  options: {
-  filter: true,
-  sort: true,
-  }
+    name: "duree",
+    label: "Durée",
+    options: {
+    filter: true,
+    sort: true,
+    }
   },
   
  
   {
-  name: "montant",
-  label: "Montant",
-  options: {
-  filter: true,
-  sort: true,
-  }
+    name: "montant",
+    label: "Montant",
+    options: {
+    filter: true,
+    sort: true,
+    }
   },
   {
     name: "taux",
@@ -290,7 +281,7 @@ render(){
           WebkitBackgroundClip: "text",
           WebkitTextFillColor: "transparent",};
 
-          if (rowData[0] == 'empunteur') {
+          if (rowData[0] == 'emprunteur') {
             return (
               <TableRow>
                   <TableCell/>
@@ -300,7 +291,8 @@ render(){
                       <p>Taux de remboursement:<span style={gradient}>{rowData[6]}</span> </p>
                       <p>Remboursement par mois:<span style={gradient}>{rowData[7]}</span> </p>                    
                       <p>faire une transaction </p> 
-                      <PaymentButton />
+                      <PaymentButton amount={parseFloat(rowData[7])} user={rowData[2]} />
+                      
                       
                       
                   </TableCell>
@@ -317,9 +309,9 @@ render(){
                   <TableCell/>
                   <TableCell colSpan={3}>
                       <h4>Utilisateur <span style={gradient}>{rowData[1]}</span></h4>
-                      <p>Montant Totale:<span style={gradient}>{rowData[4]}</span> </p>
-                      <p>Taux de remboursement:<span style={gradient}>{rowData[5]}</span> </p>
-                      <p>Remboursement par mois:<span style={gradient}>{rowData[6]}</span> </p>                    
+                      <p>Montant Totale:<span style={gradient}>{rowData[5]}</span> </p>
+                      <p>Taux de remboursement:<span style={gradient}>{rowData[6]}</span> </p>
+                      <p>Remboursement par mois:<span style={gradient}>{rowData[7]}</span> </p>                    
                       
                   </TableCell>
                   <TableCell/>
