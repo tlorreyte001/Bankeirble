@@ -41,7 +41,7 @@ export class Litige extends React.Component {
     };
 
     button = () => {
-        let user = JSON.parse(localStorage.getItem("user")).pseudo;
+        let user = localStorage.getItem("token");
         let loanId = this.state.id;
         let url = "http://localhost:8800/loan/contract?user=" + user + "&loanId=" + loanId;
         console.log(url);
