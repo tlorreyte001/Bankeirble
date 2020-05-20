@@ -99,17 +99,21 @@ export class PaymentButton extends React.Component {
             Amount: this.props.amount,
             CardId: this.state.cards[0].Id
         };
-        APIP.justPay(
-            localStorage.getItem("token"), data
-        )
-            .then(async (response) => {
-                if (data.data.text === "Succès") {
-                    APIBC.transaction(this.props.contractId, this.props.amount, parseInt(this.format(new Date())))
+        APIBC.transaction(this.props.contractId, this.props.amount, parseInt(this.format(new Date())))
                         .then((r)=>{
                             this.handleClose();
                         })
-                }
-            })
+        // APIP.justPay(
+        //     localStorage.getItem("token"), data
+        // )
+        //     .then(async (response) => {
+        //         if (data.data.text === "Succès") {
+        //             APIBC.transaction(this.props.contractId, this.props.amount, parseInt(this.format(new Date())))
+        //                 .then((r)=>{
+        //                     this.handleClose();
+        //                 })
+        //         }
+        //     })
     }
 
     format = (date) => {
