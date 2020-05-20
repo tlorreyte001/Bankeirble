@@ -111,9 +111,9 @@ export class PopUpForm extends React.Component {
                         }).then((status) => {
                             console.log(status);
                             if (status) {
-                                this.props.Success(false);
-                            } else {
                                 this.props.Success(true);
+                            } else {
+                                this.props.Success(false);
                             }
                         })
                     } catch (e) {
