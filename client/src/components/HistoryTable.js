@@ -18,6 +18,7 @@ export class HistoryTable extends React.Component{
   state={
     rows:[],
     data:[{
+        constractId:'',
         status:'',
         preteur:'',
         emprunteur:'',
@@ -29,7 +30,6 @@ export class HistoryTable extends React.Component{
         monthly:'',
         pastTransactions:'',
         futureTransactions:'',
-
     }],
     infos: [],
     open: false,
@@ -66,6 +66,7 @@ export class HistoryTable extends React.Component{
         startDate = day + '/' + month + '/' + year ;
 
         let obj = {
+          constractId:'',
           status:'',
           preteur:'',
           emprunteur:'',
@@ -78,7 +79,7 @@ export class HistoryTable extends React.Component{
           pastTransactions:'',
         };
 
-
+        obj.constractId = contract.contractId;
         obj.preteur = contract.lender;
         obj.emprunteur = contract.borrower;
         obj.dateDebut = startDate;
@@ -291,7 +292,7 @@ render(){
                       <p>Taux de remboursement:<span style={gradient}>{rowData[6]}</span> </p>
                       <p>Remboursement par mois:<span style={gradient}>{rowData[7]}</span> </p>                    
                       <p>faire une transaction </p> 
-                      <PaymentButton amount={parseFloat(rowData[7])} user={rowData[2]} />
+                      <PaymentButton amount={parseFloat(rowData[8])} user={rowData[3]} contractId={rowData[0]} />
                       
                       
                       
