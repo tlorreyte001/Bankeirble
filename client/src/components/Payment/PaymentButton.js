@@ -210,7 +210,7 @@ export class PaymentButton extends React.Component {
 
         return(
             <div>
-                <Button disabled={this.state.disabled} variant="contained" color="primary" className={"m-3"} onClick={this.pay}>Payer</Button>
+                <Button disabled={this.state.disabled} variant="contained" color="primary" className={"m-3"} onClick={this.justPay}>Payer</Button>
                 <Dialog open={this.state.openPopUp} onClose={this.handleClose} aria-labelledby="form-dialog-title">
                     <DialogTitle id="form-dialog-title">Récapitulatif de Paiement</DialogTitle>
                     <DialogContent>
